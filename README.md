@@ -19,10 +19,8 @@
 
 | Secret | 说明 |
 |--------|------|
-| `KIMI_API_KEY` | Kimi API Key，从 [platform.moonshot.cn](https://platform.moonshot.cn) 获取（推荐） |
-| `ANTHROPIC_API_KEY` | 或者使用 Anthropic API Key |
-
-两者都填写时，默认优先使用 Kimi；可通过 `LLM_PROVIDER=anthropic` 环境变量切换。
+| `ANTHROPIC_API_KEY` | API Key（Anthropic 或 Kimi Code 均可） |
+| `ANTHROPIC_BASE_URL` | API 地址，使用 Kimi Code 时填 `https://api.kimi.com/coding/`；使用 Anthropic 官方时留空 |
 
 > `GITHUB_TOKEN` 由 GitHub Actions 自动提供，无需手动配置。
 
@@ -38,8 +36,8 @@
 pip install -r requirements.txt
 
 export GITHUB_TOKEN=ghp_xxxxx
-export KIMI_API_KEY=sk-xxxxx           # 使用 Kimi
-# export ANTHROPIC_API_KEY=sk-ant-xxx  # 或使用 Anthropic
+export ANTHROPIC_BASE_URL=https://api.kimi.com/coding/
+export ANTHROPIC_API_KEY=sk-kimi-xxxxxxxx
 export DIGEST_REPO=your-username/claude-code-digest  # 可选，不设置则只生成文件
 
 python scripts/daily_digest.py
