@@ -33,14 +33,14 @@
 ## 本地运行
 
 ```bash
-pip install -r requirements.txt
+npm install
 
 export GITHUB_TOKEN=ghp_xxxxx
 export ANTHROPIC_BASE_URL=https://api.kimi.com/coding/
 export ANTHROPIC_API_KEY=sk-kimi-xxxxxxxx
 export DIGEST_REPO=your-username/claude-code-digest  # 可选，不设置则只生成文件
 
-python scripts/daily_digest.py
+npm start
 ```
 
 ## 输出示例

@@ -1,6 +1,4 @@
 .env
-__pycache__/
-*.pyc
-.venv/
-venv/
-.python-version
+.DS_Store
+node_modules/
+dist/

@@ -19,14 +19,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.12"
-          cache: pip
+          node-version: 22
+          cache: npm
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: npm ci
 
       - name: Run daily digest
         env:
@@ -34,7 +34,7 @@ jobs:
           ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           DIGEST_REPO: ${{ github.repository }}
-        run: python scripts/daily_digest.py
+        run: npm start
 
       - name: Commit digest file
         run: |
