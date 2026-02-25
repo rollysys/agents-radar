@@ -104,8 +104,13 @@ async function main(): Promise<void> {
           return { config: cfg, issues, prs, releases, summary: "过去24小时无活动。" };
         }
         console.log(`  [${cfg.id}] Calling LLM for summary...`);
-        const summary = await callLlm(buildCliPrompt(cfg, issues, prs, releases, dateStr));
-        return { config: cfg, issues, prs, releases, summary };
+        try {
+          const summary = await callLlm(buildCliPrompt(cfg, issues, prs, releases, dateStr));
+          return { config: cfg, issues, prs, releases, summary };
+        } catch (err) {
+          console.error(`  [${cfg.id}] LLM call failed: ${err}`);
+          return { config: cfg, issues, prs, releases, summary: "⚠️ 摘要生成失败。" };
+        }
       }),
     ),
     (async () => {
@@ -116,7 +121,12 @@ async function main(): Promise<void> {
         return "过去24小时无活动。";
       }
       console.log(`  [openclaw] Calling LLM for OpenClaw report...`);
-      return callLlm(buildOpenclawPrompt(issues, prs, releases, dateStr));
+      try {
+        return await callLlm(buildOpenclawPrompt(issues, prs, releases, dateStr));
+      } catch (err) {
+        console.error(`  [openclaw] LLM call failed: ${err}`);
+        return "⚠️ 摘要生成失败。";
+      }
     })(),
   ]);
 

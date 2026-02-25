@@ -34,6 +34,24 @@ export function formatItem(item: GitHubItem): string {
 }
 
 // ---------------------------------------------------------------------------
+// Sampling helpers (shared)
+// ---------------------------------------------------------------------------
+
+const CLI_ISSUE_LIMIT = 30;
+const CLI_PR_LIMIT    = 20;
+
+/** Sort by comment count desc, take top N. */
+function topN(items: GitHubItem[], n: number): GitHubItem[] {
+  return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
+}
+
+function sampleNote(total: number, sampled: number, label: string): string {
+  return total > sampled
+    ? `（共 ${total} 条，以下展示评论数最多的 ${sampled} 条）`
+    : `（共 ${total} 条）`;
+}
+
+// ---------------------------------------------------------------------------
 // Prompts
 // ---------------------------------------------------------------------------
 
@@ -44,11 +62,17 @@ export function buildCliPrompt(
   releases: GitHubRelease[],
   dateStr: string,
 ): string {
-  const issuesText   = issues.map(formatItem).join("\n") || "无";
-  const prsText      = prs.map(formatItem).join("\n") || "无";
+  const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
+  const sampledPrs    = topN(prs,    CLI_PR_LIMIT);
+
+  const issuesText   = sampledIssues.map(formatItem).join("\n") || "无";
+  const prsText      = sampledPrs.map(formatItem).join("\n") || "无";
   const releasesText = releases.length
     ? releases.map((r) => `- ${r.tag_name}: ${r.name}\n  ${(r.body ?? "").slice(0, 300)}`).join("\n")
     : "无";
+
+  const issueNote = sampleNote(issues.length, sampledIssues.length, "issues");
+  const prNote    = sampleNote(prs.length,    sampledPrs.length,    "prs");
 
   return `你是一位专注于 AI 开发工具的技术分析师。请根据以下 GitHub 数据，生成 ${dateStr} 的 ${cfg.name} 社区动态日报。
 
@@ -57,10 +81,10 @@ export function buildCliPrompt(
 ## 最新 Releases（过去24小时）
 ${releasesText}
 
-## 最新 Issues（过去24小时内更新，共${issues.length}条）
+## 最新 Issues（过去24小时内更新）${issueNote}
 ${issuesText}
 
-## 最新 Pull Requests（过去24小时内更新，共${prs.length}条）
+## 最新 Pull Requests（过去24小时内更新）${prNote}
 ${prsText}
 
 ---
@@ -81,11 +105,6 @@ ${prsText}
 /** Max items forwarded to the LLM for high-volume repos. */
 const OPENCLAW_ISSUE_LIMIT = 50;
 const OPENCLAW_PR_LIMIT    = 30;
-
-/** Sort by comment count desc, take top N. */
-function topN(items: GitHubItem[], n: number): GitHubItem[] {
-  return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
-}
 
 export function buildOpenclawPrompt(
   issues: GitHubItem[],
