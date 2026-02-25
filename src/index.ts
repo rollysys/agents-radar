@@ -13,6 +13,7 @@ import {
   type RepoConfig,
   fetchRecentItems,
   fetchRecentReleases,
+  fetchSkillsData,
   createGitHubIssue,
 } from "./github.ts";
 import {
@@ -20,6 +21,7 @@ import {
   buildCliPrompt,
   buildOpenclawPrompt,
   buildComparisonPrompt,
+  buildSkillsPrompt,
 } from "./prompts.ts";
 import { callLlm, saveFile, autoGenFooter } from "./report.ts";
 
@@ -44,6 +46,9 @@ const OPENCLAW: RepoConfig = {
   name: "OpenClaw",
   paginated: true,
 };
+
+/** Claude Code Skills — trending skills tracked separately, no date filter. */
+const CLAUDE_SKILLS_REPO = "anthropics/skills";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -75,27 +80,33 @@ async function main(): Promise<void> {
   // ── 1. Fetch all repos in parallel ─────────────────────────────────────────
 
   const allConfigs = [...CLI_REPOS, OPENCLAW];
-  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}`);
+  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills`);
 
-  const fetched = await Promise.all(
-    allConfigs.map(async (cfg) => {
-      const [issuesRaw, prs, releases] = await Promise.all([
-        fetchRecentItems(cfg, "issues", since),
-        fetchRecentItems(cfg, "pulls", since),
-        fetchRecentReleases(cfg.repo, since),
-      ]);
-      const issues = issuesRaw.filter((i) => !i.pull_request);
-      console.log(`  [${cfg.id}] issues: ${issues.length}, prs: ${prs.length}, releases: ${releases.length}`);
-      return { cfg, issues, prs, releases };
+  const [fetched, skillsData] = await Promise.all([
+    Promise.all(
+      allConfigs.map(async (cfg) => {
+        const [issuesRaw, prs, releases] = await Promise.all([
+          fetchRecentItems(cfg, "issues", since),
+          fetchRecentItems(cfg, "pulls", since),
+          fetchRecentReleases(cfg.repo, since),
+        ]);
+        const issues = issuesRaw.filter((i) => !i.pull_request);
+        console.log(`  [${cfg.id}] issues: ${issues.length}, prs: ${prs.length}, releases: ${releases.length}`);
+        return { cfg, issues, prs, releases };
+      }),
+    ),
+    fetchSkillsData(CLAUDE_SKILLS_REPO).then((d) => {
+      console.log(`  [claude-code-skills] prs: ${d.prs.length}, issues: ${d.issues.length}`);
+      return d;
     }),
-  );
+  ]);
 
   const fetchedCli      = fetched.filter((f) => f.cfg.id !== OPENCLAW.id);
   const fetchedOpenclaw = fetched.find((f) => f.cfg.id === OPENCLAW.id)!;
 
-  // ── 2. Generate CLI summaries + OpenClaw summary in parallel ───────────────
+  // ── 2. Generate CLI summaries + OpenClaw summary + Skills summary in parallel
 
-  const [cliDigests, openclawSummary] = await Promise.all([
+  const [cliDigests, openclawSummary, skillsSummary] = await Promise.all([
     Promise.all(
       fetchedCli.map(async ({ cfg, issues, prs, releases }): Promise<RepoDigest> => {
         const hasData = issues.length || prs.length || releases.length;
@@ -128,6 +139,15 @@ async function main(): Promise<void> {
         return "⚠️ 摘要生成失败。";
       }
     })(),
+    (async () => {
+      console.log("  [claude-code-skills] Calling LLM for skills report...");
+      try {
+        return await callLlm(buildSkillsPrompt(skillsData.prs, skillsData.issues, dateStr));
+      } catch (err) {
+        console.error(`  [claude-code-skills] LLM call failed: ${err}`);
+        return "⚠️ Skills 摘要生成失败。";
+      }
+    })(),
   ]);
 
   // ── 3. Generate CLI cross-tool comparison ──────────────────────────────────
@@ -139,19 +159,25 @@ async function main(): Promise<void> {
 
   // ── 4. Build merged CLI digest (comparison + per-tool details) ─────────────
 
-  const repoLinks = cliDigests
-    .map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`)
-    .join("\n");
+  const repoLinks =
+    cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
+    `\n- [Claude Code Skills](https://github.com/${CLAUDE_SKILLS_REPO})`;
 
   const toolSections = cliDigests
-    .map((d) => [
-      `<details>`,
-      `<summary><strong>${d.config.name}</strong> — <a href="https://github.com/${d.config.repo}">${d.config.repo}</a></summary>`,
-      ``,
-      d.summary,
-      ``,
-      `</details>`,
-    ].join("\n"))
+    .map((d) => {
+      // For Claude Code, prepend the skills section at the top of the details block
+      const skillsSection = d.config.id === "claude-code"
+        ? `## Claude Code Skills 社区热点\n\n> 数据来源: [anthropics/skills](https://github.com/${CLAUDE_SKILLS_REPO})\n\n${skillsSummary}\n\n---\n\n`
+        : "";
+      return [
+        `<details>`,
+        `<summary><strong>${d.config.name}</strong> — <a href="https://github.com/${d.config.repo}">${d.config.repo}</a></summary>`,
+        ``,
+        skillsSection + d.summary,
+        ``,
+        `</details>`,
+      ].join("\n");
+    })
     .join("\n\n");
 
   const digestContent =

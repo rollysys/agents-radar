@@ -160,6 +160,23 @@ export async function ensureLabel(name: string, color: string): Promise<void> {
   }
 }
 
+/**
+ * Fetch trending skills data from a skills repo (e.g. anthropics/skills).
+ * PRs sorted by popularity (comment count); issues sorted by comments.
+ * No `since` filter — we want all-time hot items, not just the last 24 h.
+ */
+export async function fetchSkillsData(repo: string): Promise<{ prs: GitHubItem[]; issues: GitHubItem[] }> {
+  const [prs, issuesRaw] = await Promise.all([
+    githubGet<GitHubItem[]>(`https://api.github.com/repos/${repo}/pulls`, {
+      state: "open", sort: "popularity", direction: "desc", per_page: "50",
+    }),
+    githubGet<GitHubItem[]>(`https://api.github.com/repos/${repo}/issues`, {
+      state: "all", sort: "comments", direction: "desc", per_page: "50",
+    }),
+  ]);
+  return { prs, issues: issuesRaw.filter((i) => !i.pull_request) };
+}
+
 export async function createGitHubIssue(
   title: string,
   body: string,
