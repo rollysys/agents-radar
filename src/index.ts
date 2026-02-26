@@ -22,8 +22,10 @@ import {
   buildOpenclawPrompt,
   buildComparisonPrompt,
   buildSkillsPrompt,
+  buildWebReportPrompt,
 } from "./prompts.ts";
 import { callLlm, saveFile, autoGenFooter } from "./report.ts";
+import { loadWebState, saveWebState, fetchSiteContent, type WebFetchResult } from "./web.ts";
 
 // ---------------------------------------------------------------------------
 // Repo config
@@ -77,12 +79,14 @@ async function main(): Promise<void> {
   const baseUrl = process.env["ANTHROPIC_BASE_URL"] ?? "api.anthropic.com";
   console.log(`[${now.toISOString()}] Starting digest | endpoint: ${baseUrl}`);
 
-  // ── 1. Fetch all repos in parallel ─────────────────────────────────────────
+  // ── 1. Fetch all repos + web content in parallel ───────────────────────────
 
   const allConfigs = [...CLI_REPOS, OPENCLAW];
-  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills`);
+  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web`);
 
-  const [fetched, skillsData] = await Promise.all([
+  const webState = loadWebState();
+
+  const [fetched, skillsData, webResults] = await Promise.all([
     Promise.all(
       allConfigs.map(async (cfg) => {
         const [issuesRaw, prs, releases] = await Promise.all([
@@ -99,6 +103,16 @@ async function main(): Promise<void> {
       console.log(`  [claude-code-skills] prs: ${d.prs.length}, issues: ${d.issues.length}`);
       return d;
     }),
+    Promise.all([
+      fetchSiteContent("anthropic", webState).catch((err): WebFetchResult => {
+        console.error(`  [web/anthropic] fetch failed: ${err}`);
+        return { site: "anthropic", siteName: "Anthropic (Claude)", isFirstRun: false, newItems: [], totalDiscovered: 0 };
+      }),
+      fetchSiteContent("openai", webState).catch((err): WebFetchResult => {
+        console.error(`  [web/openai] fetch failed: ${err}`);
+        return { site: "openai", siteName: "OpenAI", isFirstRun: false, newItems: [], totalDiscovered: 0 };
+      }),
+    ]),
   ]);
 
   const fetchedCli      = fetched.filter((f) => f.cfg.id !== OPENCLAW.id);
@@ -204,7 +218,56 @@ async function main(): Promise<void> {
     openclawSummary + footer;
   console.log(`  Saved ${saveFile(openclawContent, dateStr, "openclaw.md")}`);
 
-  // ── 6. Create GitHub issues ────────────────────────────────────────────────
+  // ── 6. Web report ──────────────────────────────────────────────────────────
+
+  const hasNewWebContent = webResults.some((r) => r.newItems.length > 0);
+  let webReportPath = "";
+
+  if (hasNewWebContent) {
+    console.log("  [web] Calling LLM for web content report...");
+    try {
+      const webSummary = await callLlm(buildWebReportPrompt(webResults, dateStr), 8192);
+      const isFirstRun = webResults.some((r) => r.isFirstRun);
+      const mode = isFirstRun ? "首次全量" : "今日更新";
+      const totalNew = webResults.reduce((sum, r) => sum + r.newItems.length, 0);
+
+      const webContent =
+        `# AI 官方内容追踪报告 ${dateStr}\n\n` +
+        `> ${mode} | 新增内容: ${totalNew} 篇 | 生成时间: ${utcStr} UTC\n\n` +
+        `数据来源:\n` +
+        `- Anthropic: [anthropic.com](https://www.anthropic.com) — ` +
+          `新增 ${webResults.find((r) => r.site === "anthropic")?.newItems.length ?? 0} 篇` +
+          `（sitemap 共 ${webResults.find((r) => r.site === "anthropic")?.totalDiscovered ?? 0} 条）\n` +
+        `- OpenAI: [openai.com](https://openai.com) — ` +
+          `新增 ${webResults.find((r) => r.site === "openai")?.newItems.length ?? 0} 篇` +
+          `（sitemap 共 ${webResults.find((r) => r.site === "openai")?.totalDiscovered ?? 0} 条）\n\n` +
+        `---\n\n` +
+        webSummary +
+        footer;
+
+      webReportPath = saveFile(webContent, dateStr, "ai-web.md");
+      console.log(`  Saved ${webReportPath}`);
+
+      if (digestRepo) {
+        const webUrl = await createGitHubIssue(
+          `🌐 AI 官方内容追踪报告 ${dateStr}${isFirstRun ? "（首次全量）" : ""}`,
+          webContent,
+          "web",
+        );
+        console.log(`  Created web issue: ${webUrl}`);
+      }
+    } catch (err) {
+      console.error(`  [web] Report generation failed: ${err}`);
+    }
+  } else {
+    console.log("  [web] No new content detected, skipping report.");
+  }
+
+  // Persist updated web state (runs regardless of whether a report was generated)
+  saveWebState(webState);
+  console.log("  [web] State saved.");
+
+  // ── 7. Create GitHub issues (CLI + OpenClaw) ────────────────────────────────
 
   if (digestRepo) {
     const cliUrl = await createGitHubIssue(`📊 AI CLI 工具社区动态日报 ${dateStr}`, digestContent, "digest");
