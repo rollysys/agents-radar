@@ -60,6 +60,9 @@ interface SiteConfig {
   subSitemapNames?: string[];
   /** URL template for sub-sitemaps; {name} is replaced with each sub-sitemap name */
   subSitemapTemplate?: string;
+  /** Skip fetching article pages; derive title from URL slug instead. Use when the
+   *  site blocks bot requests (e.g. Cloudflare WAF on datacenter IPs). */
+  metadataOnly?: boolean;
 }
 
 const SITE_CONFIGS: Record<"anthropic" | "openai", SiteConfig> = {
@@ -84,6 +87,9 @@ const SITE_CONFIGS: Record<"anthropic" | "openai", SiteConfig> = {
       "product",
     ],
     subSitemapTemplate: "https://openai.com/sitemap.xml/{name}/",
+    // Article pages return 403 from datacenter IPs (Cloudflare WAF);
+    // sitemaps are accessible, so use metadata-only mode.
+    metadataOnly: true,
   },
 };
 
@@ -181,6 +187,16 @@ function urlCategory(url: string): string {
     return new URL(url).pathname.split("/").filter(Boolean)[0] ?? "article";
   } catch {
     return "article";
+  }
+}
+
+/** Derive a human-readable title from the last URL path segment. */
+function titleFromUrl(url: string): string {
+  try {
+    const slug = new URL(url).pathname.split("/").filter(Boolean).pop() ?? "";
+    return slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  } catch {
+    return url;
   }
 }
 
@@ -294,23 +310,37 @@ export async function fetchSiteContent(
     `${newUrls.length} new URLs, fetching content for ${toFetch.length}`,
   );
 
-  // Fetch page content sequentially with a polite delay
+  // Build items — either from full page fetches or from sitemap metadata only
   const items: WebPageItem[] = [];
-  for (const { loc, lastmod } of toFetch) {
-    try {
-      const html = await httpGet(loc);
+  if (cfg.metadataOnly) {
+    for (const { loc, lastmod } of toFetch) {
       items.push({
         url:      loc,
-        title:    extractTitle(html),
+        title:    titleFromUrl(loc),
         lastmod:  lastmod ?? "",
-        content:  extractText(html),
+        content:  "",
         site,
         category: urlCategory(loc),
       });
-    } catch (err) {
-      console.error(`  [web/${site}] Failed to fetch ${loc}: ${err}`);
     }
-    await sleep(FETCH_DELAY_MS);
+  } else {
+    // Fetch page content sequentially with a polite delay
+    for (const { loc, lastmod } of toFetch) {
+      try {
+        const html = await httpGet(loc);
+        items.push({
+          url:      loc,
+          title:    extractTitle(html),
+          lastmod:  lastmod ?? "",
+          content:  extractText(html),
+          site,
+          category: urlCategory(loc),
+        });
+      } catch (err) {
+        console.error(`  [web/${site}] Failed to fetch ${loc}: ${err}`);
+      }
+      await sleep(FETCH_DELAY_MS);
+    }
   }
 
   // Mark ALL discovered URLs as seen (not just fetched ones)
