@@ -1,162 +1,126 @@
 # OpenClaw 项目动态日报 2026-02-26
 
-> 数据来源: [openclaw/openclaw](https://github.com/openclaw/openclaw) | Issues: 500 | PRs: 500 | 生成时间: 2026-02-26 00:08 UTC
+> 数据来源: [openclaw/openclaw](https://github.com/openclaw/openclaw) | Issues: 500 | PRs: 500 | 生成时间: 2026-02-26 08:46 UTC
 
 # OpenClaw 项目动态日报 | 2026-02-26
 
----
-
 ## 1. 今日速览
 
-OpenClaw 今日保持**极高活跃度**：24小时内 Issues 和 PR 各更新 500 条，社区参与热度持续攀升。项目发布 **v2026.2.24** 稳定版及 beta 版，核心改进聚焦多语言中断指令支持。PR 队列积压明显（424 条待合并 vs 76 条已处理），反映"稳定化模式"下审核瓶颈——团队正通过 [#5799](https://github.com/openclaw/openclaw/issues/5799) 主动限制新功能涌入，优先夯实核心稳定性。今日合并 PR 以 Telegram/Discord 渠道修复、会话管理优化为主，中国本土模型生态（SiliconFlow、DeepSeek、DashScope 等）接入成为社区贡献亮点。
+OpenClaw 今日保持极高活跃度，24小时内 **500+ Issues** 和 **500+ PRs** 更新，社区参与度处于峰值水平。项目发布 **v2026.2.25** 稳定版及 beta 版本，重点优化 Android 端聊天体验与启动性能。核心开发节奏聚焦 **Feishu/飞书生态完善**（多账号路由、线程回复）、**Ollama 本地模型适配**（上下文窗口修复、嵌入支持）及 **Telegram/Discord 等渠道稳定性**（打字指示器、消息分片问题）。社区对 **DingTalk 钉钉入驻** 呼声高涨，两个相关 Issue 同日进入热榜。整体项目健康度良好，但积压的"stale"标签 Issue 需关注。
 
 ---
 
 ## 2. 版本发布
 
-### [v2026.2.24](https://github.com/openclaw/openclaw/releases/tag/v2026.2.24) & [v2026.2.24-beta.1](https://github.com/openclaw/openclaw/releases/tag/v2026.2.24-beta.1)
+### v2026.2.25 (稳定版) & v2026.2.25-beta.1
+**发布日期**: 2026-02-25 | [Release 页面](https://github.com/openclaw/openclaw/releases)
 
-| 属性 | 详情 |
-|:---|:---|
-| **发布日期** | 2026-02-24 |
-| **更新类型** | 功能增强（非破坏性）|
-| **核心变更** | **Auto-reply/Abort 快捷键全面升级** |
+| 变更类别 | 详情 |
+|---------|------|
+| **Android/Chat** | 优化流式消息传输处理，改进原生 Android 聊天 UI 的 Markdown 渲染质量，支持 GitHub 风格 Markdown (#26079) |
+| **Android/启动性能** | 延迟前台服务启动，将 WebView 调试初始化移出关键路径 |
 
-**详细变更：**
-- **扩展独立停止短语**：`stop openclaw`、`stop action`、`stop run`、`stop agent`、`please stop` 及其变体
-- **容忍尾部标点**：支持 `STOP OPENCLAW!!!` 等情绪化输入
-- **多语言支持**：新增西班牙语(ES)、法语(FR)、中文(ZH)、印地语(HI)、阿拉伯语(AR)、日语(JP)、德语(DE)、葡萄牙语(PT)等语言的关键词识别
-
-**迁移注意事项**：无需配置变更，自动生效。终端用户可立即使用母语中断正在运行的 agent。
+**破坏性变更**: 无  
+**迁移注意**: Android 用户建议升级以获得更流畅的聊天体验；beta 版与稳定版内容一致，供渠道测试使用。
 
 ---
 
 ## 3. 项目进展
 
-### 今日已合并/关闭的关键 PR（76 条中的代表性进展）
+### 今日合并/关闭的重要 PR
 
-| PR | 作者 | 核心贡献 | 项目推进 |
+| PR | 作者 | 核心贡献 | 状态 |
 |:---|:---|:---|:---|
-| [#26928](https://github.com/openclaw/openclaw/pull/26928) [#26927](https://github.com/openclaw/openclaw/pull/26927) [#26946](https://github.com/openclaw/openclaw/pull/26946) | @lbo728, @NewdlDewdl, @stakeswky | **Discord embed 标题修复** — 确保带标题+描述的消息完整传递给 agent | 渠道可靠性 ↑ |
-| [#26912](https://github.com/openclaw/openclaw/pull/26912) | @markshields-tl | **会话分叉保护** — 父上下文过大时跳过 fork，避免 Slack 线程静默失败 | 稳定性关键修复 |
-| [#26908](https://github.com/openclaw/openclaw/pull/26908) [#26837](https://github.com/openclaw/openclaw/pull/26837) [#26954](https://github.com/openclaw/openclaw/pull/26954) | @kevinWangSheng, @lbo728 | **Telegram 会话键规范化 + 打字指示器修复** | 用户体验一致性 |
-| [#26717](https://github.com/openclaw/openclaw/pull/26717) | @Youyou972 | **Cron 模型回退机制** — 无效 payload.model 时优雅降级到 agent 默认链 | 自动化可靠性 |
-| [#26581](https://github.com/openclaw/openclaw/pull/26581) [#23249](https://github.com/openclaw/openclaw/pull/23249) | @lbo728, @Sid-Qin | **Gateway RPC agentId 透传修复** — 解决自定义工作区媒体访问失败 | 多 agent 场景打通 |
-| [#26550](https://github.com/openclaw/openclaw/pull/26550) | @habakan | **Control UI 通配符支持** — `allowedOrigins` 支持 `"*"` | 部署灵活性 |
-| [#3474](https://github.com/openclaw/openclaw/pull/3474) | @elektricM | **macOS 菜单栏活动指示器修复** | 桌面端体验 |
+| [#27154](https://github.com/openclaw/openclaw/pull/27154) | @yinghaosang | 修复配置文档中错误的 Providers 链接（指向 WhatsApp → 正确指向 /providers） | ✅ 已合并 |
+| [#17378](https://github.com/openclaw/openclaw/pull/17378) | @ar-nadeem | 允许 `dangerouslyDisableDeviceAuth` 在 `trusted-proxy` 认证模式下生效，修复 Control UI 绕过设备认证的场景 | ✅ 已合并 |
 
-**整体进展评估**：今日合并 PR 聚焦"修复即稳定"策略——无重大新功能，全是生产环境痛点（会话爆炸、消息截断、媒体访问失败）。项目正从"功能冲刺"转向"质量巩固"。
+**整体推进**: 今日合并 PR 以文档修复和安全配置优化为主，大型功能 PR（如 #24397 DecisionEngine、#18196 客户端技能安全）仍在 review 队列。项目核心架构向 **v10.4 决策引擎 + 可观测性 + 成本优化** 演进中。
 
 ---
 
 ## 4. 社区热点
 
-### 🔥 讨论最活跃的 Issues（按评论数排序）
+### 🔥 讨论最活跃的 Issues
 
-| 排名 | Issue | 评论 | 核心诉求 | 状态 |
-|:---|:---|:---:|:---|:---|
-| 1 | [#3460](https://github.com/openclaw/openclaw/issues/3460) i18n & 本地化支持 | **69** | 全球用户强烈要求多语言界面，但团队明确声明**暂无资源支持** | 🔴 OPEN |
-| 2 | [#7559](https://github.com/openclaw/openclaw/issues/7559) iOS/Android TestFlight 申请 | **38** | 移动端测试渠道饥渴，用户愿用设备作 camera/location 节点 | ✅ CLOSED |
-| 3 | [#4531](https://github.com/openclaw/openclaw/issues/4531) 配对断开错误 (1008) | **35** | Docker 部署的网关连接稳定性问题 | ✅ CLOSED |
-| 4 | [#75](https://github.com/openclaw/openclaw/issues/75) Linux/Windows 桌面应用 | **28** | 跨平台桌面客户端缺口，👍 **54** 为最高赞 | 🔴 OPEN |
-| 5 | [#17019](https://github.com/openclaw/openclaw/issues/17019) Reasoning 类型项错误 | **28** | API 响应格式变更导致的解析失败 | ✅ CLOSED |
+| 排名 | Issue | 评论 | 核心诉求 | 链接 |
+|:---|:---|:---|:---|:---|
+| 1 | Web UI "Unsupported schema node" 错误 | 20 条 | **Clawdbot 控制面板 Nodes/Accounts 区块崩溃**，用户无法查看账户配置，被迫使用 Raw 模式 | [#1749](https://github.com/openclaw/openclaw/issues/1749) |
+| 2 | 将钉钉添加为首次安装渠道选项 | 17 条 | **企业用户强烈需求**：钉钉已支持但不在引导流程中，需手动配置 | [#26534](https://github.com/openclaw/openclaw/issues/26534) |
+| 3 | Ollama 误用本地 CLI 而非远程 API | 11 条 | **混合部署场景痛点**：配置远程 Ollama 端点后仍尝试调用本地二进制文件 | [#11283](https://github.com/openclaw/openclaw/issues/11283) |
+| 4 | 自定义 API 提供商默认 4096 token 上下文导致失败 | 11 条 | **配置易用性**：新用户 onboarding 时因默认上下文窗口过小而直接失败 | [#21653](https://github.com/openclaw/openclaw/issues/21653) |
 
-### 热点分析
-
-- **#3460 i18n 矛盾**：社区热情（69 评论）vs 团队资源限制形成张力。今日 v2026.2.24 的多语言**停止指令**是妥协方案——先解决"如何紧急停止"，再谈完整本地化。
-- **#75 跨平台缺口**：54 赞表明这是最长尾痛点。项目当前 macOS/iOS/Android 优先策略明确，Linux/Windows 社区需自力更生。
-- **#7559 移动端战略**：关闭 Issue 暗示 TestFlight 可能已达容量或进入封闭测试新阶段。
+**背后信号**: 企业级部署（钉钉、远程 Ollama、多账户飞书）成为社区焦点，配置引导的"首次体验"是用户流失关键节点。
 
 ---
 
 ## 5. Bug 与稳定性
 
-### 今日活跃 Bug 报告（按严重程度排序）
+### 按严重程度排列
 
-| 严重程度 | Issue | 描述 | 状态 | Fix PR |
+| 严重程度 | Issue | 描述 | Fix PR | 链接 |
 |:---|:---|:---|:---|:---|
-| 🔴 **高** | [#22445](https://github.com/openclaw/openclaw/issues/22445) | WSL 网关连接失败（`Dangerously: true` 无效）| 🔴 OPEN | 无 |
-| 🔴 **高** | [#21653](https://github.com/openclaw/openclaw/issues/21653) | 自定义 API 默认 4096 token 窗口导致 agent 崩溃 | 🔴 OPEN | 无 |
-| 🔴 **高** | [#4686](https://github.com/openclaw/openclaw/issues/4686) | WhatsApp 重链永久卡住（"logging in"）| 🔴 OPEN | 无 |
-| 🟡 **中** | [#26761](https://github.com/openclaw/openclaw/issues/26761) [#26416](https://github.com/openclaw/openclaw/issues/26416) | Telegram 打字指示器无限持续 | 🔴 OPEN | [#26837](https://github.com/openclaw/openclaw/pull/26837) 待审 |
-| 🟡 **中** | [#24102](https://github.com/openclaw/openclaw/issues/24102) | 429 配额错误未触发模型回退链 | 🔴 OPEN | 无 |
-| 🟡 **中** | [#23600](https://github.com/openclaw/openclaw/issues/23600) | Telegram 手动配置流程损坏 | 🔴 OPEN | 无 |
-| 🟢 **低** | [#9831](https://github.com/openclaw/openclaw/issues/9831) | gemini-cli 安装检测失败 | 🔴 OPEN | 无 |
+| 🔴 **高** | Telegram 消息分片乱序/重复 | 长消息拆分后顺序错乱，用户收到空/截断/重复消息 | 🔄 [#27157](https://github.com/openclaw/openclaw/issues/27157) 已关闭（同日修复） | [#27157](https://github.com/openclaw/openclaw/issues/27157) |
+| 🔴 **高** | 工具名未 trim 导致 "Tool not found" | LLM 输出带空格的工具名直接失败 | ✅ [#27313](https://github.com/openclaw/openclaw/pull/27313) 待合并 | [#27045](https://github.com/openclaw/openclaw/issues/27045) |
+| 🟡 **中** | Telegram 打字指示器无限持续 | `streaming: partial` 模式下指示器不消失 | 待修复 | [#26761](https://github.com/openclaw/openclaw/issues/26761) |
+| 🟡 **中** | Discord `ackReaction` 不自动触发 | 配置有效但确认反应不发送 | 待修复 | [#23577](https://github.com/openclaw/openclaw/issues/23577) |
+| 🟡 **中** | Agent 级 `models.json` apiKey 不覆盖主配置 | 多租户场景密钥隔离失效 | ✅ [#27293](https://github.com/openclaw/openclaw/pull/27293) 待合并 | [#27243](https://github.com/openclaw/openclaw/issues/27243) |
+| 🟢 **低** | 缓存命中率显示超 100% | 统计计算错误（1142% cached） | ✅ [#27315](https://github.com/openclaw/openclaw/pull/27315) 待合并 | - |
 
-### 已修复 Bug（今日关闭）
-
-| Issue | 修复内容 | 关闭 PR |
-|:---|:---|:---|
-| [#24213](https://github.com/openclaw/openclaw/issues/24213) | `reasoning` 与 `reasoning_effort` 参数冲突 | 已集成 |
-| [#25009](https://github.com/openclaw/openclaw/issues/25009) | Control UI 非回环地址需显式配置 origins | [#26550](https://github.com/openclaw/openclaw/pull/26550) |
-| [#22298](https://github.com/openclaw/openclaw/issues/22298) | 隔离 cron + announce 交付的配对失败 | 已集成 |
+**回归风险**: [#27157](https://github.com/openclaw/openclaw/issues/27157) 显示 Telegram 消息分片为近期引入，需关注发布节奏。
 
 ---
 
 ## 6. 功能请求与路线图信号
 
-### 用户强烈需求（高 👍 或活跃讨论）
+| 功能请求 | 状态 | 纳入可能性 | 关键 PR/Issue |
+|:---|:---|:---|:---|
+| **Ollama 嵌入提供商支持** | 🔄 开发中 | **高** | [#26349](https://github.com/openclaw/openclaw/pull/26349) 待合并 |
+| **Vertex AI Anthropic 提供商 (Claude on GCP)** | ✅ 已实现 | 已发布 | [#6937](https://github.com/openclaw/openclaw/issues/6937) 已关闭 |
+| **Anthropic adaptive thinking / Opus 4.6 effort 参数** | 📋 待评估 | 中 | [#9837](https://github.com/openclaw/openclaw/issues/9837) |
+| **GitHub Copilot gpt-5.3-codex + xhigh reasoning** | 🔄 开发中 | **高** | [#19301](https://github.com/openclaw/openclaw/issues/19301), [#27251](https://github.com/openclaw/openclaw/pull/27251) |
+| **Moonshot/Kimi 原生网页搜索** | 📋 待评估 | 中 | [#16616](https://github.com/openclaw/openclaw/issues/16616) |
+| **TUI 内联图片渲染 (Kitty/iTerm2)** | 🔄 开发中 | **高** | [#23764](https://github.com/openclaw/openclaw/pull/23764) |
+| **Android 通知监听 (`notifications.list`)** | 🔄 开发中 | **高** | [#27344](https://github.com/openclaw/openclaw/pull/27344) |
 
-| 需求 | Issue | 👍 | 信号强度 | 可行性评估 |
-|:---|:---|:---:|:---|:---|
-| **Linux/Windows 桌面应用** | [#75](https://github.com/openclaw/openclaw/issues/75) | 54 | ⭐⭐⭐⭐⭐ | 低（团队明确无计划）|
-| **MCP 完整支持** | [#13248](https://github.com/openclaw/openclaw/issues/13248) | 12 | ⭐⭐⭐⭐☆ | 中（基础设施存在，待产品化）|
-| **DeepSeek 一级供应商** | [#7309](https://github.com/openclaw/openclaw/issues/7309) | 12 | ⭐⭐⭐⭐⭐ | **高** — [#26967](https://github.com/openclaw/openclaw/pull/26967) 今日已提 PR |
-| **实时语音对话** | [#7200](https://github.com/openclaw/openclaw/issues/7200) | 6 | ⭐⭐⭐☆☆ | 中（Twilio/WebRTC 集成复杂度）|
-| **加密密钥管理** | [#7916](https://github.com/openclaw/openclaw/issues/7916) | 7 | ⭐⭐⭐⭐☆ | 中 — [#26155](https://github.com/openclaw/openclaw/pull/26155) 外部 secrets 管理 PR 待审 |
-| **Anthropic 自适应思考** | [#9837](https://github.com/openclaw/openclaw/issues/9837) | 6 | ⭐⭐⭐⭐☆ | 高（Opus 4.6 适配）|
-| **钉钉首装渠道** | [#26534](https://github.com/openclaw/openclaw/issues/26534) | 1 | ⭐⭐⭐☆☆ | 高（#10347 已实现，仅缺向导集成）|
-
-### 下一版本可能纳入
-
-1. **中国模型生态接入** — [#26967](https://github.com/openclaw/openclaw/pull/26967) 一次性添加 SiliconFlow、DeepSeek、DashScope、Volcengine、Xiaomi 五大供应商，符合"稳定化模式"下的高价值低风险变更。
-2. **外部 Secrets 管理** — [#26155](https://github.com/openclaw/openclaw/pull/26155) 解决企业安全合规痛点，PR 规模大（XL）但设计评审充分。
+**下一版本信号**: v2026.3.x 预计聚焦 **本地模型生态完善**（Ollama 嵌入、上下文修复）和 **移动端能力扩展**（Android 通知、图片渲染）。
 
 ---
 
 ## 7. 用户反馈摘要
 
-### 真实痛点（来自 Issue 评论提炼）
+### 💬 真实痛点提炼
 
-| 场景 | 痛点 | 来源 Issue |
+| 场景 | 反馈原文风格 | 情绪 |
 |:---|:---|:---|
-| **WSL 开发者** | "Dangerously: true 已配置，网关仍拒绝连接" — Windows 开发环境支持边缘案例 | [#22445](https://github.com/openclaw/openclaw/issues/22445) |
-| **多 Agent 团队** | 自定义工作区文件发送失败，被迫回退到默认 agent | [#26581](https://github.com/openclaw/openclaw/issues/26581) 相关 |
-| **高频自动化用户** | Cron 作业模型配置错误即硬失败，无优雅降级 | [#26717](https://github.com/openclaw/openclaw/issues/26717) 已修复 |
-| **大上下文用户** | 126K+ token 会话进入工具调用死循环，agent 无响应 | [#16583](https://github.com/openclaw/openclaw/issues/16583) |
-| **成本敏感用户** | Anthropic 缓存读取始终为 0，成本 10 倍于预期 | [#19534](https://github.com/openclaw/openclaw/issues/19534) 已关闭 |
-| **中国开发者** | 文档内链跳转强制回英文，本地化体验断裂 | [#26223](https://github.com/openclaw/openclaw/pull/26223) 修复中 |
+| **Raspberry Pi 4B 性能** | "17+ 秒执行 `--help`... 几乎无法使用" | 😤 沮丧 |
+| **macOS 应用 Canvas 卡死** | "Waiting for A2UI message 永远等待，推送成功但界面不更新" | 😤 沮丧 |
+| **飞书多账户路由** | "所有消息都路由到默认账户，尽管收到了正确的 app_id" | 😠 困惑 |
+| **首次配置体验** | "Docker 文档跳过了关键镜像下载步骤，步骤必然失败" | 😠 不满 |
+| **钉钉缺失** | "钉钉已实现但不在引导流程，必须手动配置" | 😐 期待 |
 
-### 满意度信号
-
-- ✅ **中断体验**：多语言停止指令获隐性好评（无反对 Issue）
-- ✅ **移动端**：TestFlight 申请踊跃表明产品吸引力
-- ❌ **稳定性**：Docker/WSL 网络配置仍是新手最大门槛
+### ✅ 满意点
+- Vertex AI Claude 支持快速落地（[#6937](https://github.com/openclaw/openclaw/issues/6937) 9 条评论高效关闭）
+- 社区响应速度快（[#27157](https://github.com/openclaw/openclaw/issues/27157) 当日报告当日修复）
 
 ---
 
 ## 8. 待处理积压
 
-### 需维护者关注的高价值长期 Issue
+### ⚠️ 长期未响应的重要 Issue
 
-| Issue | 创建时间 | 最后更新 | 风险 | 行动建议 |
-|:---|:---|:---|:---|:---|
-| [#75](https://github.com/openclaw/openclaw/issues/75) Linux/Windows 桌面应用 | 2026-01-01 | 2026-02-25 | 社区分裂风险 | 明确路线图或标记 `help wanted` 供社区认领 |
-| [#3460](https://github.com/openclaw/openclaw/issues/3460) i18n 支持 | 2026-01-28 | 2026-02-25 | 全球增长天花板 | 建立社区翻译流程，非官方支持 |
-| [#5871](https://github.com/openclaw/openclaw/issues/5871) Raspberry Pi 4 CLI 极慢 | 2026-02-01 | 2026-02-25 | IoT 场景流失 | 性能剖析或提供 ARM 优化构建 |
-| [#9157](https://github.com/openclaw/openclaw/issues/9157) 工作区文件注入浪费 93.5% token | 2026-02-04 | 2026-02-25 | 成本效率核心问题 | 评估 [#26968](https://github.com/openclaw/openclaw/pull/26968) `bootstrapInjectMemory` 方案 |
-| [#5769](https://github.com/openclaw/openclaw/issues/5769) Ollama 流式工具调用失败 | 2026-01-31 | 2026-02-25 | 本地模型生态 | 与 [#4892](https://github.com/openclaw/openclaw/issues/4892) 合并评估 `stream: false` 回退 |
+| Issue | 天数 | 风险 | 行动建议 |
+|:---|:---|:---|:---|
+| [#4349](https://github.com/openclaw/openclaw/issues/4349) TUI 模型选择器显示 600+ 模型 | 27 天 | 用户体验严重受损 | 标记 `good first issue` |
+| [#5090](https://github.com/openclaw/openclaw/issues/5090) macOS 缺少 NSRemindersUsageDescription | 26 天 | Apple 审核风险 | 需 iOS/macOS 开发者介入 |
+| [#5769](https://github.com/openclaw/openclaw/issues/5769) Ollama 流式破坏工具调用 | 26 天 | 核心功能缺陷 | 与 [#27292](https://github.com/openclaw/openclaw/pull/27292) 关联评估 |
+| [#8044](https://github.com/openclaw/openclaw/issues/8044) Peekaboo Bridge 发现失效 | 23 天 | macOS 自动化能力退化 | PR 已提交待 review |
+| [#12785](https://github.com/openclaw/openclaw/issues/12785) 新手友好 Issue 列表 | 17 天 | 社区建设 | 维护者需打标签 |
 
-### PR 审核瓶颈提醒
-
-- **424 条待合并 PR** 与 76 条已处理的比例（5.6:1）表明审核队列严重积压
-- [#5799](https://github.com/openclaw/openclaw/issues/5799) "稳定化模式" 声明后，建议维护者：
-  - 优先合并 `size: XS/S` 的修复类 PR
-  - 对 `size: XL` 新功能（如 [#20450](https://github.com/openclaw/openclaw/pull/20450) MABOS 仪表板、[#19282](https://github.com/openclaw/openclaw/pull/19282) Nostr NIP-63）明确里程碑归属
+**维护者提醒**: 5 个 `stale` 标签 Issue 今日仍有活动评论，建议重新评估优先级或明确关闭理由。
 
 ---
 
-*日报生成时间：2026-02-26 | 数据来源：GitHub API 快照*
+*日报生成时间: 2026-02-26 | 数据来源: github.com/openclaw/openclaw*
 
 ---
 *本日报由 [agents-radar](https://github.com/duanyytop/agents-radar) 自动生成。*
