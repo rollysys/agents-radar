@@ -1,28 +1,12 @@
 /**
  * LLM invocation, file I/O, and GitHub issue creation helpers.
- * Modified to support Minimax API (OpenAI compatible)
  */
 
-import OpenAI from "openai";
+import Anthropic from "@anthropic-ai/sdk";
 import fs from "node:fs";
 import path from "node:path";
 
-// 支持 Minimax 或其他 OpenAI 兼容的 API
-const MODEL = process.env["OPENAI_MODEL"] 
-  ?? process.env["ANTHROPIC_MODEL"] 
-  ?? "MiniMax-Text-01";
-
-const BASE_URL = process.env["OPENAI_BASE_URL"] 
-  ?? process.env["ANTHROPIC_BASE_URL"];
-
-const API_KEY = process.env["OPENAI_API_KEY"] 
-  ?? process.env["ANTHROPIC_API_KEY"];
-
-// 创建 OpenAI 客户端（兼容 Minimax）
-const client = new OpenAI({
-  apiKey: API_KEY,
-  baseURL: BASE_URL,
-});
+const MODEL = process.env["ANTHROPIC_MODEL"] ?? "claude-sonnet-4-6";
 
 // ---------------------------------------------------------------------------
 // Concurrency limiter — prevents rate-limit (429) errors when many LLM calls
@@ -51,16 +35,16 @@ function releaseSlot(): void {
 export async function callLlm(prompt: string, maxTokens = 4096): Promise<string> {
   await acquireSlot();
   try {
-    const response = await client.chat.completions.create({
+    // Reads ANTHROPIC_API_KEY and ANTHROPIC_BASE_URL from env automatically
+    const client = new Anthropic();
+    const message = await client.messages.create({
       model: MODEL,
-      messages: [{ role: "user", content: prompt }],
       max_tokens: maxTokens,
-      temperature: 0.7,
+      messages: [{ role: "user", content: prompt }],
     });
-    
-    const content = response.choices[0]?.message?.content;
-    if (!content) throw new Error("Empty response from LLM");
-    return content;
+    const block = message.content[0];
+    if (block?.type !== "text") throw new Error("Unexpected response type from LLM");
+    return block.text;
   } finally {
     releaseSlot();
   }
