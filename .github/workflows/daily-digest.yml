@@ -13,27 +13,21 @@ permissions:
 jobs:
   digest:
     runs-on: ubuntu-latest
-    # Web content fetching adds ~60-120 s of HTTP requests on incremental runs;
-    # the first-ever run (fetching 50 articles) may need up to 20 min.
     timeout-minutes: 25
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm install
 
-      # 调试：检查 env 是否正确传递（隐藏敏感信息）
+      # 调试：检查 env 是否正确传递
       - name: Check env vars
         run: |
           echo "ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-NOT SET}"
@@ -47,13 +41,11 @@ jobs:
       - name: Run daily digest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Minimax Anthropic API 兼容端点
-          # URL 和 Model 从 Repository Variables 读取，API Key 从 Secrets 读取
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
           DIGEST_REPO: ${{ github.repository }}
-        run: pnpm start
+        run: npm start
 
       - name: Commit digest files
         run: |
@@ -68,7 +60,6 @@ jobs:
             git push
           fi
 
-      # ============ 163 邮箱发送步骤 ============
       - name: Get current date
         if: success()
         id: date
@@ -96,7 +87,6 @@ jobs:
             digests/${{ steps.date.outputs.DATE }}/ai-web.md
             digests/${{ steps.date.outputs.DATE }}/ai-trending.md
           secure: true
-          priority: normal
 
       - name: Email Send Status
         if: failure()
