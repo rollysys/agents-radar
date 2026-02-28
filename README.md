@@ -2,7 +2,7 @@
 
 English | [中文](./README.zh.md)
 
-A GitHub Actions workflow that runs every morning at 08:00 CST. It tracks GitHub activity from AI CLI tools, OpenClaw and its peer projects in the AI agent ecosystem, and scrapes official news and research from Anthropic and OpenAI, then publishes Chinese-language daily digests as GitHub Issues and committed Markdown files.
+A GitHub Actions workflow that runs every morning at 08:00 CST. It tracks GitHub activity from AI CLI tools, OpenClaw and its peer projects in the AI agent ecosystem, scrapes official news and research from Anthropic and OpenAI, and monitors the GitHub AI trending repos daily — then publishes Chinese-language daily digests as GitHub Issues and committed Markdown files.
 
 ## Tracked sources
 
@@ -42,6 +42,17 @@ OpenClaw is tracked as the primary reference project. Nine peer projects in the 
 | IronClaw | [nearai/ironclaw](https://github.com/nearai/ironclaw) | 3.5k |
 | TinyClaw | [TinyAGI/tinyclaw](https://github.com/TinyAGI/tinyclaw) | 2.7k |
 
+### GitHub AI Trending
+
+Two data sources are fetched in parallel every day:
+
+| Source | Details |
+|--------|---------|
+| [github.com/trending](https://github.com/trending?since=daily) | Today's trending repos — parsed from HTML; includes today's new star count |
+| GitHub Search API | Repos active in the last 7 days matching 6 AI topics: `llm`, `ai-agent`, `rag`, `vector-database`, `large-language-model`, `machine-learning` |
+
+The LLM filters out non-AI repos from the trending list, classifies the rest by dimension (AI infrastructure / agents / applications / models / RAG), and extracts trend signals.
+
 ### Official web content (sitemap-based)
 
 | Organization | Site | Tracked sections |
@@ -58,6 +69,7 @@ New articles are detected by comparing sitemap `lastmod` timestamps against a pe
 - Generates a per-tool summary for each CLI repository and a cross-tool comparative analysis
 - Generates a deep OpenClaw project report plus a cross-ecosystem comparison against 9 peer projects
 - Scrapes official Anthropic and OpenAI web content via sitemaps; detects new articles incrementally
+- Monitors GitHub Trending daily + searches 6 AI topic tags; classifies repos by dimension and extracts trend signals
 - Publishes GitHub Issues for each report type; commits Markdown files to `digests/YYYY-MM-DD/`
 - Runs on a daily schedule via GitHub Actions; supports manual triggering
 
@@ -106,6 +118,7 @@ Files are written to `digests/YYYY-MM-DD/`:
 | `ai-cli.md` | CLI digest — cross-tool comparison + per-tool details | `digest` |
 | `ai-agents.md` | OpenClaw deep report + cross-ecosystem comparison + 9 peer details | `openclaw` |
 | `ai-web.md` | Official web content report (only written when new content exists) | `web` |
+| `ai-trending.md` | GitHub AI trending report — repos classified by dimension + trend signals (only written when data is available) | `trending` |
 
 A shared state file `digests/web-state.json` tracks which web URLs have been seen; it is committed alongside the daily digests.
 
@@ -164,7 +177,22 @@ OpenAI 内容精选            (research / release / company / safety / ...)
 [首次全量时额外包含: 内容格局总览]
 ```
 
-Historical digests are stored in [`digests/`](./digests/). Published issues are tagged by type: [`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web).
+`ai-trending.md` structure (written in Chinese):
+```
+数据来源: GitHub Trending + GitHub Search API
+
+今日速览
+各维度热门项目
+  🔧 AI 基础工具   — 框架 / SDK / 推理引擎 / CLI
+  🤖 AI 智能体/工作流 — Agent 框架 / 多智能体 / 自动化
+  📦 AI 应用       — 垂直场景产品 / 解决方案
+  🧠 大模型/训练   — 模型权重 / 训练框架 / 微调工具
+  🔍 RAG/知识库    — 向量数据库 / 检索增强
+趋势信号分析
+社区关注热点
+```
+
+Historical digests are stored in [`digests/`](./digests/). Published issues are tagged by type: [`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web) · [`trending`](../../issues?label=trending).
 
 ## Schedule
 
