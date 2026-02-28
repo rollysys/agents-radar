@@ -1,0 +1,179 @@
+# agents-radar
+
+[English](./README.md) | 中文
+
+每天早上 08:00 CST 自动运行的 GitHub Actions 工作流。追踪主流 AI CLI 工具的 GitHub 动态、OpenClaw 及其同赛道项目的生态活动，并抓取 Anthropic 和 OpenAI 官网的最新资讯，以中文每日简报的形式发布为 GitHub Issues 并提交为 Markdown 文件。
+
+## 追踪来源
+
+### AI CLI 工具（GitHub）
+
+| 工具 | 仓库 |
+|------|------|
+| Claude Code | [anthropics/claude-code](https://github.com/anthropics/claude-code) |
+| OpenAI Codex | [openai/codex](https://github.com/openai/codex) |
+| Gemini CLI | [google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli) |
+| Kimi Code CLI | [MoonshotAI/kimi-cli](https://github.com/MoonshotAI/kimi-cli) |
+| OpenCode | [anomalyco/opencode](https://github.com/anomalyco/opencode) |
+| Qwen Code | [QwenLM/qwen-code](https://github.com/QwenLM/qwen-code) |
+
+### Claude Code Skills（GitHub）
+
+| 来源 | 仓库 |
+|------|------|
+| Claude Code Skills | [anthropics/skills](https://github.com/anthropics/skills) |
+
+PR 和 Issue 不设时间过滤，按社区热度（评论数）排序，报告始终反映当前最活跃的 Skills 讨论，而非仅看最新内容。
+
+### OpenClaw + AI Agent 生态（GitHub）
+
+OpenClaw 作为重点追踪项目，同时横向对比 9 个同赛道项目，覆盖个人 AI 助手 / 自主 Agent 方向。
+
+| 项目 | 仓库 | Stars |
+|------|------|-------|
+| OpenClaw | [openclaw/openclaw](https://github.com/openclaw/openclaw) | — |
+| Zeroclaw | [zeroclaw-labs/zeroclaw](https://github.com/zeroclaw-labs/zeroclaw) | 19.6k |
+| EasyClaw | [gaoyangz77/easyclaw](https://github.com/gaoyangz77/easyclaw) | 87 |
+| LobsterAI | [netease-youdao/LobsterAI](https://github.com/netease-youdao/LobsterAI) | 2.6k |
+| ZeptoClaw | [qhkm/zeptoclaw](https://github.com/qhkm/zeptoclaw) | 372 |
+| NanoBot | [HKUDS/nanobot](https://github.com/HKUDS/nanobot) | 25.5k |
+| PicoClaw | [sipeed/picoclaw](https://github.com/sipeed/picoclaw) | 20.2k |
+| NanoClaw | [qwibitai/nanoclaw](https://github.com/qwibitai/nanoclaw) | 15k |
+| IronClaw | [nearai/ironclaw](https://github.com/nearai/ironclaw) | 3.5k |
+| TinyClaw | [TinyAGI/tinyclaw](https://github.com/TinyAGI/tinyclaw) | 2.7k |
+
+### 官网内容（基于 Sitemap）
+
+| 组织 | 网站 | 追踪板块 |
+|------|------|---------|
+| Anthropic | [anthropic.com](https://www.anthropic.com) | `/news/`、`/research/`、`/engineering/`、`/learn/` |
+| OpenAI | [openai.com](https://openai.com) | research、publication、release、company、engineering、milestone、learn-guides、safety、product |
+
+通过对比 Sitemap 中的 `lastmod` 时间戳与持久化状态文件（`digests/web-state.json`）来检测新文章。**首次运行**时，每个站点最多抓取 25 篇近期文章并生成全量概览报告；后续运行仅处理新增或更新的 URL，无新内容则跳过网页报告步骤。
+
+## 功能特性
+
+- 抓取所有追踪仓库过去 24 小时内更新的 Issues、PR 和 Releases
+- 追踪热门 Claude Code Skills，按社区参与度而非时间排序
+- 为每个 CLI 仓库生成单独摘要，并输出跨工具横向对比分析
+- 生成 OpenClaw 深度项目报告，并与 9 个同赛道项目进行横向对比
+- 通过 Sitemap 抓取 Anthropic 和 OpenAI 官网内容，增量检测新文章
+- 以 GitHub Issues 形式发布报告，同时提交 Markdown 文件至 `digests/YYYY-MM-DD/`
+- 每日通过 GitHub Actions 定时运行，支持手动触发
+
+## 部署配置
+
+### 1. Fork 本仓库
+
+### 2. 添加 Secrets
+
+进入 **Settings → Secrets and variables → Actions**，添加以下密钥：
+
+| Secret | 说明 |
+|--------|------|
+| `ANTHROPIC_API_KEY` | API 密钥，兼容 Anthropic 和 Kimi Code |
+| `ANTHROPIC_BASE_URL` | API 地址覆盖。使用 Kimi Code 时设置为 `https://api.kimi.com/coding/`，使用 Anthropic 时留空 |
+
+> `GITHUB_TOKEN` 由 GitHub Actions 自动提供，无需手动添加。
+
+### 3. 启用工作流
+
+在 **Actions** 标签页中确认工作流已启用。
+
+如需立即测试，进入 **Actions → Daily Agents Radar → Run workflow** 手动触发。
+
+> **首次运行说明**：网页内容步骤将抓取最多 50 篇文章（每站 25 篇），可能需要额外几分钟。后续运行仅处理新内容，速度更快。
+
+## 本地运行
+
+```bash
+pnpm install
+
+export GITHUB_TOKEN=ghp_xxxxx
+export ANTHROPIC_BASE_URL=https://api.kimi.com/coding/
+export ANTHROPIC_API_KEY=sk-kimi-xxxxxxxx
+export DIGEST_REPO=your-username/agents-radar  # 可选，留空则仅写入本地文件
+
+pnpm start
+```
+
+## 输出格式
+
+文件写入 `digests/YYYY-MM-DD/`：
+
+| 文件 | 内容 | GitHub Issue 标签 |
+|------|------|------------------|
+| `ai-cli.md` | CLI 简报 — 跨工具横向对比 + 各工具详细报告 | `digest` |
+| `ai-agents.md` | OpenClaw 深度报告 + 横向生态对比 + 9 个同赛道项目详情 | `openclaw` |
+| `ai-web.md` | 官网内容报告（仅在有新内容时生成） | `web` |
+
+`digests/web-state.json` 用于记录已处理的 URL，随每日简报一并提交。
+
+---
+
+`ai-cli.md` 结构：
+```
+## 横向对比
+  生态全景 / 活跃度对比表 / 共同需求 / 差异定位 / 趋势信号
+
+## 各工具详细报告
+  <details> Claude Code    — [Claude Code Skills 社区热点]
+                             热门 Skills 排行 / 社区需求趋势 / 高潜力待合并 Skills
+                             ---
+                             今日速览 / 热点 Issues / PR 进展 / 趋势
+  <details> OpenAI Codex   — 今日速览 / 热点 Issues / PR 进展 / 趋势
+  <details> Gemini CLI     — ...
+  <details> Kimi Code CLI  — ...
+  <details> OpenCode       — ...
+  <details> Qwen Code      — ...
+```
+
+`ai-agents.md` 结构：
+```
+Issues: N | PRs: N | 覆盖项目: 10 个
+
+## OpenClaw 项目深度报告
+  今日速览 / 版本发布 / 项目进展 / 社区热点 /
+  Bug稳定性 / 功能请求 / 用户反馈 / 待处理积压
+
+## 横向生态对比
+  生态全景 / 活跃度对比表 / OpenClaw定位分析 /
+  共同技术方向 / 差异化定位 / 社区热度与成熟度 / 趋势信号
+
+## 同赛道项目详细报告
+  <details> Zeroclaw   — 今日速览 / 版本发布 / 项目进展 / ...（8节）
+  <details> EasyClaw   — ...
+  <details> LobsterAI  — ...
+  <details> ZeptoClaw  — ...
+  <details> NanoBot    — ...
+  <details> PicoClaw   — ...
+  <details> NanoClaw   — ...
+  <details> IronClaw   — ...
+  <details> TinyClaw   — ...
+```
+
+`ai-web.md` 结构：
+```
+数据来源: anthropic.com (N 篇) + openai.com (N 篇)
+
+今日速览
+Anthropic/Claude 内容精选  (news / research / engineering / learn)
+OpenAI 内容精选            (research / release / company / safety / ...)
+战略信号解读
+值得关注的细节
+[首次全量时额外包含: 内容格局总览]
+```
+
+历史简报存储在 [`digests/`](./digests/)。已发布的 Issues 按类型打标签：[`digest`](../../issues?label=digest) · [`openclaw`](../../issues?label=openclaw) · [`web`](../../issues?label=web)。
+
+## 定时计划
+
+默认 cron 表达式 `"0 0 * * *"` = **00:00 UTC = 08:00 CST**。
+
+修改时间请编辑 `.github/workflows/daily-digest.yml` 中的 cron 表达式：
+
+| CST   | UTC cron      |
+|-------|---------------|
+| 08:00 | `0 0 * * *`  |
+| 09:00 | `0 1 * * *`  |
+| 10:00 | `0 2 * * *`  |
