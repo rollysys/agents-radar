@@ -37,15 +37,15 @@ function releaseSlot(): void {
 export async function callLlm(prompt: string, maxTokens = 4096): Promise<string> {
   await acquireSlot();
   try {
-    // 检测是否是 Minimax 端点（需要裸 token，不带 Bearer）
+    // 检测是否是 Minimax 端点（使用 Bearer token）
     const isMinimax = BASE_URL?.includes("minimax");
     
     if (isMinimax) {
-      // Minimax: 使用裸 token，手动构造请求
+      // Minimax: 使用 Bearer token
       const response = await fetch(`${BASE_URL}/v1/messages`, {
         method: "POST",
         headers: {
-          "Authorization": API_KEY, // 裸 token，不带 Bearer
+          "Authorization": `Bearer ${API_KEY}`, // Bearer 格式
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
