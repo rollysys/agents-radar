@@ -11,6 +11,8 @@
 
 import {
   type RepoConfig,
+  type GitHubItem,
+  type GitHubRelease,
   fetchRecentItems,
   fetchRecentReleases,
   fetchSkillsData,
@@ -27,7 +29,7 @@ import {
   buildTrendingPrompt,
 } from "./prompts.ts";
 import { callLlm, saveFile, autoGenFooter } from "./report.ts";
-import { loadWebState, saveWebState, fetchSiteContent, type WebFetchResult } from "./web.ts";
+import { loadWebState, saveWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web.ts";
 import { fetchTrendingData, type TrendingData } from "./trending.ts";
 
 // ---------------------------------------------------------------------------
@@ -79,28 +81,28 @@ function requireEnv(name: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Main
+// Types
 // ---------------------------------------------------------------------------
 
-async function main(): Promise<void> {
-  requireEnv("GITHUB_TOKEN");
-  requireEnv("ANTHROPIC_API_KEY");
+interface RepoFetch {
+  cfg: RepoConfig;
+  issues: GitHubItem[];
+  prs: GitHubItem[];
+  releases: GitHubRelease[];
+}
 
-  const now     = new Date();
-  const since   = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-  const dateStr = new Date(now.getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
-  const utcStr  = now.toISOString().slice(0, 16).replace("T", " ");
-  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+// ---------------------------------------------------------------------------
+// Phase 1: Fetch
+// ---------------------------------------------------------------------------
 
-  const baseUrl = process.env["ANTHROPIC_BASE_URL"] ?? "api.anthropic.com";
-  console.log(`[${now.toISOString()}] Starting digest | endpoint: ${baseUrl}`);
-
-  // ── 1. Fetch all repos + web content in parallel ───────────────────────────
-
+async function fetchAllData(since: Date, webState: WebState): Promise<{
+  fetched: RepoFetch[];
+  skillsData: { prs: GitHubItem[]; issues: GitHubItem[] };
+  webResults: WebFetchResult[];
+  trendingData: TrendingData;
+}> {
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
   console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web`);
-
-  const webState = loadWebState();
 
   const [fetched, skillsData, webResults, trendingData] = await Promise.all([
     Promise.all(
@@ -129,18 +131,32 @@ async function main(): Promise<void> {
         return { site: "openai", siteName: "OpenAI", isFirstRun: false, newItems: [], totalDiscovered: 0 };
       }),
     ]),
-    fetchTrendingData(since).catch((): TrendingData => ({
+    fetchTrendingData().catch((): TrendingData => ({
       trendingRepos: [], searchRepos: [], trendingFetchSuccess: false,
     })),
   ]);
 
-  const peerIds         = new Set(OPENCLAW_PEERS.map((p) => p.id));
-  const fetchedCli      = fetched.filter((f) => f.cfg.id !== OPENCLAW.id && !peerIds.has(f.cfg.id));
-  const fetchedOpenclaw = fetched.find((f) => f.cfg.id === OPENCLAW.id)!;
-  const fetchedPeers    = fetched.filter((f) => peerIds.has(f.cfg.id));
+  return { fetched, skillsData, webResults, trendingData };
+}
 
-  // ── 2. Generate CLI summaries + OpenClaw summary + Skills summary + Peer summaries in parallel
+// ---------------------------------------------------------------------------
+// Phase 2: LLM summaries
+// ---------------------------------------------------------------------------
 
+async function generateSummaries(
+  fetchedCli: RepoFetch[],
+  fetchedOpenclaw: RepoFetch,
+  skillsData: { prs: GitHubItem[]; issues: GitHubItem[] },
+  fetchedPeers: RepoFetch[],
+  trendingData: TrendingData,
+  dateStr: string,
+): Promise<{
+  cliDigests: RepoDigest[];
+  openclawSummary: string;
+  skillsSummary: string;
+  peerDigests: RepoDigest[];
+  trendingSummary: string;
+}> {
   const [cliDigests, openclawSummary, skillsSummary, peerDigests, trendingSummary] = await Promise.all([
     Promise.all(
       fetchedCli.map(async ({ cfg, issues, prs, releases }): Promise<RepoDigest> => {
@@ -213,34 +229,27 @@ async function main(): Promise<void> {
     })(),
   ]);
 
-  // Build openclawDigest for peers comparison (reuses openclawSummary — zero extra LLM call)
-  const openclawDigest: RepoDigest = {
-    config: OPENCLAW,
-    issues: fetchedOpenclaw.issues,
-    prs: fetchedOpenclaw.prs,
-    releases: fetchedOpenclaw.releases,
-    summary: openclawSummary,
-  };
+  return { cliDigests, openclawSummary, skillsSummary, peerDigests, trendingSummary };
+}
 
-  // ── 3. Generate CLI comparison + peers comparison in parallel ──────────────
+// ---------------------------------------------------------------------------
+// Report content builders
+// ---------------------------------------------------------------------------
 
-  console.log("  Calling LLM for CLI comparative analysis + peers comparison...");
-  const [comparison, peersComparison] = await Promise.all([
-    callLlm(buildComparisonPrompt(cliDigests, dateStr)),
-    callLlm(buildPeersComparisonPrompt(openclawDigest, peerDigests, dateStr)),
-  ]);
-
-  const footer = autoGenFooter();
-
-  // ── 4. Build merged CLI digest (comparison + per-tool details) ─────────────
-
+function buildCliReportContent(
+  cliDigests: RepoDigest[],
+  skillsSummary: string,
+  comparison: string,
+  utcStr: string,
+  dateStr: string,
+  footer: string,
+): string {
   const repoLinks =
     cliDigests.map((d) => `- [${d.config.name}](https://github.com/${d.config.repo})`).join("\n") +
     `\n- [Claude Code Skills](https://github.com/${CLAUDE_SKILLS_REPO})`;
 
   const toolSections = cliDigests
     .map((d) => {
-      // For Claude Code, prepend the skills section at the top of the details block
       const skillsSection = d.config.id === "claude-code"
         ? `## Claude Code Skills 社区热点\n\n> 数据来源: [anthropics/skills](https://github.com/${CLAUDE_SKILLS_REPO})\n\n${skillsSummary}\n\n---\n\n`
         : "";
@@ -255,7 +264,7 @@ async function main(): Promise<void> {
     })
     .join("\n\n");
 
-  const digestContent =
+  return (
     `# AI CLI 工具社区动态日报 ${dateStr}\n\n` +
     `> 生成时间: ${utcStr} UTC | 覆盖工具: ${cliDigests.length} 个\n\n` +
     `${repoLinks}\n\n` +
@@ -265,13 +274,20 @@ async function main(): Promise<void> {
     `\n\n---\n\n` +
     `## 各工具详细报告\n\n` +
     toolSections +
-    footer;
+    footer
+  );
+}
 
-  console.log(`  Saved ${saveFile(digestContent, dateStr, "ai-cli.md")}`);
-
-  // ── 5. Save merged OpenClaw + peers report ────────────────────────────────
-
-  const { issues: ocIssues, prs: ocPrs, releases: ocReleases } = fetchedOpenclaw;
+function buildOpenclawReportContent(
+  fetchedOpenclaw: RepoFetch,
+  peerDigests: RepoDigest[],
+  openclawSummary: string,
+  peersComparison: string,
+  utcStr: string,
+  dateStr: string,
+  footer: string,
+): string {
+  const { issues, prs } = fetchedOpenclaw;
 
   const peersRepoLinks =
     `- [OpenClaw](https://github.com/${OPENCLAW.repo})\n` +
@@ -290,9 +306,9 @@ async function main(): Promise<void> {
     )
     .join("\n\n");
 
-  const openclawContent =
+  return (
     `# OpenClaw 生态日报 ${dateStr}\n\n` +
-    `> Issues: ${ocIssues.length} | PRs: ${ocPrs.length} | 覆盖项目: ${1 + OPENCLAW_PEERS.length} 个 | 生成时间: ${utcStr} UTC\n\n` +
+    `> Issues: ${issues.length} | PRs: ${prs.length} | 覆盖项目: ${1 + OPENCLAW_PEERS.length} 个 | 生成时间: ${utcStr} UTC\n\n` +
     `${peersRepoLinks}\n\n` +
     `---\n\n` +
     `## OpenClaw 项目深度报告\n\n` +
@@ -303,16 +319,25 @@ async function main(): Promise<void> {
     `\n\n---\n\n` +
     `## 同赛道项目详细报告\n\n` +
     peerDetailSections +
-    footer;
+    footer
+  );
+}
 
-  console.log(`  Saved ${saveFile(openclawContent, dateStr, "ai-agents.md")}`);
+// ---------------------------------------------------------------------------
+// Report savers (LLM call + file save + optional GitHub issue)
+// ---------------------------------------------------------------------------
 
-  // ── 6. Web report ──────────────────────────────────────────────────────────
+async function saveWebReport(
+  webResults: WebFetchResult[],
+  webState: WebState,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+): Promise<void> {
+  const hasNewContent = webResults.some((r) => r.newItems.length > 0);
 
-  const hasNewWebContent = webResults.some((r) => r.newItems.length > 0);
-  let webReportPath = "";
-
-  if (hasNewWebContent) {
+  if (hasNewContent) {
     console.log("  [web] Calling LLM for web content report...");
     try {
       const webSummary = await callLlm(buildWebReportPrompt(webResults, dateStr), 8192);
@@ -334,8 +359,7 @@ async function main(): Promise<void> {
         webSummary +
         footer;
 
-      webReportPath = saveFile(webContent, dateStr, "ai-web.md");
-      console.log(`  Saved ${webReportPath}`);
+      console.log(`  Saved ${saveFile(webContent, dateStr, "ai-web.md")}`);
 
       if (digestRepo) {
         const webUrl = await createGitHubIssue(
@@ -352,34 +376,95 @@ async function main(): Promise<void> {
     console.log("  [web] No new content detected, skipping report.");
   }
 
-  // Persist updated web state (runs regardless of whether a report was generated)
   saveWebState(webState);
   console.log("  [web] State saved.");
+}
 
-  // ── 6b. Trending report ────────────────────────────────────────────────────
-
-  const hasAnyTrendingData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
-  if (hasAnyTrendingData) {
-    const trendingContent =
-      `# AI 开源趋势日报 ${dateStr}\n\n` +
-      `> 数据来源: GitHub Trending + GitHub Search API | 生成时间: ${utcStr} UTC\n\n` +
-      `---\n\n` +
-      trendingSummary +
-      footer;
-
-    const trendingPath = saveFile(trendingContent, dateStr, "ai-trending.md");
-    console.log(`  Saved ${trendingPath}`);
-
-    if (digestRepo) {
-      const trendingUrl = await createGitHubIssue(`📈 AI 开源趋势日报 ${dateStr}`, trendingContent, "trending");
-      console.log(`  Created trending issue: ${trendingUrl}`);
-    }
-  } else {
+async function saveTrendingReport(
+  trendingData: TrendingData,
+  trendingSummary: string,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+): Promise<void> {
+  const hasData = trendingData.trendingRepos.length > 0 || trendingData.searchRepos.length > 0;
+  if (!hasData) {
     console.log("  [trending] No data available, skipping report.");
+    return;
   }
 
-  // ── 7. Create GitHub issues (CLI + OpenClaw) ────────────────────────────────
+  const trendingContent =
+    `# AI 开源趋势日报 ${dateStr}\n\n` +
+    `> 数据来源: GitHub Trending + GitHub Search API | 生成时间: ${utcStr} UTC\n\n` +
+    `---\n\n` +
+    trendingSummary +
+    footer;
 
+  console.log(`  Saved ${saveFile(trendingContent, dateStr, "ai-trending.md")}`);
+
+  if (digestRepo) {
+    const trendingUrl = await createGitHubIssue(`📈 AI 开源趋势日报 ${dateStr}`, trendingContent, "trending");
+    console.log(`  Created trending issue: ${trendingUrl}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
+async function main(): Promise<void> {
+  requireEnv("GITHUB_TOKEN");
+  requireEnv("ANTHROPIC_API_KEY");
+
+  const now        = new Date();
+  const since      = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const dateStr    = new Date(now.getTime() + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const utcStr     = now.toISOString().slice(0, 16).replace("T", " ");
+  const digestRepo = process.env["DIGEST_REPO"] ?? "";
+
+  console.log(`[${now.toISOString()}] Starting digest | endpoint: ${process.env["ANTHROPIC_BASE_URL"] ?? "api.anthropic.com"}`);
+
+  // 1. Fetch all data in parallel
+  const webState = loadWebState();
+  const { fetched, skillsData, webResults, trendingData } = await fetchAllData(since, webState);
+
+  const peerIds         = new Set(OPENCLAW_PEERS.map((p) => p.id));
+  const fetchedCli      = fetched.filter((f) => f.cfg.id !== OPENCLAW.id && !peerIds.has(f.cfg.id));
+  const fetchedOpenclaw = fetched.find((f) => f.cfg.id === OPENCLAW.id)!;
+  const fetchedPeers    = fetched.filter((f) => peerIds.has(f.cfg.id));
+
+  // 2. Generate per-repo LLM summaries in parallel
+  const { cliDigests, openclawSummary, skillsSummary, peerDigests, trendingSummary } =
+    await generateSummaries(fetchedCli, fetchedOpenclaw, skillsData, fetchedPeers, trendingData, dateStr);
+
+  // 3. Generate cross-repo comparisons in parallel
+  console.log("  Calling LLM for CLI comparative analysis + peers comparison...");
+  const openclawDigest: RepoDigest = {
+    config: OPENCLAW,
+    issues: fetchedOpenclaw.issues,
+    prs: fetchedOpenclaw.prs,
+    releases: fetchedOpenclaw.releases,
+    summary: openclawSummary,
+  };
+  const [comparison, peersComparison] = await Promise.all([
+    callLlm(buildComparisonPrompt(cliDigests, dateStr)),
+    callLlm(buildPeersComparisonPrompt(openclawDigest, peerDigests, dateStr)),
+  ]);
+
+  const footer = autoGenFooter();
+
+  // 4. Build + save all reports
+  const digestContent   = buildCliReportContent(cliDigests, skillsSummary, comparison, utcStr, dateStr, footer);
+  const openclawContent = buildOpenclawReportContent(fetchedOpenclaw, peerDigests, openclawSummary, peersComparison, utcStr, dateStr, footer);
+
+  console.log(`  Saved ${saveFile(digestContent, dateStr, "ai-cli.md")}`);
+  console.log(`  Saved ${saveFile(openclawContent, dateStr, "ai-agents.md")}`);
+
+  await saveWebReport(webResults, webState, utcStr, dateStr, digestRepo, footer);
+  await saveTrendingReport(trendingData, trendingSummary, utcStr, dateStr, digestRepo, footer);
+
+  // 5. Create GitHub issues for CLI + OpenClaw
   if (digestRepo) {
     const cliUrl = await createGitHubIssue(`📊 AI CLI 工具社区动态日报 ${dateStr}`, digestContent, "digest");
     console.log(`  Created CLI issue: ${cliUrl}`);
