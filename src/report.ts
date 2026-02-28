@@ -7,6 +7,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 const MODEL = process.env["ANTHROPIC_MODEL"] ?? "claude-sonnet-4-6";
+const API_KEY = process.env["ANTHROPIC_API_KEY"] ?? "";
+const BASE_URL = process.env["ANTHROPIC_BASE_URL"];
 
 // ---------------------------------------------------------------------------
 // Concurrency limiter — prevents rate-limit (429) errors when many LLM calls
@@ -35,16 +37,45 @@ function releaseSlot(): void {
 export async function callLlm(prompt: string, maxTokens = 4096): Promise<string> {
   await acquireSlot();
   try {
-    // Reads ANTHROPIC_API_KEY and ANTHROPIC_BASE_URL from env automatically
-    const client = new Anthropic();
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: maxTokens,
-      messages: [{ role: "user", content: prompt }],
-    });
-    const block = message.content[0];
-    if (block?.type !== "text") throw new Error("Unexpected response type from LLM");
-    return block.text;
+    // 检测是否是 Minimax 端点（需要裸 token，不带 Bearer）
+    const isMinimax = BASE_URL?.includes("minimax");
+    
+    if (isMinimax) {
+      // Minimax: 使用裸 token，手动构造请求
+      const response = await fetch(`${BASE_URL}/v1/messages`, {
+        method: "POST",
+        headers: {
+          "Authorization": API_KEY, // 裸 token，不带 Bearer
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: maxTokens,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+      
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`API error: ${response.status} ${error}`);
+      }
+      
+      const data = await response.json();
+      const block = data.content?.[0];
+      if (block?.type !== "text") throw new Error("Unexpected response type from LLM");
+      return block.text;
+    } else {
+      // Anthropic 官方: 使用 SDK（自动加 Bearer）
+      const client = new Anthropic();
+      const message = await client.messages.create({
+        model: MODEL,
+        max_tokens: maxTokens,
+        messages: [{ role: "user", content: prompt }],
+      });
+      const block = message.content[0];
+      if (block?.type !== "text") throw new Error("Unexpected response type from LLM");
+      return block.text;
+    }
   } finally {
     releaseSlot();
   }
