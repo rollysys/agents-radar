@@ -25,6 +25,7 @@ import {
   buildComparisonPrompt,
   buildPeersComparisonPrompt,
   buildSkillsPrompt,
+  buildTrendingPrompt,
   buildWebReportPrompt,
 } from "./prompts.ts";
 import { callLlm, saveFile, autoGenFooter } from "./report.ts";
