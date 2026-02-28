@@ -36,8 +36,14 @@ jobs:
       - name: Run daily digest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ANTHROPIC_BASE_URL: ${{ secrets.ANTHROPIC_BASE_URL }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # 支持 Minimax / 其他 OpenAI 兼容 API
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          # 兼容原项目的环境变量名
+          ANTHROPIC_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_MODEL: ${{ secrets.OPENAI_MODEL }}
           DIGEST_REPO: ${{ github.repository }}
         run: pnpm start
 
@@ -53,3 +59,37 @@ jobs:
             git commit -m "digest: ${DATE} daily digest"
             git push
           fi
+
+      # ============ 163 邮箱发送步骤 ============
+      - name: Get current date
+        if: success()
+        id: date
+        run: echo "DATE=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
+
+      - name: Send Email via 163
+        if: success()
+        uses: dawidd6/action-send-mail@v4
+        with:
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASS }}
+          subject: "📊 AI CLI 日报 ${{ steps.date.outputs.DATE }}"
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.EMAIL_FROM }}
+          html_body: |
+            <h2>📊 AI CLI 日报 - ${{ steps.date.outputs.DATE }}</h2>
+            <p>今日简报已生成，详见附件或访问 GitHub Issues。</p>
+            <hr/>
+            <p><small>本邮件由 agents-radar 自动发送</small></p>
+          attachments: |
+            digests/${{ steps.date.outputs.DATE }}/ai-cli.md
+            digests/${{ steps.date.outputs.DATE }}/ai-agents.md
+            digests/${{ steps.date.outputs.DATE }}/ai-web.md
+            digests/${{ steps.date.outputs.DATE }}/ai-trending.md
+          secure: true
+          priority: normal
+
+      - name: Email Send Status
+        if: failure()
+        run: echo "⚠️ 邮件发送失败，但简报已生成并保存"

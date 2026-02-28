@@ -2,9 +2,11 @@
  * agents-radar: daily digest for AI CLI tools and OpenClaw.
  *
  * Env vars:
- *   ANTHROPIC_API_KEY   - API key (Anthropic or Kimi Code)
- *   ANTHROPIC_BASE_URL  - Endpoint override (e.g. https://api.kimi.com/coding/)
- *   ANTHROPIC_MODEL     - Model name (default: claude-sonnet-4-6)
+ *   OPENAI_API_KEY      - API key (Minimax or other OpenAI-compatible API)
+ *   OPENAI_BASE_URL     - Endpoint override (e.g. https://api.minimax.chat/v1)
+ *   OPENAI_MODEL        - Model name (default: MiniMax-Text-01)
+ *   ANTHROPIC_API_KEY   - Deprecated, use OPENAI_API_KEY instead
+ *   ANTHROPIC_BASE_URL  - Deprecated, use OPENAI_BASE_URL instead
  *   GITHUB_TOKEN        - GitHub token for API access and issue creation
  *   DIGEST_REPO         - owner/repo where digest issues are posted (optional)
  */
@@ -415,7 +417,10 @@ async function saveTrendingReport(
 
 async function main(): Promise<void> {
   requireEnv("GITHUB_TOKEN");
-  requireEnv("ANTHROPIC_API_KEY");
+  // 支持 OPENAI_API_KEY 或兼容的 ANTHROPIC_API_KEY
+  if (!process.env["OPENAI_API_KEY"] && !process.env["ANTHROPIC_API_KEY"]) {
+    throw new Error("Missing required environment variable: OPENAI_API_KEY or ANTHROPIC_API_KEY");
+  }
 
   const now        = new Date();
   const since      = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -423,7 +428,10 @@ async function main(): Promise<void> {
   const utcStr     = now.toISOString().slice(0, 16).replace("T", " ");
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
 
-  console.log(`[${now.toISOString()}] Starting digest | endpoint: ${process.env["ANTHROPIC_BASE_URL"] ?? "api.anthropic.com"}`);
+  const endpoint = process.env["OPENAI_BASE_URL"] 
+    ?? process.env["ANTHROPIC_BASE_URL"] 
+    ?? "api.minimax.chat";
+  console.log(`[${now.toISOString()}] Starting digest | endpoint: ${endpoint}`);
 
   // 1. Fetch all data in parallel
   const webState = loadWebState();
