@@ -42,7 +42,9 @@ async function testMinimaxApi() {
     console.log(JSON.stringify(data, null, 2));
 
     if (response.ok) {
-      const content = data.content?.[0]?.text;
+      // Minimax 返回 content 数组，可能包含 thinking 和 text
+      const textBlock = data.content?.find((c: any) => c.type === "text");
+      const content = textBlock?.text || data.content?.[0]?.text;
       console.log("\n✅ API 调用成功！");
       console.log("Content:", content);
     } else {

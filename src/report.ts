@@ -61,8 +61,10 @@ export async function callLlm(prompt: string, maxTokens = 4096): Promise<string>
       }
       
       const data = await response.json();
-      const block = data.content?.[0];
-      if (block?.type !== "text") throw new Error("Unexpected response type from LLM");
+      // Minimax 返回 content 数组，可能包含 thinking 和 text
+      const textBlock = data.content?.find((c: any) => c.type === "text");
+      const block = textBlock || data.content?.[0];
+      if (!block?.text) throw new Error("Unexpected response type from LLM");
       return block.text;
     } else {
       // Anthropic 官方: 使用 SDK（自动加 Bearer）
