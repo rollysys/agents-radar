@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-02-28T03:32:56.104Z",
+    "lastChecked": "2026-02-28T08:12:12.718Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -317,7 +317,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-02-28T03:32:55.407Z",
+    "lastChecked": "2026-02-28T08:12:13.135Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-02-27T18:40:43.703Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-02-27T18:40:49.471Z",
@@ -827,7 +827,7 @@
       "https://openai.com/business/put-ai-to-work-automate-and-scale-financial-operations/": "2025-12-26T18:50:32.418Z",
       "https://openai.com/business/enabling-a-data-driven-workforce-webinar/": "2025-12-26T18:48:40.812Z",
       "https://openai.com/business/fine-tuning-gpt-4o-webinar/": "2025-12-26T18:48:40.270Z",
-      "https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/": "2026-02-28T01:00:08.695Z",
+      "https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/": "2026-02-28T07:56:12.773Z",
       "https://openai.com/index/updating-our-preparedness-framework/": "2025-12-19T13:22:25.962Z",
       "https://openai.com/index/gpt-4-5-system-card/": "2025-12-19T13:22:24.869Z",
       "https://openai.com/index/gpt-4o-image-generation-system-card-addendum/": "2025-12-19T13:22:24.100Z",
@@ -929,11 +929,11 @@
       "https://openai.com/index/affective-use-study/": "2025-06-24T22:17:06.485Z",
       "https://openai.com/index/bertelsmann-powers-creativity-and-productivity-with-openai/": "2025-05-23T02:02:29.542Z",
       "https://openai.com/index/nonprofit-commission-guidance/": "2025-05-22T22:50:03.329Z",
-      "https://openai.com/index/update-on-mental-health-related-work/": "2026-02-28T01:51:23.891Z",
-      "https://openai.com/index/continuing-microsoft-partnership/": "2026-02-28T01:22:32.241Z",
-      "https://openai.com/index/amazon-partnership/": "2026-02-28T01:22:37.452Z",
-      "https://openai.com/index/scaling-ai-for-everyone/": "2026-02-28T01:22:35.536Z",
-      "https://openai.com/index/introducing-the-stateful-runtime-environment-for-agents-in-amazon-bedrock/": "2026-02-27T22:37:36.746Z"
+      "https://openai.com/index/update-on-mental-health-related-work/": "2026-02-28T07:53:02.328Z",
+      "https://openai.com/index/continuing-microsoft-partnership/": "2026-02-28T07:49:44.884Z",
+      "https://openai.com/index/amazon-partnership/": "2026-02-28T07:49:59.929Z",
+      "https://openai.com/index/scaling-ai-for-everyone/": "2026-02-28T07:49:53.106Z",
+      "https://openai.com/index/introducing-the-stateful-runtime-environment-for-agents-in-amazon-bedrock/": "2026-02-28T07:19:01.659Z"
     }
   }
 }
