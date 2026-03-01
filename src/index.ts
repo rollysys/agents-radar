@@ -27,10 +27,12 @@ import {
   buildSkillsPrompt,
   buildTrendingPrompt,
   buildWebReportPrompt,
+  buildBlueskyPrompt,
 } from "./prompts.ts";
 import { callLlm, saveFile, autoGenFooter } from "./report.ts";
 import { loadWebState, saveWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web.ts";
 import { fetchTrendingData, type TrendingData } from "./trending.ts";
+import { fetchBlueskyData, type BlueskyFetchResult } from "./bluesky.ts";
 
 // ---------------------------------------------------------------------------
 // Repo config
@@ -100,11 +102,12 @@ async function fetchAllData(since: Date, webState: WebState): Promise<{
   skillsData: { prs: GitHubItem[]; issues: GitHubItem[] };
   webResults: WebFetchResult[];
   trendingData: TrendingData;
+  blueskyData: BlueskyFetchResult;
 }> {
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
-  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web`);
+  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, bluesky`);
 
-  const [fetched, skillsData, webResults, trendingData] = await Promise.all([
+  const [fetched, skillsData, webResults, trendingData, blueskyData] = await Promise.all([
     Promise.all(
       allConfigs.map(async (cfg) => {
         const [issuesRaw, prs, releases] = await Promise.all([
@@ -134,9 +137,13 @@ async function fetchAllData(since: Date, webState: WebState): Promise<{
     fetchTrendingData().catch((): TrendingData => ({
       trendingRepos: [], searchRepos: [], trendingFetchSuccess: false,
     })),
+    fetchBlueskyData(since).catch((err): BlueskyFetchResult => {
+      console.error(`  [bluesky] fetch failed: ${err}`);
+      return { posts: [], authorPostCount: 0, searchPostCount: 0, errors: [String(err)] };
+    }),
   ]);
 
-  return { fetched, skillsData, webResults, trendingData };
+  return { fetched, skillsData, webResults, trendingData, blueskyData };
 }
 
 // ---------------------------------------------------------------------------
@@ -409,6 +416,42 @@ async function saveTrendingReport(
   }
 }
 
+async function saveBlueskyReport(
+  blueskyData: BlueskyFetchResult,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+): Promise<void> {
+  if (blueskyData.posts.length === 0) {
+    console.log("  [bluesky] No posts available, skipping report.");
+    return;
+  }
+
+  console.log("  [bluesky] Calling LLM for social media report...");
+  try {
+    const blueskySummary = await callLlm(buildBlueskyPrompt(blueskyData, dateStr), 6144);
+
+    const blueskyContent =
+      `# AI 社交媒体日报 ${dateStr}\n\n` +
+      `> 数据来源: Bluesky | 追踪作者: ${blueskyData.authorPostCount} 条 | ` +
+      `关键词搜索: ${blueskyData.searchPostCount} 条 | ` +
+      `去重后: ${blueskyData.posts.length} 条 | 生成时间: ${utcStr} UTC\n\n` +
+      `---\n\n` +
+      blueskySummary +
+      footer;
+
+    console.log(`  Saved ${saveFile(blueskyContent, dateStr, "ai-social.md")}`);
+
+    if (digestRepo) {
+      const socialUrl = await createGitHubIssue(`💬 AI 社交媒体日报 ${dateStr}`, blueskyContent, "social");
+      console.log(`  Created social issue: ${socialUrl}`);
+    }
+  } catch (err) {
+    console.error(`  [bluesky] Report generation failed: ${err}`);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
@@ -427,7 +470,7 @@ async function main(): Promise<void> {
 
   // 1. Fetch all data in parallel
   const webState = loadWebState();
-  const { fetched, skillsData, webResults, trendingData } = await fetchAllData(since, webState);
+  const { fetched, skillsData, webResults, trendingData, blueskyData } = await fetchAllData(since, webState);
 
   const peerIds         = new Set(OPENCLAW_PEERS.map((p) => p.id));
   const fetchedCli      = fetched.filter((f) => f.cfg.id !== OPENCLAW.id && !peerIds.has(f.cfg.id));
@@ -463,6 +506,7 @@ async function main(): Promise<void> {
 
   await saveWebReport(webResults, webState, utcStr, dateStr, digestRepo, footer);
   await saveTrendingReport(trendingData, trendingSummary, utcStr, dateStr, digestRepo, footer);
+  await saveBlueskyReport(blueskyData, utcStr, dateStr, digestRepo, footer);
 
   // 5. Create GitHub issues for CLI + OpenClaw
   if (digestRepo) {

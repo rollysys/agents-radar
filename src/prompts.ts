@@ -5,6 +5,7 @@
 import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
 import type { WebFetchResult } from "./web.ts";
 import type { TrendingData } from "./trending.ts";
+import type { BlueskyFetchResult } from "./bluesky.ts";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -346,6 +347,62 @@ ${searchSection}
 4. **社区关注热点** — 以 bullet 形式列出 3~5 个值得开发者重点关注的具体项目或方向，给出简短理由
 
 语言要求：中文，专业简洁，每个项目必须附 GitHub 链接。
+`;
+}
+
+export function buildBlueskyPrompt(result: BlueskyFetchResult, dateStr: string): string {
+  const top = result.posts.slice(0, 80);
+
+  const postsText = top
+    .map(
+      (p, i) =>
+        `${i + 1}. @${p.authorHandle} (${p.authorDisplayName})` +
+        ` [❤️${p.likes} 🔁${p.reposts} 💬${p.replies}]` +
+        ` [来源: ${p.source}]` +
+        `\n   ${p.text.replace(/\n/g, " ").slice(0, 300)}` +
+        `\n   ${p.url}` +
+        `\n   ${p.createdAt.slice(0, 16)}`,
+    )
+    .join("\n\n");
+
+  return `你是一位专注于 AI 领域的社交媒体分析师。以下是 ${dateStr} 从 Bluesky 社交平台获取的 AI 领域动态数据，请进行深度分析。
+
+## 数据说明
+- 追踪作者帖子: ${result.authorPostCount} 条
+- 关键词搜索帖子: ${result.searchPostCount} 条
+- 去重后共: ${result.posts.length} 条（以下展示互动量最高的 ${top.length} 条）
+${result.errors.length > 0 ? `- 抓取异常: ${result.errors.length} 个\n` : ""}
+
+## 帖子数据（按互动量降序）
+
+${postsText}
+
+---
+
+请生成一份结构清晰的《AI 社交媒体日报》，包含以下部分：
+
+1. **今日速览** — 3~5 句话概括今日 AI 社交媒体最值得关注的讨论和动向
+
+2. **热门 Top 10** — 互动量最高的 10 条帖子，每条包含：
+   - 作者 + 互动数据
+   - 核心内容概述（2~3 句话）
+   - 为什么值得关注
+   - 原帖链接
+
+3. **领域分类** — 将今日帖子按以下维度分类汇总：
+   - 🧠 模型/研究进展
+   - 🔧 工具/框架/开发
+   - 🤖 AI 智能体/应用
+   - 💼 行业/商业/政策
+   - 🎓 教程/教育/观点
+
+4. **意见领袖观点** — 追踪名单中的大咖今日说了什么，逐人整理核心观点
+
+5. **高价值链接** — 帖子中提及的论文、项目、博客等外部链接，附简要说明
+
+6. **趋势信号** — 200~300 字分析：今日社交媒体中涌现的技术话题、社区情绪、行业风向
+
+语言要求：中文，专业简洁，每个条目附上 Bluesky 原帖链接。
 `;
 }
 
