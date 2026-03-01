@@ -1,35 +1,79 @@
 # AI 开源趋势日报 2026-03-01
 
-> 数据来源: GitHub Trending + GitHub Search API | 生成时间: 2026-03-01 14:04 UTC
+> 数据来源: GitHub Trending + GitHub Search API | 生成时间: 2026-03-01 15:22 UTC
 
 ---
 
 # AI 开源趋势日报（2026-03-01）
 
----
-
 ## 第一步：AI 相关性筛选
 
-### 排除项目（非 AI/ML 领域）
-- `microsoft/markitdown` — 文件格式转换工具
-- `basecamp/omarchy` — Linux 发行版
+### 排除项目
+- `basecamp/omarchy` — Linux 发行版，非 AI 领域
+- `microsoft/markitdown` — 通用文档转换工具，无明确 AI 核心功能
 
-### 筛选结果
-从 13 个 Trending 项目中筛选出 **11 个 AI 相关项目**；主题搜索的 79 个项目全部与 AI 相关。
+### 纳入项目（11 个）
+Trending 榜单中其余 11 个项目均与 AI 强相关，纳入分析。
 
 ---
 
 ## 第二步：分类结果
 
-### 分类总览
+### 🔧 AI 基础工具（框架、SDK、推理引擎）
 
-| 类别 | Trending 项目数 | 主题搜索代表项目数 |
-|------|---------------|------------------|
-| 🔧 AI 基础工具 | 3 | 15+ |
-| 🤖 AI 智能体/工作流 | 5 | 20+ |
-| 📦 AI 应用 | 3 | 10+ |
-| 🧠 大模型/训练 | 0 | 10+ |
-| 🔍 RAG/知识库 | 0 | 25+ |
+| 项目 | Stars | 今日新增 | 说明 |
+|------|-------|----------|------|
+| [open-compass/opencompass](https://github.com/open-compass/opencompass) | 6,698 | — | LLM 评测平台，支持 100+ 数据集 |
+| [0xPlaygrounds/rig](https://github.com/0xPlaygrounds/rig) | 6,186 | — | Rust 编写的模块化 LLM 应用框架 |
+| [skyzh/tiny-llm](https://github.com/skyzh/tiny-llm) | 3,834 | — | Apple Silicon 上的 LLM 推理服务课程 |
+| [multimindlab/multimind-sdk](https://github.com/multimindlab/multimind-sdk) | 88 | — | 统一接口的本地+托管模型 SDK |
+| [galilai-group/stable-pretraining](https://github.com/galilai-group/stable-pretraining) | 130 | — | 基础模型预训练的可扩展库 |
+
+### 🤖 AI 智能体/工作流
+
+| 项目 | Stars | 今日新增 | 说明 |
+|------|-------|----------|------|
+| [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | — | +766 | Claude Agent 编排平台，支持多智能体 swarm |
+| [bytedance/deer-flow](https://github.com/bytedance/deer-flow) | — | +352 | 开源 SuperAgent 研究框架，支持沙箱、记忆、子智能体 |
+| [alibaba/OpenSandbox](https://github.com/alibaba/OpenSandbox) | — | +1,186 | 通用 AI 沙箱平台，支持 Coding Agent / GUI Agent / RL 训练 |
+| [X-PLUG/MobileAgent](https://github.com/X-PLUG/MobileAgent) | — | +192 | 强大 GUI Agent 系列，移动端自动化 |
+| [superset-sh/superset](https://github.com/superset-sh/superset) | — | +391 | AI 智能体时代的 IDE，支持运行 Claude Code/Codex |
+| [datawhalechina/hello-agents](https://github.com/datawhalechina/hello-agents) | — | +603 | 从零构建智能体的教程项目 |
+| [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) | — | +184 | 科研/工程用 Agent 技能集 |
+| [NevaMind-AI/memU](https://github.com/NevaMind-AI/memU) | — | +338 | 主动记忆层，支撑 24/7 智能体 |
+| [trycua/cua](https://github.com/trycua/cua) | 12,777 | — | 开源桌面控制 Agent 基础设施 |
+
+### 📦 AI 应用（垂直场景）
+
+| 项目 | Stars | 今日新增 | 说明 |
+|------|-------|----------|------|
+| [moeru-ai/airi](https://github.com/moeru-ai/airi) | — | +738 | 自托管虚拟角色伴侣，支持实时语音/Minecraft/Factorio |
+| [ruvnet/wifi-densepose](https://github.com/ruvnet/wifi-densepose) | — | +2,152 | WiFi 信号实时人体姿态估计，无摄像头隐私方案 |
+| [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps) | 98,524 | +475 | LLM 应用与 RAG 优秀案例集 |
+
+### 🧠 大模型/训练
+
+| 项目 | Stars | 今日新增 | 说明 |
+|------|-------|----------|------|
+| [ollama/ollama](https://github.com/ollama/ollama) | 163,753 | — | 本地大模型运行引擎（Kimi/GLM/DeepSeek/Qwen 等） |
+| [huggingface/transformers](https://github.com/huggingface/transformers) | 157,158 | — | 最广泛使用的模型定义框架 |
+| [vllm-project/vllm](https://github.com/vllm-project/vllm) | 71,567 | — | 高吞吐 LLM 推理服务引擎 |
+| [hiyouga/LlamaFactory](https://github.com/hiyouga/LlamaFactory) | 67,699 | — | 百种 LLM/VLM 统一高效微调框架 |
+| [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | 86,523 | — | PyTorch 从零实现 ChatGPT 式 LLM |
+
+### 🔍 RAG/知识库
+
+| 项目 | Stars | 今日新增 | 说明 |
+|------|-------|----------|------|
+| [run-llama/llama_index](https://github.com/run-llama/llama_index) | 47,273 | — | 文档智能体与 OCR 平台 |
+| [infiniflow/ragflow](https://github.com/infiniflow/ragflow) | 73,953 | — | RAG 与 Agent 融合的上下文引擎 |
+| [mem0ai/mem0](https://github.com/mem0ai/mem0) | 48,338 | — | AI 智能体通用记忆层 |
+| [FlowiseAI/Flowise](https://github.com/FlowiseAI/Flowise) | 49,441 | — | 可视化构建 AI 智能体 |
+| [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl) | 86,947 | — | 网页数据转 LLM 可用格式 |
+| [PaddlePaddle/PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) | 71,388 | — | 多语言 OCR 工具包 |
+| [meilisearch/meilisearch](https://github.com/meilisearch/meilisearch) | 56,133 | — | AI 混合搜索向量引擎 |
+| [qdrant/qdrant](https://github.com/qdrant/qdrant) | 29,212 | — | 高性能向量数据库 |
+| [chroma-core/chroma](https://github.com/chroma-core/chroma) | 26,383 | — | 开源向量检索数据库 |
 
 ---
 
@@ -37,99 +81,37 @@
 
 ### 1. 今日速览
 
-今日 GitHub AI 生态呈现三大核心趋势：**Agent 编排平台持续爆发**，ruvnet/ruflo 今日新增 766 stars，彰显社区对多智能体协作框架的强烈需求；**AI 基础设施加速成熟**，Alibaba OpenSandbox 获得 1186 stars，表明企业级 AI 应用沙箱化部署成为新基建方向；**垂直场景 AI 应用多点开花**，WiFi 姿态估计、实时语音伴侣等创新项目首次登榜，反映 AI 从通用能力向具体场景渗透的趋势。整体来看，AI 智能体和工作流已成为当前开源社区最热门的方向。
+今日 AI 开源社区呈现 **"Agent 编排与沙箱平台爆发"** 的显著趋势。阿里 OpenSandbox 以 +1,186 今日 stars 领跑Trending，代表 AI 应用落地基础设施的成熟；ruvnet/ruflo（+766）和 superset-sh/superset（+391）分别聚焦 Claude Agent 编排与智能体开发环境，预示着 **"智能体即服务"（Agent-as-a-Service）** 正在成为新范式。非视觉感知技术 wifi-densepose（+2,152）热度最高，反映出隐私计算场景的强劲需求。整体来看，AI 智能体工作流、垂直应用沙箱、记忆系统是今日三大增长引擎。
 
 ---
 
-### 2. 各维度热门项目
+### 2. 趋势信号分析（~280 字）
 
-#### 🔧 AI 基础工具
+**Agent 编排与多智能体系统** 成为今日最热方向。ruvnet/ruflo 定位于 Claude 生态的多智能体编排，bytedance/deer-flow 以 SuperAgent 形态整合研究-编码-创建全链路，两者均获得社区积极响应。这表明单纯模型调用已向**复杂工作流协同**演进。
 
-| 项目 | 数据 | 说明 |
-|------|------|------|
-| [vllm-project/vllm](https://github.com/vllm-project/vllm) | ⭐71,563 | 高吞吐、低内存占用的 LLM 推理引擎，大模型部署标配 |
-| [hiyouga/LlamaFactory](https://github.com/hiyouga/LlamaFactory) | ⭐67,698 | 统一高效微调 100+ LLMs & VLMs，ACL 2024 论文 |
-| [0xPlaygrounds/rig](https://github.com/0xPlaygrounds/rig) | ⭐6,183 | Rust 生态的模块化 LLM 应用框架，类型安全新选择 |
-| [skyzh/tiny-llm](https://github.com/skyzh/tiny-llm) | ⭐3,834 | Apple Silicon 上的 LLM 推理服务课程，手把手教你搭 vLLM + Qwen |
-| [alibaba/OpenSandbox](https://github.com/alibaba/OpenSandbox) | ⭐+1,186 today | 通用 AI 沙箱平台，支持 Coding Agent、GUI Agent、RL 训练等多场景 |
-| [open-compass/opencompass](https://github.com/open-compass/opencompass) | ⭐6,698 | LLM 评测平台，支持 100+ 数据集，主流模型全覆盖 |
+**AI 沙箱与开发环境** 基础设施快速成熟。alibaba/OpenSandbox（+1,186）是今日增长冠军，覆盖 Coding Agent / GUI Agent / RL 训练等多场景，支持多语言 SDK 和 K8s 部署，标志着 AI 应用从实验走向生产环境的标准化的关键节点。
 
-#### 🤖 AI 智能体/工作流
+**非视觉感知与隐私计算** 出人意料地成为热点。wifi-densepose（+2,152）利用 WiFi 信号实现人体姿态估计和生命体征监测，无需摄像头，在医疗、养老、智能家居场景有明确价值，是边缘 AI 的落地示范。
 
-| 项目 | 数据 | 说明 |
-|------|------|------|
-| [langgenius/dify](https://github.com/langgenius/dify) | ⭐130,768 | 生产级 Agentic 工作流开发平台，社区热度持续攀升 |
-| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | ⭐127,815 | Agent 开发标准框架，工具链最完善 |
-| [browser-use/browser-use](https://github.com/browser-use/browser-use) | ⭐79,262 | 让 AI 代理操控浏览器，自动化任务神器 |
-| [OpenHands/OpenHands](https://github.com/OpenHands/OpenHands) | ⭐68,351 | AI 驱动开发代理，代码生成与执行一体化 |
-| [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | ⭐+766 today | Claude Agent 编排平台，支持多智能体 swarm 部署 |
-| [bytedance/deer-flow](https://github.com/bytedance/deer-flow) | ⭐+352 today | 开源 SuperAgent 框架，支持研究、编码、创作多任务 |
-| [X-PLUG/MobileAgent](https://github.com/X-PLUG/MobileAgent) | ⭐+192 today | 强大的 GUI 代理家族，移动端自动化 |
-| [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) | ⭐29,104 | 前端 Agent 框架，生成式 UI 开创者 |
-| [trycua/cua](https://github.com/trycua/cua) | ⭐12,777 | 计算机使用代理开源基础设施，跨平台桌面控制 |
-
-#### 📦 AI 应用
-
-| 项目 | 数据 | 说明 |
-|------|------|------|
-| [moeru-ai/airi](https://github.com/moeru-ai/airi) | ⭐+738 today | 自托管 AI 伴侣，支持实时语音聊天、Minecraft、Factorio |
-| [ruvnet/wifi-densepose](https://github.com/ruvnet/wifi-densepose) | ⭐+2,152 today | WiFi 信号转实时人体姿态估计、生命体征监测，纯视觉替代方案 |
-| [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps) | ⭐98,490 / +475 today | LLM 应用精选集，涵盖 Agent、RAG 最佳实践 |
-| [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) | ⭐+184 today | 面向科研/工程/金融的 Claude 预置技能集 |
-| [OpenBB-finance/OpenBB](https://github.com/OpenBB-finance/OpenBB) | ⭐62,355 | 金融数据分析平台，支持 quant 和 AI Agent |
-| [PaddlePaddle/PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) | ⭐71,385 | 文档 OCR 工具包，100+ 语言支持，连接图像与 LLM |
-
-#### 🧠 大模型/训练
-
-| 项目 | 数据 | 说明 |
-|------|------|------|
-| [tensorflow/tensorflow](https://github.com/tensorflow/tensorflow) | ⭐193,948 | 通用 ML 框架，生态最完善 |
-| [huggingface/transformers](https://github.com/huggingface/transformers) | ⭐157,155 | 模型定义框架，覆盖文本/视觉/音频/多模态 |
-| [pytorch/pytorch](https://github.com/pytorch/pytorch) | ⭐97,847 | 动态神经网络框架，研究首选 |
-| [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | ⭐86,508 | 手把手实现 ChatGPT 类 LLM，教程明星项目 |
-| [microsoft/AI-For-Beginners](https://github.com/microsoft/AI-For-Beginners) | ⭐45,710 | 12 周 AI 入门课程，适合零基础开发者 |
-| [ollama/ollama](https://github.com/ollama/ollama) | ⭐163,748 | 本地大模型运行工具，支持 Kimi、GLM、DeepSeek 等 |
-
-#### 🔍 RAG/知识库
-
-| 项目 | 数据 | 说明 |
-|------|------|------|
-| [infiniflow/ragflow](https://github.com/infiniflow/ragflow) | ⭐73,949 | RAG + Agent 融合引擎，上下文理解能力突出 |
-| [run-llama/llama_index](https://github.com/run-llama/llama_index) | ⭐47,272 | 文档智能体与 OCR 平台 |
-| [mem0ai/mem0](https://github.com/mem0ai/mem0) | ⭐48,334 | AI Agent 通用记忆层，24/7 主动代理核心组件 |
-| [milvus-io/milvus](https://github.com/milvus-io/milvus) | ⭐43,056 | 高性能云原生向量数据库 |
-| [FlowiseAI/Flowise](https://github.com/FlowiseAI/Flowise) | ⭐49,440 | 可视化构建 AI Agent，低代码 RAG 首选 |
-| [qdrant/qdrant](https://github.com/qdrant/qdrant) | ⭐29,209 | 高性能大规模向量检索引擎 |
-| [meilisearch/meilisearch](️[link](https://github.com/meilisearch/meilisearch)) | ⭐56,132 | 闪电般快速的混合搜索 API |
-| [chroma-core/chroma](https://github.com/chroma-core/chroma) | ⭐26,381 | 开源向量数据库，AI 应用检索标配 |
+**消费级 AI 伴侣** 持续升温。airi（+738）提供自托管虚拟角色方案，支持实时语音和游戏交互，代表开源社区对 "Neuro-sama 模式" 的强烈兴趣。
 
 ---
 
-### 3. 趋势信号分析
+### 3. 社区关注热点
 
-**Agent 编排与多智能体系统成为社区新风口。** 今日 Trending 榜单中，智能体相关项目占比近半（5/11），ruvnet/ruflo、bytedance/deer-flow 等项目首次登榜即获得数百 stars 增长，反映开发者对多智能体协作、Agent 编排框架的强烈需求。这一趋势与近期 Claude Code、OpenAI Agents SDK 等产品发布形成呼应。
+- **[alibaba/OpenSandbox](https://github.com/alibaba/OpenSandbox)** — 今日之星，AI 应用沙箱平台标准化的里程碑，支持多场景推理与 RL 训练，适合作为 Agent 开发基础设施。
+  
+- **[ruvnet/ruflo](https://github.com/ruvnet/ruflo)** — Claude 生态多智能体编排平台，企业级架构 + RAG 集成，是构建复杂 AI 系统的快速入口。
 
-**AI 基础设施从模型训练向应用部署迁移。** Alibaba OpenSandbox 获得 1186 stars，说明企业级 AI 应用沙箱化、容器化部署正在成为新基建方向。vLLM、LlamaFactory 等推理/微调工具持续热门，表明生产环境优化仍是核心痛点。
+- **[ruvnet/wifi-densepose](https://github.com/ruvnet/wifi-densepose)** — WiFi 姿态估计技术路线清晰，隐私敏感场景（医疗/养老/家居）落地潜力大，值得关注其后续模型迭代。
 
-**纯视觉替代技术出现突破。** ruvnet/wifi-densepose 今日新增 2152 stars（全场最高），利用 WiFi 信号实现人体姿态估计和生命体征监测，无需摄像头即可实现感知，代表了 AI 硬件泛化方向的新探索。
+- **[moeru-ai/airi](https://github.com/moeru-ai/airi)** — 虚拟角色伴侣开源方案，支持 Minecraft/Factorio 等游戏交互，"AI 陪伴" 赛道的自托管替代方案。
 
-**垂直场景 AI 应用持续分化。** 语音伴侣（airi）、金融分析（OpenBB）、科研辅助（claude-scientific-skills）等细分场景项目涌现，AI 从通用能力向具体行业渗透的趋势明显。
+- **[vllm-project/vllm](https://github.com/vllm-project/vllm) + [ollama/ollama](https://github.com/ollama/ollama)** — 推理层双雄持续稳定增长，分别代表云端高吞吐与本地轻量部署，是构建任何 AI 应用的底层依赖。
 
 ---
 
-### 4. 社区关注热点
-
-- **[ruvnet/wifi-densepose](https://github.com/ruvnet/wifi-densepose)** — WiFi 也能做姿态估计，纯视觉替代方案，隐私场景杀手级应用，2152 stars 今日增幅说明社区对其高度关注
-
-- **[ruvnet/ruflo](https://github.com/ruvnet/ruflo)** — Claude Agent 编排平台，企业级架构 + 多智能体 swarm 部署，Agent 热潮中的新秀
-
-- **[alibaba/OpenSandbox](https://github.com/alibaba/OpenSandbox)** — 阿里开源的 AI 沙箱平台，Coding Agent、GUI Agent、RL 训练全覆盖，基础设施化趋势明显
-
-- **[dify](https://github.com/langgenius/dify) / [langchain](https://github.com/langchain-ai/langchain)** — 智能体工作流开发双雄，生产级应用首选，130K+ stars 社区背书
-
-- **[vllm-project/vllm](https://github.com/vllm-project/vllm)** — LLM 推理引擎事实标准，高吞吐低显存，部署必备
-
-- **RAG + Agent 融合方向** — ragflow、LlamaIndex、mem0 等项目持续火热，上下文记忆与知识检索成为 Agent 落地关键能力
+*（本报告基于 2026-03-01 GitHub Trending 与 AI 主题搜索数据自动生成）*
 
 ---
 *本日报由 [agents-radar](https://github.com/rollysys/agents-radar) 自动生成。*
