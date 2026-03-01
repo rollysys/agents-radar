@@ -20,6 +20,7 @@ import {
 } from "./github.ts";
 import {
   type RepoDigest,
+  type SocialData,
   buildCliPrompt,
   buildPeerPrompt,
   buildComparisonPrompt,
@@ -27,12 +28,15 @@ import {
   buildSkillsPrompt,
   buildTrendingPrompt,
   buildWebReportPrompt,
-  buildBlueskyPrompt,
+  buildSocialPrompt,
 } from "./prompts.ts";
 import { callLlm, saveFile, autoGenFooter } from "./report.ts";
 import { loadWebState, saveWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web.ts";
 import { fetchTrendingData, type TrendingData } from "./trending.ts";
 import { fetchBlueskyData, type BlueskyFetchResult } from "./bluesky.ts";
+import { fetchHackerNewsData, type HNFetchResult } from "./hackernews.ts";
+import { fetchRedditData, type RedditFetchResult } from "./reddit.ts";
+import { fetchLobstersData, type LobstersFetchResult } from "./lobsters.ts";
 
 // ---------------------------------------------------------------------------
 // Repo config
@@ -102,12 +106,12 @@ async function fetchAllData(since: Date, webState: WebState): Promise<{
   skillsData: { prs: GitHubItem[]; issues: GitHubItem[] };
   webResults: WebFetchResult[];
   trendingData: TrendingData;
-  blueskyData: BlueskyFetchResult;
+  socialData: SocialData;
 }> {
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
-  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, bluesky`);
+  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, social`);
 
-  const [fetched, skillsData, webResults, trendingData, blueskyData] = await Promise.all([
+  const [fetched, skillsData, webResults, trendingData, blueskyData, hnData, redditData, lobstersData] = await Promise.all([
     Promise.all(
       allConfigs.map(async (cfg) => {
         const [issuesRaw, prs, releases] = await Promise.all([
@@ -141,9 +145,22 @@ async function fetchAllData(since: Date, webState: WebState): Promise<{
       console.error(`  [bluesky] fetch failed: ${err}`);
       return { posts: [], authorPostCount: 0, searchPostCount: 0, errors: [String(err)] };
     }),
+    fetchHackerNewsData(since).catch((err): HNFetchResult => {
+      console.error(`  [hn] fetch failed: ${err}`);
+      return { stories: [], totalFetched: 0, errors: [String(err)] };
+    }),
+    fetchRedditData(since).catch((err): RedditFetchResult => {
+      console.error(`  [reddit] fetch failed: ${err}`);
+      return { posts: [], totalFetched: 0, errors: [String(err)] };
+    }),
+    fetchLobstersData(since).catch((err): LobstersFetchResult => {
+      console.error(`  [lobsters] fetch failed: ${err}`);
+      return { stories: [], totalFetched: 0, errors: [String(err)] };
+    }),
   ]);
 
-  return { fetched, skillsData, webResults, trendingData, blueskyData };
+  const socialData: SocialData = { bluesky: blueskyData, hn: hnData, reddit: redditData, lobsters: lobstersData };
+  return { fetched, skillsData, webResults, trendingData, socialData };
 }
 
 // ---------------------------------------------------------------------------
@@ -416,39 +433,44 @@ async function saveTrendingReport(
   }
 }
 
-async function saveBlueskyReport(
-  blueskyData: BlueskyFetchResult,
+async function saveSocialReport(
+  socialData: SocialData,
   utcStr: string,
   dateStr: string,
   digestRepo: string,
   footer: string,
 ): Promise<void> {
-  if (blueskyData.posts.length === 0) {
-    console.log("  [bluesky] No posts available, skipping report.");
+  const totalPosts = socialData.bluesky.posts.length + socialData.hn.stories.length +
+    socialData.reddit.posts.length + socialData.lobsters.stories.length;
+
+  if (totalPosts === 0) {
+    console.log("  [social] No posts available from any platform, skipping report.");
     return;
   }
 
-  console.log("  [bluesky] Calling LLM for social media report...");
+  console.log("  [social] Calling LLM for social media report...");
   try {
-    const blueskySummary = await callLlm(buildBlueskyPrompt(blueskyData, dateStr), 6144);
+    const socialSummary = await callLlm(buildSocialPrompt(socialData, dateStr), 8192);
 
-    const blueskyContent =
-      `# AI 社交媒体日报 ${dateStr}\n\n` +
-      `> 数据来源: Bluesky | 追踪作者: ${blueskyData.authorPostCount} 条 | ` +
-      `关键词搜索: ${blueskyData.searchPostCount} 条 | ` +
-      `去重后: ${blueskyData.posts.length} 条 | 生成时间: ${utcStr} UTC\n\n` +
+    const socialContent =
+      `# AI 社交媒体与社区日报 ${dateStr}\n\n` +
+      `> 数据来源: Bluesky (${socialData.bluesky.posts.length}) + ` +
+      `Hacker News (${socialData.hn.stories.length}) + ` +
+      `Reddit (${socialData.reddit.posts.length}) + ` +
+      `Lobste.rs (${socialData.lobsters.stories.length}) | ` +
+      `共 ${totalPosts} 条 | 生成时间: ${utcStr} UTC\n\n` +
       `---\n\n` +
-      blueskySummary +
+      socialSummary +
       footer;
 
-    console.log(`  Saved ${saveFile(blueskyContent, dateStr, "ai-social.md")}`);
+    console.log(`  Saved ${saveFile(socialContent, dateStr, "ai-social.md")}`);
 
     if (digestRepo) {
-      const socialUrl = await createGitHubIssue(`💬 AI 社交媒体日报 ${dateStr}`, blueskyContent, "social");
+      const socialUrl = await createGitHubIssue(`💬 AI 社交媒体与社区日报 ${dateStr}`, socialContent, "social");
       console.log(`  Created social issue: ${socialUrl}`);
     }
   } catch (err) {
-    console.error(`  [bluesky] Report generation failed: ${err}`);
+    console.error(`  [social] Report generation failed: ${err}`);
   }
 }
 
@@ -470,7 +492,7 @@ async function main(): Promise<void> {
 
   // 1. Fetch all data in parallel
   const webState = loadWebState();
-  const { fetched, skillsData, webResults, trendingData, blueskyData } = await fetchAllData(since, webState);
+  const { fetched, skillsData, webResults, trendingData, socialData } = await fetchAllData(since, webState);
 
   const peerIds         = new Set(OPENCLAW_PEERS.map((p) => p.id));
   const fetchedCli      = fetched.filter((f) => f.cfg.id !== OPENCLAW.id && !peerIds.has(f.cfg.id));
@@ -506,7 +528,7 @@ async function main(): Promise<void> {
 
   await saveWebReport(webResults, webState, utcStr, dateStr, digestRepo, footer);
   await saveTrendingReport(trendingData, trendingSummary, utcStr, dateStr, digestRepo, footer);
-  await saveBlueskyReport(blueskyData, utcStr, dateStr, digestRepo, footer);
+  await saveSocialReport(socialData, utcStr, dateStr, digestRepo, footer);
 
   // 5. Create GitHub issues for CLI + OpenClaw
   if (digestRepo) {
