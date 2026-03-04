@@ -72,6 +72,10 @@ const SEARCH_KEYWORDS = [
   "open source AI",
   "RAG",
   "fine-tuning",
+  "Tesla FSD",
+  "Waymo",
+  "robotaxi",
+  "self-driving",
 ];
 
 const BLUESKY_API = "https://public.api.bsky.app";

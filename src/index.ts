@@ -37,6 +37,7 @@ import { fetchBlueskyData, type BlueskyFetchResult } from "./bluesky.ts";
 import { fetchHackerNewsData, type HNFetchResult } from "./hackernews.ts";
 import { fetchRedditData, type RedditFetchResult } from "./reddit.ts";
 import { fetchLobstersData, type LobstersFetchResult } from "./lobsters.ts";
+import { fetchRSSData, type RSSFetchResult } from "./rss.ts";
 
 // ---------------------------------------------------------------------------
 // Repo config
@@ -111,7 +112,7 @@ async function fetchAllData(since: Date, webState: WebState): Promise<{
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
   console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, social`);
 
-  const [fetched, skillsData, webResults, trendingData, blueskyData, hnData, redditData, lobstersData] = await Promise.all([
+  const [fetched, skillsData, webResults, trendingData, blueskyData, hnData, redditData, lobstersData, rssData] = await Promise.all([
     Promise.all(
       allConfigs.map(async (cfg) => {
         const [issuesRaw, prs, releases] = await Promise.all([
@@ -157,9 +158,13 @@ async function fetchAllData(since: Date, webState: WebState): Promise<{
       console.error(`  [lobsters] fetch failed: ${err}`);
       return { stories: [], totalFetched: 0, errors: [String(err)] };
     }),
+    fetchRSSData(since).catch((err): RSSFetchResult => {
+      console.error(`  [rss] fetch failed: ${err}`);
+      return { articles: [], totalFetched: 0, errors: [String(err)] };
+    }),
   ]);
 
-  const socialData: SocialData = { bluesky: blueskyData, hn: hnData, reddit: redditData, lobsters: lobstersData };
+  const socialData: SocialData = { bluesky: blueskyData, hn: hnData, reddit: redditData, lobsters: lobstersData, rss: rssData };
   return { fetched, skillsData, webResults, trendingData, socialData };
 }
 
@@ -441,7 +446,7 @@ async function saveSocialReport(
   footer: string,
 ): Promise<void> {
   const totalPosts = socialData.bluesky.posts.length + socialData.hn.stories.length +
-    socialData.reddit.posts.length + socialData.lobsters.stories.length;
+    socialData.reddit.posts.length + socialData.lobsters.stories.length + socialData.rss.articles.length;
 
   if (totalPosts === 0) {
     console.log("  [social] No posts available from any platform, skipping report.");
@@ -457,7 +462,8 @@ async function saveSocialReport(
       `> 数据来源: Bluesky (${socialData.bluesky.posts.length}) + ` +
       `Hacker News (${socialData.hn.stories.length}) + ` +
       `Reddit (${socialData.reddit.posts.length}) + ` +
-      `Lobste.rs (${socialData.lobsters.stories.length}) | ` +
+      `Lobste.rs (${socialData.lobsters.stories.length}) + ` +
+      `RSS (${socialData.rss.articles.length}) | ` +
       `共 ${totalPosts} 条 | 生成时间: ${utcStr} UTC\n\n` +
       `---\n\n` +
       socialSummary +

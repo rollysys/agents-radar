@@ -1,12 +1,12 @@
 /**
- * Hacker News data fetching for AI-related stories.
+ * Hacker News data fetching via Algolia Search API.
  *
  * Strategy:
- *   - Fetch top + best story IDs
- *   - Batch-fetch story details (parallel, capped)
- *   - Filter by AI-related keywords in title
+ *   - Search multiple AI + autonomous-driving keywords via Algolia
+ *   - Server-side time filtering (created_at_i >= since)
+ *   - Deduplicate across queries by story ID
  *   - Sort by score descending
- *   - Public Firebase API, zero auth required
+ *   - ~20 requests vs 200+ with Firebase — much more efficient
  */
 
 // ---------------------------------------------------------------------------
@@ -34,73 +34,58 @@ export interface HNFetchResult {
 // Config
 // ---------------------------------------------------------------------------
 
-const HN_API = "https://hacker-news.firebaseio.com/v0";
+const ALGOLIA_API = "https://hn.algolia.com/api/v1";
 const FETCH_TIMEOUT_MS = 10_000;
+const HITS_PER_QUERY = 50;
 
-/** Max stories to fetch details for (top + best combined, deduped). */
-const MAX_STORY_IDS = 200;
-
-/** Concurrency for fetching individual story details. */
-const BATCH_SIZE = 30;
-
-const AI_KEYWORDS = [
-  /\bai\b/i, /\bllm\b/i, /\bgpt\b/i, /\bclaude\b/i, /\bgemini\b/i,
-  /\bopenai\b/i, /\banthropic\b/i, /\bmachine.?learn/i, /\bdeep.?learn/i,
-  /\bneural.?net/i, /\btransformer/i, /\bdiffusion\b/i, /\bfine.?tun/i,
-  /\brag\b/i, /\bagent/i, /\bchatbot/i, /\bcopilot/i, /\bautonomous/i,
-  /\breinforcement.?learn/i, /\bembedding/i, /\bvector.?db/i,
-  /\blanguage.?model/i, /\bprompt/i, /\bmistral/i, /\bllama\b/i,
-  /\bstable.?diffusion/i, /\bmultimodal/i, /\bvision.?model/i,
+const QUERIES = [
+  // AI (original)
+  "AI", "LLM", "GPT", "Claude", "OpenAI", "Anthropic", "machine learning",
+  "deep learning", "neural network",
+  // Autonomous driving (new)
+  "autonomous driving", "self-driving", "Tesla FSD", "Waymo", "robotaxi",
 ];
 
-function isAIRelated(title: string): boolean {
-  return AI_KEYWORDS.some((re) => re.test(title));
+// ---------------------------------------------------------------------------
+// Algolia response types
+// ---------------------------------------------------------------------------
+
+interface AlgoliaHit {
+  objectID: string;
+  title: string;
+  url: string | null;
+  points: number | null;
+  num_comments: number | null;
+  author: string;
+  created_at_i: number;
+}
+
+interface AlgoliaResponse {
+  hits: AlgoliaHit[];
 }
 
 // ---------------------------------------------------------------------------
 // HTTP helper
 // ---------------------------------------------------------------------------
 
-async function hnGet<T>(path: string): Promise<T> {
+async function algoliaSearch(query: string, sinceTs: number): Promise<AlgoliaResponse> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    const resp = await fetch(`${HN_API}/${path}`, {
+    const params = new URLSearchParams({
+      query,
+      tags: "story",
+      numericFilters: `created_at_i>${sinceTs}`,
+      hitsPerPage: String(HITS_PER_QUERY),
+    });
+    const resp = await fetch(`${ALGOLIA_API}/search?${params}`, {
       signal: controller.signal,
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    return (await resp.json()) as T;
+    return (await resp.json()) as AlgoliaResponse;
   } finally {
     clearTimeout(timer);
   }
-}
-
-// ---------------------------------------------------------------------------
-// Fetch story details in batches
-// ---------------------------------------------------------------------------
-
-interface HNItem {
-  id: number;
-  type?: string;
-  title?: string;
-  url?: string;
-  score?: number;
-  by?: string;
-  time?: number;
-  descendants?: number;
-}
-
-async function fetchStoryBatch(ids: number[]): Promise<HNItem[]> {
-  const results = await Promise.all(
-    ids.map(async (id) => {
-      try {
-        return await hnGet<HNItem>(`item/${id}.json`);
-      } catch {
-        return null;
-      }
-    }),
-  );
-  return results.filter((r): r is HNItem => r !== null && r.type === "story");
 }
 
 // ---------------------------------------------------------------------------
@@ -111,55 +96,47 @@ export async function fetchHackerNewsData(since: Date): Promise<HNFetchResult> {
   const errors: string[] = [];
   const sinceTs = Math.floor(since.getTime() / 1000);
 
-  let topIds: number[] = [];
-  let bestIds: number[] = [];
+  // Fire all search queries in parallel
+  const results = await Promise.all(
+    QUERIES.map(async (query) => {
+      try {
+        return await algoliaSearch(query, sinceTs);
+      } catch (err) {
+        errors.push(`[hn/search/${query}] ${err}`);
+        return { hits: [] } as AlgoliaResponse;
+      }
+    }),
+  );
 
-  try {
-    [topIds, bestIds] = await Promise.all([
-      hnGet<number[]>("topstories.json"),
-      hnGet<number[]>("beststories.json"),
-    ]);
-  } catch (err) {
-    errors.push(`[hn/ids] ${err}`);
-    return { stories: [], totalFetched: 0, errors };
-  }
-
-  // Merge & deduplicate, cap total
-  const seenIds = new Set<number>();
-  const allIds: number[] = [];
-  for (const id of [...topIds, ...bestIds]) {
-    if (!seenIds.has(id) && allIds.length < MAX_STORY_IDS) {
-      seenIds.add(id);
-      allIds.push(id);
+  // Deduplicate by objectID across all queries
+  const seen = new Set<string>();
+  const allHits: AlgoliaHit[] = [];
+  for (const result of results) {
+    for (const hit of result.hits) {
+      if (!seen.has(hit.objectID)) {
+        seen.add(hit.objectID);
+        allHits.push(hit);
+      }
     }
   }
 
-  // Fetch in batches
-  const allStories: HNItem[] = [];
-  for (let i = 0; i < allIds.length; i += BATCH_SIZE) {
-    const batch = allIds.slice(i, i + BATCH_SIZE);
-    const items = await fetchStoryBatch(batch);
-    allStories.push(...items);
-  }
-
-  // Filter: AI-related + within time window
-  const filtered: HNStory[] = allStories
-    .filter((s) => s.time! >= sinceTs && s.title && isAIRelated(s.title))
-    .map((s) => ({
-      id: s.id,
-      title: s.title!,
-      url: s.url ?? `https://news.ycombinator.com/item?id=${s.id}`,
-      score: s.score ?? 0,
-      by: s.by ?? "unknown",
-      time: s.time!,
-      descendants: s.descendants ?? 0,
-      hnUrl: `https://news.ycombinator.com/item?id=${s.id}`,
+  // Map to HNStory
+  const stories: HNStory[] = allHits
+    .map((hit) => ({
+      id: Number(hit.objectID),
+      title: hit.title,
+      url: hit.url ?? `https://news.ycombinator.com/item?id=${hit.objectID}`,
+      score: hit.points ?? 0,
+      by: hit.author,
+      time: hit.created_at_i,
+      descendants: hit.num_comments ?? 0,
+      hnUrl: `https://news.ycombinator.com/item?id=${hit.objectID}`,
     }))
     .sort((a, b) => b.score - a.score);
 
   console.log(
-    `  [hn] fetched: ${allStories.length}, ai-related: ${filtered.length}, errors: ${errors.length}`,
+    `  [hn] queries: ${QUERIES.length}, fetched: ${allHits.length}, errors: ${errors.length}`,
   );
 
-  return { stories: filtered, totalFetched: allStories.length, errors };
+  return { stories, totalFetched: allHits.length, errors };
 }

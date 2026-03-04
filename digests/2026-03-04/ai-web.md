@@ -1,10 +1,10 @@
 # AI 官方内容追踪报告 2026-03-04
 
-> 今日更新 | 新增内容: 44 篇 | 生成时间: 2026-03-04 02:22 UTC
+> 今日更新 | 新增内容: 54 篇 | 生成时间: 2026-03-04 07:07 UTC
 
 数据来源:
-- Anthropic: [anthropic.com](https://www.anthropic.com) — 新增 0 篇（sitemap 共 312 条）
-- OpenAI: [openai.com](https://openai.com) — 新增 44 篇（sitemap 共 733 条）
+- Anthropic: [anthropic.com](https://www.anthropic.com) — 新增 3 篇（sitemap 共 312 条）
+- OpenAI: [openai.com](https://openai.com) — 新增 51 篇（sitemap 共 733 条）
 
 ---
 
@@ -14,219 +14,151 @@
 
 ## 1. 今日速览
 
-今日AI领域呈现**OpenAI单方面密集发布**的格局。OpenAI今日集中推出了**GPT-5.3系列**（含Codex、Spark、Instant变体）以及全新**Codex App**，同时在青少年安全与隐私保护领域发布了系统性解决方案“Teen Safety Blueprint”，展现了模型能力迭代与安全治理双轨并进的战略意图。Anthropic今日暂无新增内容披露。整体来看，OpenAI正在加速从基础模型向应用生态的纵深布局，同时通过青少年安全议题抢占舆论主导权。
+今日两家公司呈现显著的差异化战略动向。**Anthropic** 聚焦于模型可解释性研究发布和 Claude Code 工具链升级，继续深耕安全可信的 AI 基础设施。**OpenAI** 则迎来产品爆发期，一日内发布 51 篇新内容，集中于 GPT-5.3 系列（Codex、Codex Spark、Instant 三变体）、Codex App、Teen Safety Blueprint 等多条产品线，并伴随 Amazon Bedrock 集成和 Microsoft/A Amazon 合作深化，呈现全面产品化的进攻态势。
 
 ---
 
 ## 2. Anthropic / Claude 内容精选
 
-### 概览
+### Research（研究）
 
-今日 Anthropic 官网**暂无新增内容**（增量更新为 0 篇）。这一情况可能源于以下几种原因：内容发布周期性调整、战略静默期、或存在未被抓取的深层页面。考虑到 Anthropic 近期在 Claude 4 系列发布后的持续迭代节奏，建议持续关注后续动态。
+**Mapping the Mind of a Large Language Model**
+- 发布/更新：2026-03-02（原文 2024-05-21）
+- 链接：https://www.anthropic.com/research/mapping-mind-language-model
+- 内容摘要：Anthropic 首次公开展示了 Claude Sonnet 内部工作机制，识别了模型中数百万概念的表示方式。这是首个对生产级大语言模型进行的高精度“脑成像”。研究的核心突破在于发现**概念表示的分布式特性**——每个概念横跨多个神经元，每个神经元参与多个概念，这使得传统神经元级别的分析方法失效。Anthropic 采用了新的特征提取方法，成功将神经元激活模式映射到可理解的概念标签。
+- 战略意义：此举将 AI 可解释性从学术研究推向工程实践，为模型安全审计提供了新范式。若未来可实现对模型决策的实时解释，将从根本上改变 AI 安全的范式——从“事后审查”转向“事中监控”。
 
-| 分类 | 今日新增 | 关键动态 |
-|------|----------|----------|
-| News | 0 | 无 |
-| Research | 0 | 无 |
-| Engineering | 0 | 无 |
-| Product | 0 | 无 |
+---
+
+### News（产品发布）
+
+**Claude Opus 4.6**
+- 发布/更新：2026-03-02（原文 2026-02-05）
+- 链接：https://www.anthropic.com/news/claude-opus-4-6
+- 内容摘要：Anthropic 发布了 Opus 4.6，官方称之为“迄今为止最聪明的模型”。核心升级包括：编码能力提升（更精细的规划、更长的 agentic 任务续航、更强的大代码库处理能力）、代码审查与自调试能力、**1M token 上下文窗口（beta）**。性能方面，在 Terminal-Bench 2.0、Humanity's Last Exam、GDPval-AA（经济价值知识工作测试）、BrowseComp 等多项评测中取得领先，尤其在 GDPval-AA 中超越 GPT-5.2 约 144 Elo points。
+- 战略意义：1M token 上下文窗口的引入标志 Anthropic 在长上下文处理上的技术领先，结合其 Agent 能力的增强，直接对标 OpenAI 的 Codex 和 Agent 产品线。值得注意的是，Opus 4.6 强调“自主运营”（autonomous operation）能力，表明 Anthropic 正在从“对话模型”向“自主 agent”转型。
+
+**Enabling Claude Code to work more autonomously**
+- 发布/更新：2026-03-02（原文 2025-09-29）
+- 链接：https://www.anthropic.com/news/enabling-claude-code-to-work-more-autonomously
+- 内容摘要：Claude Code 迎来重大升级，包括：原生 VS Code 插件（beta）——提供实时 diff 展示的侧边栏面板；终端界面 2.0——增强状态可见性和可搜索提示历史（Ctrl+r）；Claude Agent SDK（由原 Claude Code SDK 改版）——支持子代理（subagents）和钩子（hooks）定制。案例显示开发者已使用 SDK 构建金融合规 agent、网络安全 agent 和代码调试 agent。
+- 战略意义：这是 Anthropic 首次明确将 Claude Code 定位为“开发者构建自定义 agent 的平台”，而非单纯的 CLI 工具。结合 VS Code 深度集成，Anthropic 正在争夺开发者工具链的核心入口。SDK 开放的子代理和钩子机制，预示着其对 AI Agent 生态的系统性布局。
 
 ---
 
 ## 3. OpenAI 内容精选
 
-### 3.1 产品发布（Product Releases）
+### Product Releases（产品发布，2026-03-04 集中发布）
 
-#### GPT-5.3 系列多版本发布
+| 产品名称 | 链接 | 备注 |
+|---------|------|------|
+| **Introducing The Codex App** | https://openai.com/index/introducing-the-codex-app/ | 2026-03-04 首发 |
+| **Introducing Gpt 5 3 Codex** | https://openai.com/index/introducing-gpt-5-3-codex/ | 三次重复出现，显示多版本或高优先级 |
+| **Introducing Gpt 5 3 Codex Spark** | https://openai.com/index/introducing-gpt-5-3-codex-spark/ | 三次重复出现 |
+| **Gpt 5 3 Instant** | https://openai.com/index/gpt-5-3-instant/ | 两次重复出现 |
+| **Gpt 5 3 Instant System Card** | https://openai.com/index/gpt-5-3-instant-system-card/ | 2026-03-03 |
+| **Chatgpt Study Mode** | https://openai.com/index/chatgpt-study-mode/ | 2026-03-04 |
+| **Optimizing Chatgpt** | https://openai.com/index/optimizing-chatgpt/ | 2026-03-04（两次） |
 
-| 项目 | 原文链接 |
-|------|----------|
-| Introducing GPT-5.3 Codex | https://openai.com/index/introducing-gpt-5-3-codex/ |
-| Introducing GPT-5.3 Codex Spark | https://openai.com/index/introducing-gpt-5-3-codex-spark/ |
-| GPT-5.3 Instant | https://openai.com/index/gpt-5-3-instant/ |
-| GPT-5.3 Instant System Card | https://openai.com/index/gpt-5-3-instant-system-card/ |
+> 注：上述条目因原文内容“无法提取文本内容”，基于标题和发布节奏推断。GPT-5.3 系列的密集发布（Codex、Codex Spark、Instant 三变体）表明 OpenAI 正在执行“模型系列化”战略，针对不同使用场景（深度编程、轻量即时、知识工作）提供差异化版本。
 
-**分析**：OpenAI 今日发布了 GPT-5.3 系列的多个变体版本，表明其正在执行**差异化产品矩阵策略**。Codex 版本延续了其在代码生成领域的技术优势，Spark 版本可能面向轻量化或边缘计算场景，Instant 版本则强调低延迟响应。从 System Card 的同步发布来看，OpenAI 正在强化**透明度和安全文档**的发布节奏，以应对日益严格的监管要求。
+### Safety & Policy（安全与政策）
 
-#### 引入 Codex App
+**Teen Safety 系列（2026-03-04 集中发布）**
 
-| 项目 | 原文链接 |
-|------|----------|
-| Introducing The Codex App | https://openai.com/index/introducing-the-codex-app/ |
+- Introducing The Teen Safety Blueprint：https://openai.com/index/introducing-the-teen-safety-blueprint/
+- Teen Safety Freedom And Privacy：https://openai.com/index/teen-safety-freedom-and-privacy/
+- Our Approach To Age Prediction：https://openai.com/index/our-approach-to-age-prediction/
+- Updating Model Spec With Teen Protections：https://openai.com/index/updating-model-spec-with-teen-protections/
+- Ai Literacy Resources For Teens And Parents：https://openai.com/index/ai-literacy-resources-for-teens-and-parents/
 
-**分析**：Codex App 的推出标志着 OpenAI 正在将代码助手能力从 API 层面向终端应用延伸。这与此前发布的 "Unlocking The Codex Harness" 和 "Unrolling The Codex Agent Loop" 形成呼应，表明 **Codex 已从单一模型演化为完整的开发者工具生态**。
+> 解读：OpenAI 今日发布至少 5 篇与青少年安全直接相关的内容，构成一个完整的 Teen Safety 产品包（Blueprint + Privacy + Age Prediction + Model Spec + Resources）。结合 2026-03-03 的 "Update On Mental Health Related Work"，OpenAI 正在构建系统性的青少年保护机制，可能回应全球监管压力（如 EU AI Act 对未成年人的特殊要求）。
 
-#### ChatGPT 功能更新
+**Synthetic Voices（2026-03-04）**
+- Navigating The Challenges And Opportunities Of Synthetic Voices：https://openai.com/index/navigating-the-challenges-and-opportunities-of-synthetic-voices/
 
-| 项目 | 原文链接 |
-|------|----------|
-| ChatGPT Study Mode | https://openai.com/index/chatgpt-study-mode/ |
-| Optimizing ChatGPT | https://openai.com/index/optimizing-chatgpt/ |
-| Building More Helpful ChatGPT Experiences For Everyone | https://openai.com/index/building-more-helpful-chatgpt-experiences-for-everyone/ |
-| Helping People When They Need It Most | https://openai.com/index/helping-people-when-they-need-it-most/ |
+> 解读：标题显示 OpenAI 正在关注合成语音的挑战与机遇，结合近期语音模型的发展，可能涉及语音合成安全（如深度伪造防范）或新产品线的前瞻性布局。
 
-**分析**：OpenAI 今日集中发布了多项 ChatGPT 体验优化内容。"Study Mode" 的出现表明 OpenAI 正在**教育场景**深度布局，将其定位为学习辅助工具而非单纯的对话机器人。"Optimizing ChatGPT" 和 "Building More Helpful ChatGPT Experiences" 则体现了产品迭代的用户导向思维。
+### Partnerships & Ecosystem（合作与生态）
 
----
+| 主题 | 链接 | 日期 |
+|------|------|------|
+| Amazon Partnership | https://openai.com/index/amazon-partnership/ | 2026-03-02 |
+| Introducing The Stateful Runtime Environment For Agents In Amazon Bedrock | https://openai.com/index/introducing-the-stateful-runtime-environment-for-agents-in-amazon-bedrock/ | 2026-03-02 |
+| Continuing Microsoft Partnership | https://openai.com/index/continuing-microsoft-partnership/ | 2026-03-02 |
+| Scaling Ai For Everyone | https://openai.com/index/scaling-ai-for-eeveryone/ | 2026-03-02 |
 
-### 3.2 安全与治理（Safety & Alignment）
+> 解读：Amazon Partnership 与 Amazon Bedrock 的 Stateful Runtime Environment 同步发布，暗示 OpenAI 已深度集成至 AWS 生态。2026-03-02 与 Microsoft 合作的续签公告，加上 2026-03-04 的 "Put Ai To Work Lessons From Hundreds Of Successful Deployments"（企业部署案例），表明 OpenAI 正在 B2B 市场加速渗透。
 
-#### 青少年安全系统性解决方案
+### Engineering & Technical（工程与技术）
 
-| 项目 | 原文链接 |
-|------|----------|
-| Introducing The Teen Safety Blueprint | https://openai.com/index/introducing-the-teen-safety-blueprint/ |
-| Teen Safety Freedom And Privacy | https://openai.com/index/teen-safety-freedom-and-privacy/ |
-| Our Approach To Age Prediction | https://openai.com/index/our-approach-to-age-prediction/ |
-| Updating Model Spec With Teen Protections | https://openai.com/index/updating-model-spec-with-teen-protections/ |
-| AI Literacy Resources For Teens And Parents | https://openai.com/index/ai-literacy-resources-for-teens-and-parents/ |
+| 主题 | 链接 | 日期 |
+|------|------|------|
+| Harness Engineering | https://openai.com/index/harness-engineering/ | 2026-03-03 |
+| Unlocking The Codex Harness | https://openai.com/index/unlocking-the-codex-harness/ | 2026-03-03 |
+| Unrolling The Codex Agent Loop | https://openai.com/index/unrolling-the-codex-agent-loop/ | 2026-03-03 |
 
-**分析**：今日 OpenAI 发布了**至少 5 篇**与青少年安全直接相关的内容，形成了高密度的议题矩阵。"Teen Safety Blueprint"（青少年安全蓝图）的命名暗示这是**系统性的战略级产品**，而非单一功能补丁。关键信号包括：
+> 解读："Harness"（ harness 有“工具、控制系”之意）一词连续出现三次，且与 Codex 直接关联。推测 OpenAI 正在发布 Codex 的底层工程框架或 API 能力，可能是面向开发者的“Agent Harness”工具包。
 
-- **Age Prediction（年龄预测）**： OpenAI 正在开发未成年人识别技术，这与其内容分级策略直接相关
-- **Model Spec 更新**： 将青少年保护纳入模型规范，意味着底层能力的范式级调整
-- **AI Literacy（AI素养）**： 从技术治理延伸至教育普及，体现**企业社会责任（CSR）**层面的战略布局
+### Company & People（公司与人事）
 
-#### 心理健康相关工作
+- Our Agreement With The Department Of War：https://openai.com/index/our-agreement-with-the-department-of-war/（2026-03-03）
+- Arvind Kc Chief People Officer：https://openai.com/index/arvind-kc-chief-people-officer/（2026-03-02）
+- Inside Our In House Data Agent：https://openai.com/index/inside-our-in-house-data-agent/（2026-03-02）
 
-| 项目 | 原文链接 |
-|------|----------|
-| Update On Mental Health Related Work | https://openai.com/index/update-on-mental-health-related-work/ |
-
-**分析**：继青少年安全议题后，心理健康成为 OpenAI 安全治理的**第二增长曲线**。这与行业普遍关注的 AI 心理健康风险（如诱导性内容、自残风险）高度相关，表明 OpenAI 正在构建**预防性安全体系**。
-
-#### 合成语音治理
-
-| 项目 | 原文链接 |
-|------|----------|
-| Navigating The Challenges And Opportunities Of Synthetic Voices | https://openai.com/index/navigating-the-challenges-and-opportunities-of-synthetic-voices/ |
-
-**分析**：合成语音技术（语音克隆、深度伪造）是当前 AI 治理的热点领域。OpenAI 此文的发布时机与 GPT-5.3 系列的语音能力迭代高度关联，暗示其可能在语音交互方面有新的产品布局，同时提前进行**风险治理话语权**的争夺。
-
----
-
-### 3.3 工程与研究（Engineering & Research）
-
-#### Codex 技术栈深度解析
-
-| 项目 | 原文链接 |
-|------|----------|
-| Harness Engineering | https://openai.com/index/harness-engineering/ |
-| Unlocking The Codex Harness | https://openai.com/index/unlocking-the-codex-harness/ |
-| Unrolling The Codex Agent Loop | https://openai.com/index/unrolling-the-codex-agent-loop/ |
-
-**分析**：连续三篇工程类内容聚焦 Codex 的底层架构，表明 OpenAI 正在**技术布道**——向开发者社区展示 Codex 的内部机制，以吸引更多生态参与者。"Harness"（治理/控制系统）和 "Agent Loop"（智能体循环）是当前 AI 工程领域的核心概念，OpenAI 通过内容输出正在**定义技术话语权**。
-
-#### 能力演进研究
-
-| 项目 | 原文链接 |
-|------|----------|
-| Building Towards Age Prediction | https://openai.com/index/building-towards-age-prediction/ |
-
-**分析**：这篇技术内容与前述青少年安全议题形成“研究-产品”的完整链路，表明 OpenAI 正在将**年龄预测**作为一项独立的技术能力进行研发，而非仅作为安全功能的附属。
-
----
-
-### 3.4 企业与商业（Business & Company）
-
-#### 企业部署实践
-
-| 项目 | 原文链接 |
-|------|----------|
-| Put AI To Work Lessons From Hundreds Of Successful Deployments | https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/ |
-
-**分析**：此内容的发布（3月3日，虽非今日但仍在增量列表中）表明 OpenAI 正在强化**B2B 市场的叙事能力**。"Hundreds of Successful Deployments" 的数据支撑旨在消解企业用户的采纳焦虑，与 GPT-5.3 系列的企业级能力形成呼应。
+> 解读："Department Of War" 引发关注——这是美国国防部的前称（1947 年前），现指美国防部。此协议可能涉及军事 AI 应用，引发 AI 安全社区讨论。"Inside Our In House Data Agent" 表明 OpenAI 内部已部署自研数据处理 agent，或为内部运营效率提升的案例输出。
 
 ---
 
 ## 4. 战略信号解读
 
-### 4.1 技术优先级分析
+### 技术优先级对比
 
-| 维度 | OpenAI 动向 | 解读 |
-|------|-------------|------|
-| **模型能力** | GPT-5.3 多版本迭代（Codex/Spark/Instant） | 从单一模型向**产品矩阵**演进，满足不同场景需求 |
-| **安全治理** | Teen Safety Blueprint + Age Prediction + Mental Health | 安全从**被动合规**转向**主动产品化**，构建差异化壁垒 |
-| **产品化** | Codex App + Study Mode | 从 API 能力向**终端应用**延伸，抢占用户入口 |
-| **生态建设** | 工程文档密集发布（Harness/Agent Loop） | **技术布道**策略，吸引开发者共建生态 |
+| 维度 | Anthropic | OpenAI |
+|------|-----------|--------|
+| **模型能力** | 长上下文（1M token）+ Agent 自主性 + 编码深度 | GPT-5.3 系列化（Codex/Spark/Instant）+ 评测领先 |
+| **安全范式** | 可解释性研究（“打开黑盒”）→ 预防性安全 | Teen Safety Blueprint + 青少年专项保护 + 合成语音伦理 |
+| **产品化** | Claude Code 工具链 + SDK 生态 | Codex App + ChatGPT Study Mode + 企业部署案例 |
+| **生态** | 开发者工具（VS Code 插件） | AWS（Bedrock）+ Microsoft 双轨并行 |
 
-### 4.2 竞争态势评估
+### 竞争态势分析
 
-**OpenAI 的战略意图**：
-- **模型层**：通过 GPT-5.3 系列巩固基础能力领先优势，同时用 Codex 系列强化垂直领域（代码）的护城河
-- **应用层**：Codex App 和 Study Mode 表明其正在**从工具向平台**转型，意图占领开发者生态和用户生活场景
-- **话语权层**：青少年安全Blueprint的发布，是其在**AI治理议题**上抢占定义权的关键动作
+1. **Agent 赛道升温**：Anthropic 的 Claude Code 升级（自主运营、SDK 子代理）与 OpenAI 的 Codex 系列（App + Harness）形成直接竞争。两者均强调“长任务续航”“代码库理解”“多代理协作”，标志着 Agent 已从概念验证进入产品化阶段。
 
-**Anthropic 的应对空间**：
-- 今日未发布内容可能为战略性静默，或在准备更大动作
-- 考虑到 Anthropic 近期在 Claude 4 上的持续投入，其可能在**安全治理**（ Constitutional AI 等）方向发起对OpenAI的正面竞争
+2. **可解释性 vs 安全性的话语权争夺**：Anthropic 以“打开模型黑盒”为差异化路线，试图在 AI 安全领域建立“理解即安全”的话语权。OpenAI 则以 Teen Safety Blueprint 等合规性产品回应监管诉求。两者路径不同，但目标一致——构建下一代 AI 安全的行业标准。
 
-### 4.3 对开发者和企业用户的影响
+3. **上下文窗口成为关键战场**：Anthropic 率先将 1M token 推入 beta，OpenAI 则通过 GPT-5.3 Instant（可能面向低延迟场景）进行差异化。上下文窗口的竞争已从“长度”转向“工程化应用”（如长代码库理解、长文档分析）。
 
-**开发者**：
-- Codex 生态的持续完善（App + Harness + Agent Loop）意味着更友好的开发环境和更强的集成能力
-- 多版本策略（Instant/Spark）为轻量化部署提供了更多选择
+4. **企业级市场的双轨竞争**：OpenAI 借 AWS 和 Microsoft 合作快速渗透 B2B，Anthropic 通过 Claude Code SDK 吸引开发者自建 agent 解决方案。前者依托云厂商渠道，后者依赖开发者生态，路径截然不同。
 
-**企业用户**：
-- Teen Safety Blueprint 的发布预示着 OpenAI 将青少年相关场景纳入企业级解决方案
-- System Card 的同步披露表明其对企业合规需求的响应速度提升
+### 开发者与企业用户影响
+
+- **开发者**：Anthropic 的 Claude Agent SDK 和 OpenAI 的 Codex Harness 正在提供底层工具链，开发者构建自定义 agent 的门槛显著降低。但两家 API 定价和使用限制将成为生态健康度的关键。
+- **企业用户**：OpenAI 的 "Put AI to Work" 案例库和 Amazon Bedrock 集成降低了企业部署门槛；Anthropic 的 1M token 和代码库理解能力对需要处理大型代码库的企业具有吸引力。
+- **监管敏感领域**：Teen Safety 系列的密集发布预示全球监管合规将成为产品发布的必备要素，后续可能扩展至其他受保护群体（如残障人士、弱势群体）。
 
 ---
 
 ## 5. 值得关注的细节
 
-### 5.1 新兴话题信号
+### 新兴词汇与话题
 
-| 话题 | 首次出现信号 | 潜在含义 |
-|------|--------------|----------|
-| **Teen Safety Blueprint** | 命名中包含 "Blueprint"（蓝图），暗示系统性、战略性 | 青少年安全将成为 OpenAI 长期战略方向 |
-| **Age Prediction** | 作为独立能力被专项研究 | 可能应用于内容分级、用户验证等场景 |
-| **Study Mode** | 首次将 ChatGPT 定位为“学习模式” | 教育市场战略级布局的起点 |
-| **Synthetic Voices** | 专门讨论挑战与机遇 | 语音交互领域的监管压力倒逼内容输出 |
+1. **"Harness"**：OpenAI 连续三天发布以"Harness"为核心的产品（Harness Engineering、Unlocking The Codex Harness、Unrolling The Codex Agent Loop），暗示其正在将 Codex 定位为“可控的 Agent 框架”，可能面向企业级自动化场景。
 
-### 5.2 密集发布议题
+2. **"Codex Spark"**：GPT-5.3 系列中出现"Spark"变体，可能是面向轻量/快速推理场景的子品牌，与"Anthropic 的 Sonnet"产品线命名逻辑类似（Pro/Instant 级别）。
 
-- **青少年安全相关**：今日至少 5 篇，直接相关 3 篇，议题覆盖政策、技术、教育三个层面——这是**高优先级战略发布**的典型模式
-- **Codex 系列**：3 篇工程内容 + 3 篇产品内容，覆盖从底层架构到终端应用的全栈——**生态扩张**信号明确
+3. **"Stateful Runtime Environment"**：Amazon Bedrock 的有状态运行时环境，表明 AI Agent 正在从“无状态的问答”向“有状态的持续任务执行”演进。
 
-### 5.3 政策与合规动向
+### 密集发布主题
 
-- "Updating Model Spec With Teen Protections" 表明 OpenAI 正在将**青少年保护嵌入模型底层规范**，这可能成为行业基准
-- "AI Literacy Resources For Teens And Parents" 体现了**上游教育渗透**策略，通过培养用户认知降低长期合规风险
+- **Teen Safety**：单日 5 篇相关发布，构成完整的产品包（Blueprint → Privacy → Age Prediction → Model Spec → Resources），可能预示 OpenAI 将在近期推出面向教育市场的专项功能。
+- **GPT-5.3 系列**：Codex、Codex Spark、Instant 三变体 + System Card + 多次重复发布，显示该系列是 2026 Q1 的核心产品线。
 
----
+### 政策与合规信号
 
-## 6. 附录：今日发布清单（按时间排序）
-
-> 注：以下为 OpenAI 今日新增内容的完整列表（按发布时间降序）
-
-| 序号 | 标题 | 分类 | 发布日期 |
-|------|------|------|----------|
-| 1 | Introducing GPT-5.3 Codex | index | 2026-03-04 |
-| 2 | Introducing GPT-5.3 Codex Spark | index | 2026-03-04 |
-| 3 | Introducing The Codex App | index | 2026-03-04 |
-| 4 | GPT-5.3 Instant | index | 2026-03-04 |
-| 5 | Introducing The Teen Safety Blueprint | index | 2026-03-04 |
-| 6 | Teen Safety Freedom And Privacy | index | 2026-03-04 |
-| 7 | Our Approach To Age Prediction | index | 2026-03-04 |
-| 8 | Updating Model Spec With Teen Protections | index | 2026-03-04 |
-| 9 | AI Literacy Resources For Teens And Parents | index | 2026-03-04 |
-| 10 | Update On Mental Health Related Work | index | 2026-03-04 |
-| 11 | ChatGPT Study Mode | index | 2026-03-04 |
-| 12 | Optimizing ChatGPT | index | 2026-03-04 |
-| 13 | Building More Helpful ChatGPT Experiences For Everyone | index | 2026-03-04 |
-| 14 | Helping People When They Need It Most | index | 2026-03-04 |
-| 15 | Building Towards Age Prediction | index | 2026-03-04 |
-| 16 | Unlocking The Codex Harness | index | 2026-03-03 |
-| 17 | Unrolling The Codex Agent Loop | index | 2026-03-03 |
-| 18 | GPT-5.3 Instant System Card | index | 2026-03-03 |
-| 19 | Harness Engineering | index | 2026-03-03 |
-| 20 | Navigating The Challenges And Opportunities Of Synthetic Voices | index | 2026-03-03 |
-| 21 | Put AI To Work Lessons From Hundreds Of Successful Deployments | business | 2026-03-03 |
+- **"Department Of War"**：OpenAI 与美国国防部的协议（2026-03-03）虽然在名称上可能存在误导（更可能指 DARPA 或其他防务研究机构），但结合 AI 在国防领域的应用趋势，OpenAI 正在国防/安全领域拓展合作。
+- **"Age Prediction"**：OpenAI 今日发布 2 篇与年龄预测直接相关的内容（Building Towards Age Prediction、Our Approach To Age Prediction），可能为青少年保护提供技术底层（用户年龄验证），也可能是更广泛的 AI 身份识别能力的一部分。
 
 ---
 
-*本报告基于 2026-03-04 的官网抓取数据生成，内容解读仅代表分析者观点。*
-
----
-*本日报由 [agents-radar](https://github.com/rollysys/agents-radar) 自动生成。*
+*报告生成时间：2026-03-04 | 数据来源：Anthropic (claude.com/anthropic.com) & OpenAI (openai.com) 官网增量更新*

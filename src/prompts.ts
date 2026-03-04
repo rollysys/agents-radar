@@ -9,12 +9,14 @@ import type { BlueskyFetchResult } from "./bluesky.ts";
 import type { HNFetchResult } from "./hackernews.ts";
 import type { RedditFetchResult } from "./reddit.ts";
 import type { LobstersFetchResult } from "./lobsters.ts";
+import type { RSSFetchResult } from "./rss.ts";
 
 export interface SocialData {
   bluesky: BlueskyFetchResult;
   hn: HNFetchResult;
   reddit: RedditFetchResult;
   lobsters: LobstersFetchResult;
+  rss: RSSFetchResult;
 }
 
 // ---------------------------------------------------------------------------
@@ -414,19 +416,33 @@ export function buildSocialPrompt(data: SocialData, dateStr: string): string {
         .join("\n\n")
     : "（无数据）";
 
+  // --- RSS section ---
+  const rssTop = data.rss.articles.slice(0, 20);
+  const rssText = rssTop.length > 0
+    ? rssTop
+        .map(
+          (a, i) =>
+            `${i + 1}. [${a.source}] ${a.title}` +
+            `\n   发布: ${a.pubDate} | ${a.url}` +
+            (a.description ? `\n   ${a.description.replace(/\n/g, " ").slice(0, 200)}` : ""),
+        )
+        .join("\n\n")
+    : "（无数据）";
+
   // --- Stats ---
   const totalErrors = data.bluesky.errors.length + data.hn.errors.length +
-    data.reddit.errors.length + data.lobsters.errors.length;
+    data.reddit.errors.length + data.lobsters.errors.length + data.rss.errors.length;
 
-  return `你是一位专注于 AI 领域的社交媒体与社区动态分析师。以下是 ${dateStr} 从 4 个平台获取的 AI 相关内容，请进行综合分析。
+  return `你是一位专注于 AI 与自动驾驶领域的社交媒体与社区动态分析师。以下是 ${dateStr} 从 5 个平台获取的 AI 及自动驾驶相关内容，请进行综合分析。
 
 ## 数据概览
 | 平台 | 内容量 | 说明 |
 |------|--------|------|
 | Bluesky | ${data.bluesky.posts.length} 条 | AI 意见领袖追踪 + 关键词搜索 |
-| Hacker News | ${data.hn.stories.length} 条 | AI 相关热门/精选故事 |
-| Reddit | ${data.reddit.posts.length} 条 | r/MachineLearning, r/LocalLLaMA 等 6 个子版 |
+| Hacker News | ${data.hn.stories.length} 条 | AI + 自动驾驶相关热门故事 |
+| Reddit | ${data.reddit.posts.length} 条 | AI 子版 + 自动驾驶子版 (r/SelfDrivingCars, r/waymo 等) |
 | Lobste.rs | ${data.lobsters.stories.length} 条 | 技术社区 AI/ML 相关 |
+| RSS | ${data.rss.articles.length} 条 | 自动驾驶专业媒体 (Electrek, Teslarati, TechCrunch) |
 ${totalErrors > 0 ? `| 抓取异常 | ${totalErrors} 个 | 部分源可能缺失 |\n` : ""}
 
 ---
@@ -455,9 +471,15 @@ ${lobsText}
 
 ---
 
-请生成一份结构清晰的《AI 社交媒体与社区日报》，包含以下部分：
+## RSS — 自动驾驶专业媒体（展示前 ${rssTop.length} 条）
 
-1. **今日速览** — 3~5 句话概括今日 AI 社区最值得关注的讨论和动向，跨平台综合判断
+${rssText}
+
+---
+
+请生成一份结构清晰的《AI 与自动驾驶社交媒体与社区日报》，包含以下部分：
+
+1. **今日速览** — 3~5 句话概括今日 AI 及自动驾驶社区最值得关注的讨论和动向，跨平台综合判断
 
 2. **全平台热门 Top 15** — 从所有平台中挑选互动量/关注度最高的 15 个内容，每条包含：
    - 来源平台 + 作者 + 互动数据
@@ -469,16 +491,24 @@ ${lobsText}
    - 🧠 模型/研究进展（新论文、基准测试、能力突破）
    - 🔧 工具/框架/开发（新项目、版本更新、开发者工具）
    - 🤖 AI 智能体/应用（Agent 框架、实际应用案例）
+   - 🚗 自动驾驶/智能出行（FSD、Waymo、Robotaxi、ADAS、V2X）
    - 💼 行业/商业/政策（融资、监管、市场动态）
    - 🎓 教程/教育/观点（博客、课程、深度思考）
 
 4. **Bluesky 意见领袖观点** — 追踪名单中的大咖今日说了什么，逐人整理核心观点
 
-5. **Reddit 社区热议** — r/LocalLLaMA 和 r/MachineLearning 中最活跃的讨论话题，社区情绪如何
+5. **Reddit 社区热议** — r/LocalLLaMA 和 r/MachineLearning 中最活跃的 AI 讨论 + r/SelfDrivingCars 和 r/waymo 中最活跃的自动驾驶讨论，社区情绪如何
 
-6. **高价值链接** — 各平台帖子中提及的论文、GitHub 项目、博客等外部链接，附简要说明
+6. **自动驾驶专题** — 综合 RSS 专业媒体、Reddit 自动驾驶子版、HN 和 Bluesky 中的自动驾驶内容：
+   - Tesla FSD / Autopilot 最新进展
+   - Waymo / Robotaxi 运营与技术动态
+   - 其他玩家（Cruise、Zoox、Apollo 等）动态
+   - 政策监管与安全事件
+   - 技术突破与行业趋势
 
-7. **趋势信号** — 300~400 字分析：综合 4 个平台数据，提炼技术话题演变、社区情绪、行业风向
+7. **高价值链接** — 各平台帖子中提及的论文、GitHub 项目、博客等外部链接，附简要说明
+
+8. **趋势信号** — 300~400 字分析：综合 5 个平台数据，提炼 AI 和自动驾驶领域的技术话题演变、社区情绪、行业风向
 
 语言要求：中文，专业简洁，每个条目附上原始链接（标注来源平台）。
 `;

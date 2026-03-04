@@ -42,6 +42,9 @@ const SUBREDDITS = [
   "ChatGPT",
   "ClaudeAI",
   "singularity",
+  "SelfDrivingCars",
+  "waymo",
+  "TeslaAutoPilot",
 ];
 
 const FETCH_TIMEOUT_MS = 10_000;

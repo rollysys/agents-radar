@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-03-04T02:22:22.531Z",
+    "lastChecked": "2026-03-04T07:07:53.618Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -317,7 +317,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-03-04T02:22:24.254Z",
+    "lastChecked": "2026-03-04T07:07:52.463Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-03-02T17:23:11.873Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-02-27T18:40:49.471Z",
@@ -518,10 +518,10 @@
       "https://openai.com/index/ai-agent-link-safety/": "2026-02-15T00:58:58.281Z",
       "https://openai.com/index/trusted-access-for-cyber/": "2026-02-15T00:58:41.304Z",
       "https://openai.com/index/accelerating-biological-research-in-the-wet-lab/": "2026-02-13T19:48:55.879Z",
-      "https://openai.com/index/introducing-gpt-5-3-codex-spark/": "2026-03-04T02:08:27.515Z",
+      "https://openai.com/index/introducing-gpt-5-3-codex-spark/": "2026-03-04T05:50:52.753Z",
       "https://openai.com/index/developers-can-now-submit-apps-to-chatgpt/": "2026-02-12T18:08:27.690Z",
       "https://openai.com/index/testing-ads-in-chatgpt/": "2026-02-12T18:08:23.777Z",
-      "https://openai.com/index/introducing-gpt-5-3-codex/": "2026-03-04T02:08:43.604Z",
+      "https://openai.com/index/introducing-gpt-5-3-codex/": "2026-03-04T05:51:07.856Z",
       "https://openai.com/index/our-approach-to-advertising-and-expanding-access/": "2026-02-12T11:43:31.025Z",
       "https://openai.com/index/introducing-chatgpt-health/": "2026-02-11T19:31:50.807Z",
       "https://openai.com/index/introducing-our-next-generation-audio-models/": "2026-02-11T08:25:49.709Z",
@@ -530,7 +530,7 @@
       "https://openai.com/index/gpt-4o-system-card/": "2026-02-11T00:07:43.642Z",
       "https://openai.com/index/gpt-4-research/": "2026-02-10T23:29:51.616Z",
       "https://openai.com/index/memory-and-new-controls-for-chatgpt/": "2026-02-10T23:29:50.219Z",
-      "https://openai.com/index/introducing-the-codex-app/": "2026-03-04T02:08:10.791Z",
+      "https://openai.com/index/introducing-the-codex-app/": "2026-03-04T06:43:52.035Z",
       "https://openai.com/index/chatgpt-for-teachers/": "2026-02-10T19:19:36.141Z",
       "https://openai.com/index/chatgpt-plus/": "2026-02-10T19:04:55.448Z",
       "https://openai.com/index/whisper/": "2026-02-10T17:47:44.565Z",
@@ -663,7 +663,7 @@
       "https://openai.com/index/openai-licenses-gpt-3-technology-to-microsoft/": "2026-02-09T22:12:10.916Z",
       "https://openai.com/index/ai-safety-needs-social-scientists/": "2026-02-09T22:11:16.519Z",
       "https://openai.com/index/introducing-activation-atlases/": "2026-02-09T22:10:11.938Z",
-      "https://openai.com/index/navigating-the-challenges-and-opportunities-of-synthetic-voices/": "2026-03-03T19:39:28.748Z",
+      "https://openai.com/index/navigating-the-challenges-and-opportunities-of-synthetic-voices/": "2026-03-04T06:40:11.515Z",
       "https://openai.com/index/a-holistic-approach-to-undesired-content-detection-in-the-real-world/": "2026-02-09T22:07:03.510Z",
       "https://openai.com/index/introducing-openai-frontier/": "2026-02-09T21:24:21.959Z",
       "https://openai.com/index/gpt-5-2-codex-system-card/": "2026-02-27T19:20:06.658Z",
@@ -827,7 +827,7 @@
       "https://openai.com/business/put-ai-to-work-automate-and-scale-financial-operations/": "2025-12-26T18:50:32.418Z",
       "https://openai.com/business/enabling-a-data-driven-workforce-webinar/": "2025-12-26T18:48:40.812Z",
       "https://openai.com/business/fine-tuning-gpt-4o-webinar/": "2025-12-26T18:48:40.270Z",
-      "https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/": "2026-03-03T23:14:14.176Z",
+      "https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/": "2026-03-04T04:44:23.576Z",
       "https://openai.com/index/updating-our-preparedness-framework/": "2025-12-19T13:22:25.962Z",
       "https://openai.com/index/gpt-4-5-system-card/": "2025-12-19T13:22:24.869Z",
       "https://openai.com/index/gpt-4o-image-generation-system-card-addendum/": "2025-12-19T13:22:24.100Z",

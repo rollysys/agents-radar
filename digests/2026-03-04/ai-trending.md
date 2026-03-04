@@ -1,6 +1,6 @@
 # AI 开源趋势日报 2026-03-04
 
-> 数据来源: GitHub Trending + GitHub Search API | 生成时间: 2026-03-04 02:22 UTC
+> 数据来源: GitHub Trending + GitHub Search API | 生成时间: 2026-03-04 07:07 UTC
 
 ---
 
@@ -8,26 +8,23 @@
 
 ---
 
-## 第一步：AI 相关性筛选结果
+## 今日速览
 
-**Trending 榜单筛选**：9/10 项为 AI 相关项目，仅 `aquasecurity/trivy`（通用安全扫描工具）被排除。
-
-**主题搜索筛选**：79 项均为 AI 相关项目，保留全部。
+今日 GitHub 呈现三大核心趋势：**AI Agent 基础设施全面爆发**，Sandbox 环境、Memory 管理、Agent 开发框架等工具链多点开花；**推理优化**成为新晋热点，KV Cache 层、LLM 推理引擎获得大量关注；**Companion/角色 AI** 赛道兴起，多个项目尝试打造可交互的 AI 角色。此外，安全工具 Trivy 虽今日新增 164 stars，但属于通用安全范畴，已从 AI 榜单中剔除。
 
 ---
 
-## 第二步：分类汇总
+## 各维度热门项目
 
 ### 🔧 AI 基础工具
 
 | 项目 | Stars | 说明 |
 |------|-------|------|
-| [alibaba/OpenSandbox](https://github.com/alibaba/OpenSandbox) | ⭐5,439 (+1,150) | 通用沙箱平台，支持 Coding Agent、GUI Agent、RL 训练等多场景推理执行，今日涨幅最高 |
-| [LMCache/LMCache](https://github.com/LMCache/LMCache) | ⭐0 (+135) | 专为 LLM 设计的极速 KV Cache 层，解决推理显存瓶颈 |
-| [agentscope-ai/agentscope](https://github.com/agentscope-ai/agentscope) | ⭐0 (+112) | 可视化构建与运行可信 Agent 的开发框架 |
-| [hiyouga/LlamaFactory](https://github.com/hiyouga/LlamaFactory) | ⭐67,831 | 统一高效微调 100+ LLM/VLM 工具，ACL 2024 收录 |
-| [vllm-project/vllm](https://github.com/vllm-project/vllm) | ⭐71,822 | 高吞吐、低显存占用的 LLM 推理服务引擎 |
-| [ollama/ollama](https://github.com/ollama/ollama) | ⭐163,972 | 本地运行大模型（Kimi、GLM、DeepSeek 等）的全家桶工具 |
+| [LMCache/LMCache](https://github.com/LMCache/LMCache) | ⭐0 (+135 today) | 最快 KV Cache 层，为 LLM 推理加速，今日新登榜的推理优化基础设施 |
+| [superset-sh/superset](https://github.com/superset-sh/superset) | ⭐0 (+632 today) | AI Agents 时代的 IDE，支持本地运行 Claude Code、Codex 等多种 Agent |
+| [agentscope-ai/agentscope](https://github.com/agentscope-ai/agentscope) | ⭐0 (+112 today) | 构建可可视化、可理解、可信任的 Agent 框架 |
+| [alibaba/OpenSandbox](⭐5,580 (+1,150 today) | 通用 AI 沙箱平台，支持 Coding Agent、GUI Agent、RL 训练等多场景，7 天内持续热榜 |
+| [vllm-project/vllm](https://github.com/vllm-project/vllm) | ⭐71,850 | 高吞吐、高内存效率的 LLM 推理服务引擎 |
 
 ---
 
@@ -35,14 +32,14 @@
 
 | 项目 | Stars | 说明 |
 |------|-------|------|
-| [moeru-ai/airi](https://github.com/moeru-ai/airi) | ⭐0 (+832) | 自托管 Grok Companion，支持实时语音聊天、Minecraft/Factorio 游戏 |
-| [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) | ⭐0 (+798) | 面向科研/工程/金融的即用型 Agent Skills 工具包 |
-| [superset-sh/superset](https://github.com/superset-sh/superset) | ⭐0 (+632) | AI Agent 时代的 IDE，支持本地运行 Claude Code、Codex 等多 Agent |
-| [trycua/cua](https://github.com/trycua/cua) | ⭐12,829 | 计算机使用 Agent 的开源基础设施，含沙箱、SDK、基准测试 |
-| [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) | ⭐29,149 | 前端 Agent 与生成式 UI 框架（React + Angular） |
-| [e2b-dev/E2B](https://github.com/e2b-dev/E2B) | ⭐11,106 | 企业级安全沙箱，为 Agent 提供真实工具调用能力 |
-| [agentscope-ai/ReMe](https://github.com/agentscope-ai/ReMe) | ⭐0 (+49) | Agent 记忆管理工具包，支持记忆持久化与增强 |
-| [zhayujie/chatgpt-on-wechat](https://github.com/zhayujie/chatgpt-on-wechat) | ⭐41,817 | 基于大模型的超级 AI 助理，支持多平台接入 |
+| [moeru-ai/airi](https://github.com/moeru-ai/airi) | ⭐0 (+832 today) | 自托管 Grok Companion，主打实时语音聊天、Minecraft/Factorio 游戏能力，目标对标 Neuro-sama |
+| [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) | ⭐0 (+593 today) | 全栈 AI Agency 方案，包含前端、Reddit 运营等多种专业化 Agent |
+| [K-Dense-AI/claude-scientific-skills](https://github.com/K-Dense-AI/claude-scientific-skills) | ⭐0 (+798 today) | 面向科研/工程/金融的即用型 Agent Skills 库 |
+| [CodebuffAI/codebuff](https://github.com/CodebuffAI/codebuff) | ⭐0 (+126 today) | 终端代码生成工具 |
+| [agentscope-ai/ReMe](https://github.com/agentscope-ai/ReMe) | ⭐0 (+49 today) | Agent 记忆管理套件，Remember Me, Refine Me |
+| [trycua/cua](https://github.com/trycua/cua) | ⭐12,831 | 开源计算机使用 Agent 基础设施，支持 macOS/Linux/Windows 全桌面控制 |
+| [e2b-dev/E2B](https://github.com/e2b-dev/E2B) | ⭐11,110 | 企业级安全 Agent 运行环境 |
+| [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) | ⭐29,154 | 前端 Agent 与生成式 UI 框架 |
 
 ---
 
@@ -50,12 +47,11 @@
 
 | 项目 | Stars | 说明 |
 |------|-------|------|
-| [ruvnet/RuView](https://github.com/ruvnet/RuView) | ⭐0 (+4,419) | WiFi DensePose：通过 WiFi 信号实现实时人体姿态估计、生命体征监测 |
-| [CodebuffAI/codebuff](https://github.com/CodebuffAI/codebuff) | ⭐0 (+126) | 终端代码生成工具，提升开发者编码效率 |
-| [waoowaooAI/waoowaoo](https://github.com/waoowaooAI/waoowaoo) | ⭐7,461 | 工业级 AI 影视生产平台，从短片到电影级工作流 |
-| [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | ⭐4,391 | 赋予 AI  Agent 互联网浏览与搜索能力（Twitter、Reddit、YouTube 等） |
-| [presenton/presenton](https://github.com/presenton/presenton) | ⭐4,213 | 开源 AI 演示文稿生成器与 API（Gamma 替代方案） |
-| [browser-use/browser-use](https://github.com/browser-use/browser-use) | ⭐79,494 | 让网站可被 AI Agent 自动化操作 |
+| [zhayujie/chatgpt-on-wechat](https://github.com/zhayujie/chatgpt-on-wechat) | ⭐41,832 | 大模型微信接入方案，支持多平台接入、多模态交互 |
+| [CherryHQ/cherry-studio](https://github.com/CherryHQ/cherry-studio) | ⭐40,672 | AI 生产力工作室，300+ 助手统一接入前沿 LLM |
+| [waoowaooAI/waoowaoo](https://github.com/waoowaooAI/waoowaoo) | ⭐7,628 | 工业级 AI 影视生产平台，从短视频到好莱坞标准流程 |
+| [ruvnet/RuView](https://github.com/ruvnet/RuView) | ⭐0 (+4,419 today) | WiFi 信号转实时人体姿态估计、生命体征监测，今日新增 Stars 最高 |
+| [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) | ⭐4,639 | 赋予 Agent "眼睛"读取全网，Twitter/Reddit/YouTube 一站式 |
 
 ---
 
@@ -63,11 +59,11 @@
 
 | 项目 | Stars | 说明 |
 |------|-------|------|
-| [open-compass/opencompass](https://github.com/open-compass/opencompass) | ⭐6,710 | LLM 评估平台，支持 100+ 数据集与主流模型评测 |
-| [0xPlaygrounds/rig](https://github.com/0xPlaygrounds/rig) | ⭐6,237 | Rust 语言构建模块化、可扩展 LLM 应用的框架 |
-| [skyzh/tiny-llm](https://github.com/skyzh/tiny-llm) | ⭐3,853 | Apple Silicon 上的 LLM 推理服务课程（tiny vLLM + Qwen） |
-| [llm-jp/awesome-japanese-llm](https://github.com/llm-jp/awesome-japanese-llm) | ⭐1,348 | 日语大模型全汇总 |
-| [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | ⭐86,865 | PyTorch 从零实现 ChatGPT 类 LLM 的教程 |
+| [ollama/ollama](https://github.com/ollama/ollama) | ⭐164,003 | 本地 LLM 运行环境，支持 Kimi-K2.5、GLM-5、DeepSeek 等模型 |
+| [hiyouga/LlamaFactory](https://github.com/hiyouga/LlamaFactory) | ⭐67,838 | 统一高效微调 100+ LLM & VLM（ACL 2024） |
+| [open-compass/opencompass](https://github.com/open-compass/opencompass) | ⭐6,713 | LLM 评测平台，支持 100+ 数据集 |
+| [0xPlaygrounds/rig](https://github.com/0xPlaygrounds/rig) | ⭐6,244 | Rust 实现的模块化可扩展 LLM 应用框架 |
+| [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | ⭐86,913 | 手把手实现 ChatGPT 风格 LLM（PyTorch） |
 
 ---
 
@@ -75,39 +71,31 @@
 
 | 项目 | Stars | 说明 |
 |------|-------|------|
-| [langgenius/dify](https://github.com/langgenius/dify) | ⭐131,079 | 生产级 Agentic Workflow 开发平台 |
-| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | ⭐128,091 | Agent 工程平台 |
-| [open-webui/open-webui](https://github.com/open-webui/open-webui) | ⭐125,627 | 用户友好的 AI 界面（支持 Ollama、OpenAI API） |
-| [infiniflow/ragflow](https://github.com/infiniflow/ragflow) | ⭐74,109 | 融合 RAG 与 Agent 的开源检索增强引擎 |
-| [run-llama/llama_index](https://github.com/run-llama/llama_index) | ⭐47,342 | 领先文档 Agent 与 OCR 平台 |
-| [mem0ai/mem0](https://github.com/mem0ai/mem0) | ⭐48,582 | AI Agent 通用记忆层 |
-| [milvus-io/milvus](https://github.com/milvus-io/milvus) | ⭐43,082 | 云原生高性能向量数据库 |
-| [meilisearch/meilisearch](https://github.com/meilisearch/meilisearch) | ⭐56,175 | 闪电级搜索 API，支持 AI 混合搜索 |
-| [qdrant/qdrant](https://github.com/qdrant/qdrant) | ⭐29,243 | 高性能、大规模向量数据库与检索引擎 |
+| [langgenius/dify](https://github.com/langgenius/dify) | ⭐131,115 | 生产级 Agentic 工作流开发平台 |
+| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | ⭐128,119 | Agent 工程平台 |
+| [open-webui/open-webui](https://github.com/open-webui/open-webui) | ⭐125,654 | 用户友好的 AI 界面（支持 Ollama、OpenAI API） |
+| [mem0ai/mem0](https://github.com/mem0ai/mem0) | ⭐48,606 | AI Agent 通用记忆层 |
+| [milvus-io/milvus](https://github.com/milvus-io/milvus) | ⭐43,091 | 云原生高性能向量数据库 |
+| [meilisearch/meilisearch](https://github.com/meilisearch/meilisearch) | ⭐56,177 | 闪电般快速的 AI 混合搜索引荐 |
 
 ---
 
-## 第三步：趋势信号分析
+## 趋势信号分析
 
-今日 Trending 榜单呈现出**基础设施层与应用层双热**的格局：
+今日 Trending 榜单最显著的信号是 **AI Agent 基础设施层的全面成熟**。从 11 个Trending 项目中排除 1 个非 AI 项目后，10 个 AI 项目中有 6 个直接与 Agent 开发相关，涵盖开发框架（agentscope）、记忆管理（ReMe）、沙箱环境（OpenSandbox）、IDE（superset）等完整工具链。
 
-1. **Agent 平台持续爆发**：`moeru-ai/airi`（+832）、`superset-sh/superset`（+632）、`K-Dense-AI/claude-scientific-skills`（+798）三个项目同日登榜，反映社区对**多模态交互 Agent**与**垂直领域 Agent 工具**的需求激增。值得注意的是，`superset-sh/superset` 定位于"AI Agent 时代的 IDE"，预示着开发范式从"写代码"向"调度 Agent"演进。
+**推理优化** 成为新晋热点：LMCache 作为 KV Cache 加速层今日新增 135 stars，vLLM 长期保持 71k+ stars，表明社区对推理效率的关注从"能跑"转向"跑得更快"。
 
-2. **非视觉感知新方向**：`ruvnet/RuView` 以 +4,419 的恐怖日增强势登顶，展示 WiFi 信号替代摄像头的姿态估计与生命体征监测技术。这一"射频感知 + AI"的融合路径可能开辟**隐私敏感场景**的全新应用赛道。
+**WiFi 感知 AI** 异军突起：RuView 通过 WiFi 信号实现人体姿态估计和生命体征监测，今日新增 4419 stars（全场最高），代表了一种新兴的无摄像头感知技术路线。
 
-3. **推理效率受关注**：`LMCache`（KV Cache 优化）和 `OpenSandbox`（沙箱执行环境）的上榜，表明随着 Agent 复杂度提升，**推理成本控制**与**安全隔离执行**正成为硬需求。阿里开源的 `OpenSandbox` 尤其值得关注——其覆盖 RL 训练、Coding Agent、GUI Agent 等多场景，显示出云原生沙箱在 AI 时代的通用基础设施潜力。
-
-4. **大模型层趋于成熟**：相比 Agent 的热闹，LLM 训练/推理层今日无新面孔，存量项目（如 vLLM、LlamaFactory）稳定运行，说明该层级已从"创新爆发期"进入"工程优化期"。
+**角色 AI/Companion** 赛道明确：airi 项目明确对标 Neuro-sama，主打实时语音交互和游戏能力，反映出虚拟数字人赛道的持续热度。
 
 ---
 
 ## 社区关注热点
 
-- 🔥 **OpenSandbox（阿里）**：首个覆盖 RL 训练、Coding Agent、GUI Agent 的通用沙箱开源方案，可能是 AI 应用安全运行的基础设施缺口答案
-- 🔥 **RuView**：WiFi 姿态估计 + 生命体征监测，隐私敏感场景的颠覆性方案，今日 stars 增速第一
-- 🔥 **Superset**：本地运行 Claude Code/Codex 多 Agent 的 IDE，开发者"Agent 编排台"需求的具体回应
-- ⚡ **LMCache**：KV Cache 层优化直击 LLM 推理显存痛点，适合关注部署效率的团队跟进
-- 📈 **browser-use**：7.9 万星已具备规模效应，Web 自动化 Agent 领域的事实标准
-
----
-*本日报由 [agents-radar](https://github.com/rollysys/agents-radar) 自动生成。*
+- **[alibaba/OpenSandbox](https://github.com/alibaba/OpenSandbox)** — 7 天内持续登榜的多场景 AI 沙箱，Coding Agent/GUI Agent/RL 训练一站式，推荐重点关注
+- **[LMCache/LMCache](https://github.com/LMCache/LMCache)** — 推理加速基础设施，KV Cache 层的创新实现，适合追求性能的开发者
+- **[moeru-ai/airi](https://github.com/moeru-ai/airi)** — Companion AI 新尝试，实时语音+Minecraft 玩法，代表 AI 陪伴应用新方向
+- **[trycua/cua](https://github.com/trycua/cua)** — 全桌面控制 Agent 框架，开源替代方案，安全性与可扩展性兼备
+- **[ruvnet/RuView](https://github.com/ruvnet/RuView)** — WiFi 感知技术突破，无摄像头人体感知潜力大，值得跟踪技术演进
