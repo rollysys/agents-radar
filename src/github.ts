@@ -177,6 +177,14 @@ export async function fetchSkillsData(repo: string): Promise<{ prs: GitHubItem[]
   return { prs, issues: issuesRaw.filter((i) => !i.pull_request) };
 }
 
+/**
+ * Escape `@username` mentions so GitHub doesn't send notifications.
+ * Inserts a zero-width space (U+200B) between `@` and the username.
+ */
+function escapeMentions(text: string): string {
+  return text.replace(/@([a-zA-Z0-9])/g, "@\u200B$1");
+}
+
 export async function createGitHubIssue(
   title: string,
   body: string,
@@ -192,7 +200,7 @@ export async function createGitHubIssue(
   const resp = await fetch(`https://api.github.com/repos/${digestRepo}/issues`, {
     method: "POST",
     headers: { ...headers(), "Content-Type": "application/json" },
-    body: JSON.stringify({ title, body, labels: [label] }),
+    body: JSON.stringify({ title, body: escapeMentions(body), labels: [label] }),
   });
   if (!resp.ok) throw new Error(`Failed to create issue: ${await resp.text()}`);
   const data = (await resp.json()) as { html_url: string };
