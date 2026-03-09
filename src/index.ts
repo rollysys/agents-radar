@@ -30,10 +30,7 @@ import {
   buildHnPrompt,
 } from "./prompts.ts";
 import { callLlm, saveFile, autoGenFooter } from "./report.ts";
-import {
-  buildCliReportContent,
-  buildOpenclawReportContent,
-} from "./report-builders.ts";
+import { buildCliReportContent, buildOpenclawReportContent } from "./report-builders.ts";
 import { loadWebState, saveWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web.ts";
 import { fetchTrendingData, type TrendingData } from "./trending.ts";
 import { fetchHnData, type HnData } from "./hn.ts";

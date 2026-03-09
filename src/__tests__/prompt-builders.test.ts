@@ -139,7 +139,9 @@ describe("buildPeersComparisonPrompt", () => {
       config: { id: "openclaw", repo: "openclaw/openclaw", name: "OpenClaw" },
       summary: "OC summary",
     });
-    const peerDigests = [makeDigest({ config: { ...cfg, name: "Peer" }, summary: "Peer summary", issues: [makeItem()] })];
+    const peerDigests = [
+      makeDigest({ config: { ...cfg, name: "Peer" }, summary: "Peer summary", issues: [makeItem()] }),
+    ];
     const result = buildPeersComparisonPrompt(openclawDigest, peerDigests, "2026-03-09");
     expect(result).toContain("OpenClaw（核心参照");
     expect(result).toContain("OC summary");
@@ -173,7 +175,15 @@ describe("buildTrendingPrompt", () => {
   it("includes trending repos", () => {
     const data: TrendingData = {
       trendingRepos: [
-        { fullName: "org/repo", description: "desc", language: "Python", todayStars: 100, totalStars: 5000, forks: 200, url: "https://github.com/org/repo" },
+        {
+          fullName: "org/repo",
+          description: "desc",
+          language: "Python",
+          todayStars: 100,
+          totalStars: 5000,
+          forks: 200,
+          url: "https://github.com/org/repo",
+        },
       ],
       searchRepos: [],
       trendingFetchSuccess: true,
@@ -195,7 +205,15 @@ describe("buildTrendingPrompt", () => {
     const data: TrendingData = {
       trendingRepos: [],
       searchRepos: [
-        { fullName: "ai/agent", description: "An AI agent", language: "TypeScript", stargazersCount: 1000, pushedAt: "2026-03-08", url: "https://github.com/ai/agent", searchQuery: "ai-agent" },
+        {
+          fullName: "ai/agent",
+          description: "An AI agent",
+          language: "TypeScript",
+          stargazersCount: 1000,
+          pushedAt: "2026-03-08",
+          url: "https://github.com/ai/agent",
+          searchQuery: "ai-agent",
+        },
       ],
       trendingFetchSuccess: false,
     };
@@ -216,7 +234,16 @@ describe("buildWebReportPrompt", () => {
         site: "anthropic",
         siteName: "Anthropic",
         isFirstRun: true,
-        newItems: [{ url: "https://anthropic.com/news/test", title: "Test", lastmod: "2026-03-09", content: "Content", site: "anthropic", category: "news" }],
+        newItems: [
+          {
+            url: "https://anthropic.com/news/test",
+            title: "Test",
+            lastmod: "2026-03-09",
+            content: "Content",
+            site: "anthropic",
+            category: "news",
+          },
+        ],
         totalDiscovered: 50,
       },
     ];
@@ -307,7 +334,16 @@ describe("buildHnPrompt", () => {
   it("generates English variant", () => {
     const data: HnData = {
       stories: [
-        { id: "1", title: "Test", url: "https://test.com", hnUrl: "https://news.ycombinator.com/item?id=1", points: 10, comments: 2, author: "a", createdAt: "2026-03-09T10:00:00Z" },
+        {
+          id: "1",
+          title: "Test",
+          url: "https://test.com",
+          hnUrl: "https://news.ycombinator.com/item?id=1",
+          points: 10,
+          comments: 2,
+          author: "a",
+          createdAt: "2026-03-09T10:00:00Z",
+        },
       ],
       fetchSuccess: true,
     };

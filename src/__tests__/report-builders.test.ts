@@ -99,7 +99,12 @@ describe("buildOpenclawReportContent", () => {
     const openclaw = { id: "openclaw", repo: "openclaw/openclaw", name: "OpenClaw" };
     const peers = [{ id: "peer1", repo: "org/peer1", name: "Peer1" }];
     const peerDigests = [makeDigest({ config: peers[0] })];
-    const fetchedOpenclaw = { cfg: openclaw, issues: [{ number: 1 } as unknown as GitHubItem], prs: [] as GitHubItem[], releases: [] as GitHubRelease[] };
+    const fetchedOpenclaw = {
+      cfg: openclaw,
+      issues: [{ number: 1 } as unknown as GitHubItem],
+      prs: [] as GitHubItem[],
+      releases: [] as GitHubRelease[],
+    };
 
     const result = buildOpenclawReportContent(
       fetchedOpenclaw,
