@@ -37,15 +37,14 @@ function releaseSlot(): void {
 export async function callLlm(prompt: string, maxTokens = 4096): Promise<string> {
   await acquireSlot();
   try {
-    // 检测是否是 Minimax 端点（使用 Bearer token）
     const isMinimax = BASE_URL?.includes("minimax");
-    
+
     if (isMinimax) {
-      // Minimax: 使用 Bearer token
+      // Minimax: 使用 Bearer token，Anthropic 消息格式
       const response = await fetch(`${BASE_URL}/v1/messages`, {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${API_KEY}`, // Bearer 格式
+          "Authorization": `Bearer ${API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -54,20 +53,20 @@ export async function callLlm(prompt: string, maxTokens = 4096): Promise<string>
           messages: [{ role: "user", content: prompt }],
         }),
       });
-      
+
       if (!response.ok) {
         const error = await response.text();
         throw new Error(`API error: ${response.status} ${error}`);
       }
-      
+
       const data = await response.json();
-      // Minimax 返回 content 数组，可能包含 thinking 和 text
       const textBlock = data.content?.find((c: any) => c.type === "text");
       const block = textBlock || data.content?.[0];
       if (!block?.text) throw new Error("Unexpected response type from LLM");
       return block.text;
     } else {
-      // Anthropic 官方: 使用 SDK（自动加 Bearer）
+      // Anthropic 官方 或 GLM Anthropic 兼容接口（bigmodel.cn/api/anthropic）
+      // 均通过 Anthropic SDK + ANTHROPIC_BASE_URL 自动路由
       const client = new Anthropic();
       const message = await client.messages.create({
         model: MODEL,
