@@ -37,15 +37,26 @@ export interface LobstersFetchResult {
 const LOBSTERS_API = "https://lobste.rs";
 const FETCH_TIMEOUT_MS = 10_000;
 
-const AI_TAGS = new Set([
-  "ai", "ml", "machinelearning", "compsci", "science",
-]);
+const AI_TAGS = new Set(["ai", "ml", "machinelearning", "compsci", "science"]);
 
 const AI_TITLE_KEYWORDS = [
-  /\bai\b/i, /\bllm\b/i, /\bgpt\b/i, /\bclaude\b/i, /\bopenai\b/i,
-  /\banthropic\b/i, /\bmachine.?learn/i, /\bdeep.?learn/i, /\bneural/i,
-  /\btransformer/i, /\bagent/i, /\blanguage.?model/i, /\bdiffusion/i,
-  /\bembedding/i, /\bmultimodal/i, /\bllama\b/i, /\bmistral/i,
+  /\bai\b/i,
+  /\bllm\b/i,
+  /\bgpt\b/i,
+  /\bclaude\b/i,
+  /\bopenai\b/i,
+  /\banthropic\b/i,
+  /\bmachine.?learn/i,
+  /\bdeep.?learn/i,
+  /\bneural/i,
+  /\btransformer/i,
+  /\bagent/i,
+  /\blanguage.?model/i,
+  /\bdiffusion/i,
+  /\bembedding/i,
+  /\bmultimodal/i,
+  /\bllama\b/i,
+  /\bmistral/i,
 ];
 
 function isAIRelated(tags: string[], title: string): boolean {

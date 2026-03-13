@@ -13,30 +13,25 @@ permissions:
 jobs:
   digest:
     runs-on: ubuntu-latest
+    # Web content fetching adds ~60-120 s of HTTP requests on incremental runs;
+    # the first-ever run (fetching 50 articles) may need up to 20 min.
     timeout-minutes: 25
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm install
-
-      # 调试：检查 env 是否正确传递
-      - name: Check env vars
-        run: |
-          echo "ANTHROPIC_BASE_URL: ${ANTHROPIC_BASE_URL:-NOT SET}"
-          echo "ANTHROPIC_API_KEY length: ${#ANTHROPIC_API_KEY}"
-          echo "ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-NOT SET}"
-        env:
-          ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+        run: pnpm install --frozen-lockfile
 
       - name: Run daily digest
         env:
@@ -44,8 +39,9 @@ jobs:
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          LLM_PROVIDER: anthropic
           DIGEST_REPO: ${{ github.repository }}
-        run: npm start
+        run: pnpm start
 
       - name: Commit digest files
         run: |
@@ -57,6 +53,26 @@ jobs:
           else
             DATE=$(date -u +%Y-%m-%d)
             git commit -m "digest: ${DATE} daily digest"
+            git pull --rebase
             git push
           fi
+
+      - name: Update web manifest
+        run: pnpm manifest
+
+      - name: Commit manifest and feed
+        run: |
+          git add manifest.json feed.xml
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update manifest.json"
+            git pull --rebase
+            git push
+          fi
+
+      - name: Send Telegram notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '@agents_radar' }}
+          PAGES_URL: https://duanyytop.github.io/agents-radar
+        run: pnpm notify
 

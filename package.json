@@ -2,19 +2,40 @@
   "name": "agents-radar",
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "start": "tsx src/index.ts",
-    "dev": "tsx src/debug.ts",
-    "test:api": "tsx src/test-api.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "manifest": "tsx src/generate-manifest.ts",
+    "weekly": "tsx src/weekly.ts",
+    "monthly": "tsx src/monthly.ts",
+    "notify": "tsx src/notify.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepare": "husky"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.36.3"
+    "@anthropic-ai/sdk": "^0.78.0",
+    "js-yaml": "^4.1.1",
+    "openai": "^6.27.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "dotenv": "^17.3.1",
+    "@eslint/js": "^9",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.3.5",
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint": "^9",
+    "eslint-config-prettier": "^10",
+    "husky": "^9.1.7",
+    "prettier": "^3",
     "tsx": "^4.19.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8",
+    "vitest": "^4.0.18"
   }
 }

@@ -3,21 +3,7 @@
  */
 
 import type { RepoConfig, GitHubItem, GitHubRelease } from "./github.ts";
-import type { WebFetchResult } from "./web.ts";
-import type { TrendingData } from "./trending.ts";
-import type { BlueskyFetchResult } from "./bluesky.ts";
-import type { HNFetchResult } from "./hackernews.ts";
-import type { RedditFetchResult } from "./reddit.ts";
-import type { LobstersFetchResult } from "./lobsters.ts";
-import type { RSSFetchResult } from "./rss.ts";
-
-export interface SocialData {
-  bluesky: BlueskyFetchResult;
-  hn: HNFetchResult;
-  reddit: RedditFetchResult;
-  lobsters: LobstersFetchResult;
-  rss: RSSFetchResult;
-}
+import type { Lang } from "./i18n.ts";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -35,16 +21,31 @@ export interface RepoDigest {
 // Formatting
 // ---------------------------------------------------------------------------
 
-export function formatItem(item: GitHubItem): string {
-  const labels   = item.labels.map((l) => l.name).join(", ");
+export function formatItem(item: GitHubItem, lang: Lang = "zh"): string {
+  const labels = item.labels.map((l) => l.name).join(", ");
   const labelStr = labels ? ` [${labels}]` : "";
-  const body     = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);
+  const body = (item.body ?? "").replace(/\n/g, " ").trim().slice(0, 300);
   const ellipsis = (item.body ?? "").length > 300 ? "..." : "";
+  const t =
+    lang === "en"
+      ? {
+          author: "Author",
+          created: "Created",
+          updated: "Updated",
+          comments: "Comments",
+          url: "URL",
+          summary: "Summary",
+        }
+      : { author: "作者", created: "创建", updated: "更新", comments: "评论", url: "链接", summary: "摘要" };
+  // Extract "owner/repo" from html_url to avoid full GitHub URLs that trigger cross-references
+  const repoSlug = item.html_url.replace(/^https:\/\/github\.com\//, "").replace(/\/(issues|pull)\/\d+$/, "");
+  const itemKind = item.html_url.includes("/pull/") ? "PR" : "Issue";
+  const refStr = `${repoSlug} ${itemKind} #${item.number}`;
   return [
     `#${item.number} [${item.state.toUpperCase()}]${labelStr} ${item.title}`,
-    `  作者: @${item.user.login} | 创建: ${item.created_at.slice(0, 10)} | 更新: ${item.updated_at.slice(0, 10)} | 评论: ${item.comments} | 👍: ${item.reactions?.["+1"] ?? 0}`,
-    `  链接: ${item.html_url}`,
-    `  摘要: ${body}${ellipsis}`,
+    `  ${t.author}: @${item.user.login} | ${t.created}: ${item.created_at.slice(0, 10)} | ${t.updated}: ${item.updated_at.slice(0, 10)} | ${t.comments}: ${item.comments} | 👍: ${item.reactions?.["+1"] ?? 0}`,
+    `  ${t.url}: ${refStr}`,
+    `  ${t.summary}: ${body}${ellipsis}`,
   ].join("\n");
 }
 
@@ -53,17 +54,20 @@ export function formatItem(item: GitHubItem): string {
 // ---------------------------------------------------------------------------
 
 const CLI_ISSUE_LIMIT = 30;
-const CLI_PR_LIMIT    = 20;
+const CLI_PR_LIMIT = 20;
 
 /** Sort by comment count desc, take top N. */
-function topN(items: GitHubItem[], n: number): GitHubItem[] {
+export function topN(items: GitHubItem[], n: number): GitHubItem[] {
   return [...items].sort((a, b) => b.comments - a.comments).slice(0, n);
 }
 
-function sampleNote(total: number, sampled: number, label: string): string {
-  return total > sampled
-    ? `（共 ${total} 条，以下展示评论数最多的 ${sampled} 条）`
-    : `（共 ${total} 条）`;
+export function sampleNote(total: number, sampled: number, lang: Lang = "zh"): string {
+  if (lang === "en") {
+    return total > sampled
+      ? `(Total: ${total} items; showing top ${sampled} by comment count)`
+      : `(Total: ${total} items)`;
+  }
+  return total > sampled ? `（共 ${total} 条，以下展示评论数最多的 ${sampled} 条）` : `（共 ${total} 条）`;
 }
 
 // ---------------------------------------------------------------------------
@@ -76,18 +80,51 @@ export function buildCliPrompt(
   prs: GitHubItem[],
   releases: GitHubRelease[],
   dateStr: string,
+  lang: Lang = "zh",
 ): string {
   const sampledIssues = topN(issues, CLI_ISSUE_LIMIT);
-  const sampledPrs    = topN(prs,    CLI_PR_LIMIT);
+  const sampledPrs = topN(prs, CLI_PR_LIMIT);
 
-  const issuesText   = sampledIssues.map(formatItem).join("\n") || "无";
-  const prsText      = sampledPrs.map(formatItem).join("\n") || "无";
+  const issuesText =
+    sampledIssues.map((i) => formatItem(i, lang)).join("\n") || (lang === "en" ? "None" : "无");
+  const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || (lang === "en" ? "None" : "无");
   const releasesText = releases.length
     ? releases.map((r) => `- ${r.tag_name}: ${r.name}\n  ${(r.body ?? "").slice(0, 300)}`).join("\n")
-    : "无";
+    : lang === "en"
+      ? "None"
+      : "无";
 
-  const issueNote = sampleNote(issues.length, sampledIssues.length, "issues");
-  const prNote    = sampleNote(prs.length,    sampledPrs.length,    "prs");
+  const issueNote = sampleNote(issues.length, sampledIssues.length, lang);
+  const prNote = sampleNote(prs.length, sampledPrs.length, lang);
+
+  if (lang === "en") {
+    return `You are a technical analyst focused on AI developer tools. Based on the following GitHub data, generate the ${cfg.name} community digest for ${dateStr}.
+
+# Data source: github.com/${cfg.repo}
+
+## Latest Releases (last 24h)
+${releasesText}
+
+## Latest Issues (updated in last 24h)${issueNote}
+${issuesText}
+
+## Latest Pull Requests (updated in last 24h)${prNote}
+${prsText}
+
+---
+
+Generate a structured English digest with the following sections:
+
+1. **Today's Highlights** - 2-3 sentences summarizing the most important updates
+2. **Releases** - If new versions exist, summarize changes; omit if none
+3. **Hot Issues** - Pick 10 noteworthy Issues, explain why they matter and community reaction
+4. **Key PR Progress** - Pick 10 important PRs, describe features or fixes
+5. **Feature Request Trends** - Distill the most-requested feature directions from all Issues
+6. **Developer Pain Points** - Summarize recurring developer frustrations or high-frequency requests
+
+Style: concise and professional, suited for technical developers. Include GitHub links for each item.
+`;
+  }
 
   return `你是一位专注于 AI 开发工具的技术分析师。请根据以下 GitHub 数据，生成 ${dateStr} 的 ${cfg.name} 社区动态日报。
 
@@ -118,7 +155,7 @@ ${prsText}
 }
 
 const PEER_ISSUE_LIMIT = 30;
-const PEER_PR_LIMIT    = 20;
+const PEER_PR_LIMIT = 20;
 
 export function buildPeerPrompt(
   cfg: RepoConfig,
@@ -128,26 +165,62 @@ export function buildPeerPrompt(
   dateStr: string,
   issueLimit = PEER_ISSUE_LIMIT,
   prLimit = PEER_PR_LIMIT,
+  lang: Lang = "zh",
 ): string {
   const totalIssues = issues.length;
-  const totalPrs    = prs.length;
+  const totalPrs = prs.length;
 
   const sampledIssues = topN(issues, issueLimit);
-  const sampledPrs    = topN(prs,    prLimit);
+  const sampledPrs = topN(prs, prLimit);
 
-  const issuesText   = sampledIssues.map(formatItem).join("\n") || "无";
-  const prsText      = sampledPrs.map(formatItem).join("\n") || "无";
+  const noneStr = lang === "en" ? "None" : "无";
+  const issuesText = sampledIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
+  const prsText = sampledPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
   const releasesText = releases.length
     ? releases.map((r) => `- ${r.tag_name}: ${r.name}\n  ${(r.body ?? "").slice(0, 300)}`).join("\n")
-    : "无";
+    : noneStr;
 
-  const openIssues   = issues.filter((i) => i.state === "open").length;
+  const openIssues = issues.filter((i) => i.state === "open").length;
   const closedIssues = issues.filter((i) => i.state === "closed").length;
-  const openPrs      = prs.filter((p) => p.state === "open").length;
-  const mergedPrs    = prs.filter((p) => p.state === "closed").length;
+  const openPrs = prs.filter((p) => p.state === "open").length;
+  const mergedPrs = prs.filter((p) => p.state === "closed").length;
 
-  const issueSampleNote = sampleNote(totalIssues, sampledIssues.length, "issues");
-  const prSampleNote    = sampleNote(totalPrs,    sampledPrs.length,    "prs");
+  const issueSampleNote = sampleNote(totalIssues, sampledIssues.length, lang);
+  const prSampleNote = sampleNote(totalPrs, sampledPrs.length, lang);
+
+  if (lang === "en") {
+    return `You are an analyst of AI agent and personal AI assistant open-source projects. Based on the following GitHub data from ${cfg.name} (github.com/${cfg.repo}), generate a project digest for ${dateStr}.
+
+# Data Overview
+- Issues updated in last 24h: ${totalIssues} (open/active: ${openIssues}, closed: ${closedIssues})
+- PRs updated in last 24h: ${totalPrs} (open: ${openPrs}, merged/closed: ${mergedPrs})
+- New releases: ${releases.length}
+
+## Latest Releases
+${releasesText}
+
+## Latest Issues ${issueSampleNote}
+${issuesText}
+
+## Latest Pull Requests ${prSampleNote}
+${prsText}
+
+---
+
+Generate a structured English ${cfg.name} project digest with the following sections:
+
+1. **Today's Overview** - 3-5 sentences summarizing project status, including activity assessment
+2. **Releases** - If new versions exist, detail changes, breaking changes, migration notes; omit if none
+3. **Project Progress** - Merged/closed PRs today, what features advanced or were fixed
+4. **Community Hot Topics** - Most active Issues/PRs with most comments/reactions (with links), analyze underlying needs
+5. **Bugs & Stability** - Bugs, crashes, regressions reported today, ranked by severity, note if fix PRs exist
+6. **Feature Requests & Roadmap Signals** - User-requested features, predict which might be in next version
+7. **User Feedback Summary** - Real user pain points, use cases, satisfaction/dissatisfaction
+8. **Backlog Watch** - Long-unanswered important Issues or PRs needing maintainer attention
+
+Style: objective, data-driven, highlighting project health. Include GitHub links for each item.
+`;
+  }
 
   return `你是一位 AI 智能体与个人 AI 助手领域开源项目分析师。请根据以下来自 ${cfg.name} (github.com/${cfg.repo}) 的 GitHub 数据，生成 ${dateStr} 的项目动态日报。
 
@@ -186,17 +259,47 @@ export function buildPeersComparisonPrompt(
   openclawDigest: RepoDigest,
   peerDigests: RepoDigest[],
   dateStr: string,
+  lang: Lang = "zh",
 ): string {
+  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
+
   const openclawSection =
-    `## OpenClaw（核心参照，github.com/${openclawDigest.config.repo}）\n${openclawDigest.summary}`;
+    lang === "en"
+      ? `## OpenClaw (core reference, github.com/${openclawDigest.config.repo})\n${openclawDigest.summary}`
+      : `## OpenClaw（核心参照，github.com/${openclawDigest.config.repo}）\n${openclawDigest.summary}`;
 
   const peerSections = peerDigests
     .map((d) => {
       const hasData = d.issues.length || d.prs.length || d.releases.length;
-      if (!hasData) return `## ${d.config.name} (github.com/${d.config.repo})\n过去24小时无活动。`;
+      if (!hasData) return `## ${d.config.name} (github.com/${d.config.repo})\n${noActivityStr}`;
       return `## ${d.config.name} (github.com/${d.config.repo})\n${d.summary}`;
     })
     .join("\n\n---\n\n");
+
+  if (lang === "en") {
+    return `You are a senior analyst of the AI agent and personal AI assistant open-source ecosystem. The following are ${dateStr} community digest summaries for each project.
+
+${openclawSection}
+
+---
+
+${peerSections}
+
+---
+
+Generate a cross-project comparison report in English with these sections:
+
+1. **Ecosystem Overview** - 3-5 sentences on the overall personal AI assistant / agent open-source landscape
+2. **Activity Comparison** - Table comparing Issues count, PR count, Release status, and health score for each project
+3. **OpenClaw's Position** - Advantages vs peers, technical approach differences, community size comparison
+4. **Shared Technical Focus Areas** - Requirements emerging across multiple projects (note which projects, specific needs)
+5. **Differentiation Analysis** - Key differences in feature focus, target users, technical architecture
+6. **Community Momentum & Maturity** - Activity tiers, which are rapidly iterating, which are stabilizing
+7. **Trend Signals** - Industry trends extracted from community feedback, value for AI agent developers
+
+Style: concise and professional, data-backed, suited for technical decision-makers and developers.
+`;
+  }
 
   return `你是一位专注于 AI 智能体与个人 AI 助手开源生态的资深技术分析师。以下是 ${dateStr} 各开源项目的社区动态摘要。
 
@@ -226,12 +329,39 @@ export function buildSkillsPrompt(
   prs: GitHubItem[],
   issues: GitHubItem[],
   dateStr: string,
+  lang: Lang = "zh",
 ): string {
-  const topPrs    = topN(prs,    20);
+  const topPrs = topN(prs, 20);
   const topIssues = topN(issues, 15);
 
-  const prsText    = topPrs.map(formatItem).join("\n") || "无";
-  const issuesText = topIssues.map(formatItem).join("\n") || "无";
+  const noneStr = lang === "en" ? "None" : "无";
+  const prsText = topPrs.map((p) => formatItem(p, lang)).join("\n") || noneStr;
+  const issuesText = topIssues.map((i) => formatItem(i, lang)).join("\n") || noneStr;
+
+  if (lang === "en") {
+    return `You are a technical analyst focused on the Claude Code ecosystem. The following data is from github.com/anthropics/skills (official Claude Code Skills repository). Analyze the community's most-watched Skills activity (data as of ${dateStr}).
+
+## Repository Context
+anthropics/skills is the official Claude Code Skills collection. Each PR typically represents a new or improved Skill. The community proposes new Skills and reports issues via Issues; PRs represent actual Skill submissions.
+
+## Popular Pull Requests (sorted by comments, ${prs.length} total, showing top ${topPrs.length})
+${prsText}
+
+## Community Issues (sorted by comments, ${issues.length} total, showing top ${topIssues.length})
+${issuesText}
+
+---
+
+Generate a Claude Code Skills community highlights report in English with these sections:
+
+1. **Top Skills Ranking** - List the 5-8 most-discussed Skills (PRs) by comments/attention, describe each Skill's functionality, discussion highlights, and current status (open/merged/draft)
+2. **Community Demand Trends** - From Issues, distill the most-anticipated new Skill directions (e.g. workflow automation, code review, test generation, documentation)
+3. **High-Potential Pending Skills** - Active-comment PRs not yet merged; these Skills may land soon
+4. **Skills Ecosystem Insight** - One-sentence summary: what is the community's most concentrated demand at the Skills level?
+
+Style: concise and professional, include GitHub links for each item.
+`;
+  }
 
   return `你是一位专注于 Claude Code 生态的技术分析师。以下是来自 github.com/anthropics/skills（Claude Code Skills 官方仓库）的数据，请分析社区最关注的 Skills 动态（数据截止 ${dateStr}）。
 
@@ -257,14 +387,36 @@ ${issuesText}
 `;
 }
 
-export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string): string {
+export function buildComparisonPrompt(digests: RepoDigest[], dateStr: string, lang: Lang = "zh"): string {
+  const noActivityStr = lang === "en" ? "No activity in the last 24 hours." : "过去24小时无活动。";
+
   const sections = digests
     .map((d) => {
       const hasData = d.issues.length || d.prs.length || d.releases.length;
-      if (!hasData) return `## ${d.config.name} (github.com/${d.config.repo})\n过去24小时无活动。`;
+      if (!hasData) return `## ${d.config.name} (github.com/${d.config.repo})\n${noActivityStr}`;
       return `## ${d.config.name} (github.com/${d.config.repo})\n${d.summary}`;
     })
     .join("\n\n---\n\n");
+
+  if (lang === "en") {
+    return `You are a senior technical analyst of the AI developer tools ecosystem. The following are ${dateStr} community digest summaries for each major AI CLI tool:
+
+${sections}
+
+---
+
+Generate a cross-tool comparison report in English with these sections:
+
+1. **Ecosystem Overview** - 3-5 sentences on the overall AI CLI tools development landscape
+2. **Activity Comparison** - Table comparing Issues count, PR count, Release status for each tool today
+3. **Shared Feature Directions** - Requirements appearing across multiple tool communities (note which tools, specific needs)
+4. **Differentiation Analysis** - Differences in feature focus, target users, and technical approach
+5. **Community Momentum & Maturity** - Which tools have more active communities, which are rapidly iterating
+6. **Trend Signals** - Industry trends from community feedback, reference value for developers
+
+Style: concise and professional, data-backed, suited for technical decision-makers and developers.
+`;
+  }
 
   return `你是一位专注于 AI 开发工具生态的资深技术分析师。以下是 ${dateStr} 各主流 AI CLI 工具的社区动态摘要：
 
@@ -284,295 +436,3 @@ ${sections}
 语言要求：简洁专业，有数据支撑，适合技术决策者和开发者阅读。
 `;
 }
-
-export function buildTrendingPrompt(data: TrendingData, dateStr: string): string {
-  const trendingSection = data.trendingFetchSuccess && data.trendingRepos.length > 0
-    ? data.trendingRepos
-        .map(
-          (r) =>
-            `- [${r.fullName}](${r.url})` +
-            (r.language ? ` [${r.language}]` : "") +
-            ` ⭐${r.totalStars.toLocaleString()}` +
-            (r.todayStars > 0 ? ` (+${r.todayStars} today)` : "") +
-            (r.forks > 0 ? ` 🍴${r.forks.toLocaleString()}` : "") +
-            (r.description ? `\n  ${r.description}` : ""),
-        )
-        .join("\n")
-    : "（未能抓取今日 GitHub Trending 榜单）";
-
-  const searchSection = data.searchRepos.length > 0
-    ? data.searchRepos
-        .map(
-          (r) =>
-            `- [${r.fullName}](${r.url})` +
-            (r.language ? ` [${r.language}]` : "") +
-            ` ⭐${r.stargazersCount.toLocaleString()}` +
-            ` [topic:${r.searchQuery}]` +
-            (r.description ? `\n  ${r.description}` : ""),
-        )
-        .join("\n")
-    : "（无搜索结果）";
-
-  return `你是一位专注于 AI 开源生态的技术分析师。以下是 ${dateStr} 的 GitHub AI 相关热门仓库数据，请进行 AI 相关性筛选、分类和趋势分析。
-
-## 数据说明
-- **Trending 榜单**（github.com/trending，今日 stars 数最可信）：今日实时热榜，含今日新增 stars
-- **主题搜索**（GitHub Search API，topic 标签）：7天内活跃的 AI 相关项目，按主题分类
-
----
-
-## GitHub 今日 Trending 榜单（共 ${data.trendingRepos.length} 个仓库）
-${trendingSection}
-
----
-
-## AI 主题搜索结果（共 ${data.searchRepos.length} 个仓库，已去重）
-${searchSection}
-
----
-
-请生成一份结构清晰的《AI 开源趋势日报》，要求：
-
-**第一步（过滤）**：从以上数据中筛选出与 AI/ML 明确相关的项目（排除与 AI 无关的通用工具、前端框架、游戏等），对于 Trending 榜单中的非 AI 项目直接略去。
-
-**第二步（分类）**：将筛选后的项目按以下维度分类（一个项目可归入多类，优先归入最主要类别）：
-- 🔧 AI 基础工具（框架、SDK、推理引擎、开发工具、CLI）
-- 🤖 AI 智能体/工作流（Agent 框架、自动化、多智能体）
-- 📦 AI 应用（具体应用产品、垂直场景解决方案）
-- 🧠 大模型/训练（模型权重、训练框架、微调工具）
-- 🔍 RAG/知识库（向量数据库、检索增强、知识管理）
-
-**第三步（输出报告）**，包含以下部分：
-
-1. **今日速览** — 3~5 句话概括今日 AI 开源领域最值得关注的动向
-
-2. **各维度热门项目** — 每个维度列出 3~8 个代表项目，每项包含：
-   - 项目名（附链接）
-   - stars 数据（总量 + 今日新增，如有）
-   - 一句话说明：这个项目是什么，为什么今天值得关注
-
-3. **趋势信号分析** — 200~300 字，从今日热榜中提炼：
-   - 哪类 AI 工具正在获得社区爆发性关注？
-   - 有无新兴技术栈或方向首次登榜？
-   - 与近期大模型发布/行业事件的关联
-
-4. **社区关注热点** — 以 bullet 形式列出 3~5 个值得开发者重点关注的具体项目或方向，给出简短理由
-
-语言要求：中文，专业简洁，每个项目必须附 GitHub 链接。
-`;
-}
-
-export function buildSocialPrompt(data: SocialData, dateStr: string): string {
-  // --- Bluesky section ---
-  const bskyTop = data.bluesky.posts.slice(0, 50);
-  const bskyText = bskyTop.length > 0
-    ? bskyTop
-        .map(
-          (p, i) =>
-            `${i + 1}. @${p.authorHandle} (${p.authorDisplayName})` +
-            ` [❤️${p.likes} 🔁${p.reposts} 💬${p.replies}]` +
-            `\n   ${p.text.replace(/\n/g, " ").slice(0, 300)}` +
-            `\n   ${p.url}`,
-        )
-        .join("\n\n")
-    : "（无数据）";
-
-  // --- Hacker News section ---
-  const hnTop = data.hn.stories.slice(0, 40);
-  const hnText = hnTop.length > 0
-    ? hnTop
-        .map(
-          (s, i) =>
-            `${i + 1}. [${s.score}⬆ ${s.descendants}💬] ${s.title}` +
-            `\n   by ${s.by} | ${s.url}` +
-            `\n   讨论: ${s.hnUrl}`,
-        )
-        .join("\n\n")
-    : "（无数据）";
-
-  // --- Reddit section ---
-  const redditTop = data.reddit.posts.slice(0, 40);
-  const redditText = redditTop.length > 0
-    ? redditTop
-        .map(
-          (p, i) =>
-            `${i + 1}. [r/${p.subreddit}] [${p.score}⬆ ${p.numComments}💬] ${p.title}` +
-            `\n   by u/${p.author} | ${p.permalink}` +
-            (p.selftext ? `\n   ${p.selftext.replace(/\n/g, " ").slice(0, 200)}` : ""),
-        )
-        .join("\n\n")
-    : "（无数据）";
-
-  // --- Lobsters section ---
-  const lobsTop = data.lobsters.stories.slice(0, 20);
-  const lobsText = lobsTop.length > 0
-    ? lobsTop
-        .map(
-          (s, i) =>
-            `${i + 1}. [${s.score}⬆ ${s.commentCount}💬] [${s.tags.join(",")}] ${s.title}` +
-            `\n   by ${s.submitter} | ${s.url}` +
-            `\n   讨论: ${s.commentsUrl}`,
-        )
-        .join("\n\n")
-    : "（无数据）";
-
-  // --- RSS section ---
-  const rssTop = data.rss.articles.slice(0, 20);
-  const rssText = rssTop.length > 0
-    ? rssTop
-        .map(
-          (a, i) =>
-            `${i + 1}. [${a.source}] ${a.title}` +
-            `\n   发布: ${a.pubDate} | ${a.url}` +
-            (a.description ? `\n   ${a.description.replace(/\n/g, " ").slice(0, 200)}` : ""),
-        )
-        .join("\n\n")
-    : "（无数据）";
-
-  // --- Stats ---
-  const totalErrors = data.bluesky.errors.length + data.hn.errors.length +
-    data.reddit.errors.length + data.lobsters.errors.length + data.rss.errors.length;
-
-  return `你是一位专注于 AI 与自动驾驶领域的社交媒体与社区动态分析师。以下是 ${dateStr} 从 5 个平台获取的 AI 及自动驾驶相关内容，请进行综合分析。
-
-## 数据概览
-| 平台 | 内容量 | 说明 |
-|------|--------|------|
-| Bluesky | ${data.bluesky.posts.length} 条 | AI 意见领袖追踪 + 关键词搜索 |
-| Hacker News | ${data.hn.stories.length} 条 | AI + 自动驾驶相关热门故事 |
-| Reddit | ${data.reddit.posts.length} 条 | AI 子版 + 自动驾驶子版 (r/SelfDrivingCars, r/waymo 等) |
-| Lobste.rs | ${data.lobsters.stories.length} 条 | 技术社区 AI/ML 相关 |
-| RSS | ${data.rss.articles.length} 条 | 自动驾驶专业媒体 (Electrek, Teslarati, TechCrunch) |
-${totalErrors > 0 ? `| 抓取异常 | ${totalErrors} 个 | 部分源可能缺失 |\n` : ""}
-
----
-
-## Bluesky — AI 意见领袖动态（展示前 ${bskyTop.length} 条）
-
-${bskyText}
-
----
-
-## Hacker News — AI 热门故事（展示前 ${hnTop.length} 条）
-
-${hnText}
-
----
-
-## Reddit — AI 社区讨论（展示前 ${redditTop.length} 条）
-
-${redditText}
-
----
-
-## Lobste.rs — 技术社区精选（展示前 ${lobsTop.length} 条）
-
-${lobsText}
-
----
-
-## RSS — 自动驾驶专业媒体（展示前 ${rssTop.length} 条）
-
-${rssText}
-
----
-
-请生成一份结构清晰的《AI 与自动驾驶社交媒体与社区日报》，包含以下部分：
-
-1. **今日速览** — 3~5 句话概括今日 AI 及自动驾驶社区最值得关注的讨论和动向，跨平台综合判断
-
-2. **全平台热门 Top 15** — 从所有平台中挑选互动量/关注度最高的 15 个内容，每条包含：
-   - 来源平台 + 作者 + 互动数据
-   - 核心内容概述（2~3 句话）
-   - 为什么值得关注
-   - 原始链接
-
-3. **领域分类** — 将全部内容按以下维度分类汇总（标注来源平台）：
-   - 🧠 模型/研究进展（新论文、基准测试、能力突破）
-   - 🔧 工具/框架/开发（新项目、版本更新、开发者工具）
-   - 🤖 AI 智能体/应用（Agent 框架、实际应用案例）
-   - 🚗 自动驾驶/智能出行（FSD、Waymo、Robotaxi、ADAS、V2X）
-   - 💼 行业/商业/政策（融资、监管、市场动态）
-   - 🎓 教程/教育/观点（博客、课程、深度思考）
-
-4. **Bluesky 意见领袖观点** — 追踪名单中的大咖今日说了什么，逐人整理核心观点
-
-5. **Reddit 社区热议** — r/LocalLLaMA 和 r/MachineLearning 中最活跃的 AI 讨论 + r/SelfDrivingCars 和 r/waymo 中最活跃的自动驾驶讨论，社区情绪如何
-
-6. **自动驾驶专题** — 综合 RSS 专业媒体、Reddit 自动驾驶子版、HN 和 Bluesky 中的自动驾驶内容：
-   - Tesla FSD / Autopilot 最新进展
-   - Waymo / Robotaxi 运营与技术动态
-   - 其他玩家（Cruise、Zoox、Apollo 等）动态
-   - 政策监管与安全事件
-   - 技术突破与行业趋势
-
-7. **高价值链接** — 各平台帖子中提及的论文、GitHub 项目、博客等外部链接，附简要说明
-
-8. **趋势信号** — 300~400 字分析：综合 5 个平台数据，提炼 AI 和自动驾驶领域的技术话题演变、社区情绪、行业风向
-
-语言要求：中文，专业简洁，每个条目附上原始链接（标注来源平台）。
-`;
-}
-
-export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string): string {
-  const isAnyFirstRun = results.some((r) => r.isFirstRun);
-
-  const siteSections = results
-    .map(({ siteName, isFirstRun, newItems, totalDiscovered }) => {
-      const mode = isFirstRun
-        ? `首次全量抓取（sitemap 共 ${totalDiscovered} 条 URL，以下为最新 ${newItems.length} 篇正文内容）`
-        : `今日增量更新，共 ${newItems.length} 篇新内容`;
-
-      if (newItems.length === 0) return `## ${siteName}\n\n（${mode}，暂无可供分析的内容。）`;
-
-      const itemsText = newItems
-        .map((item) =>
-          [
-            `### [${item.title || item.url}](${item.url})`,
-            `- 分类: ${item.category} | 发布/更新: ${item.lastmod.slice(0, 10) || "未知"}`,
-            `- 内容节选: ${item.content || "（无法提取文本内容）"}`,
-          ].join("\n"),
-        )
-        .join("\n\n");
-
-      return `## ${siteName}（${mode}）\n\n${itemsText}`;
-    })
-    .join("\n\n---\n\n");
-
-  const firstRunNote = isAnyFirstRun
-    ? "本次为首次全量抓取，请重点梳理各站点的内容格局、历史脉络与核心主题，而非仅关注单篇文章。"
-    : "本次为增量更新，请聚焦今日新增内容，并结合上下文判断其战略意义。";
-
-  return `你是一位专注于 AI 领域的深度内容分析师，擅长从官方公告、技术博客、研究论文和产品文档中提炼战略信号。
-
-以下是 ${dateStr} 从 Anthropic（claude.com / anthropic.com）和 OpenAI（openai.com）官网抓取的内容，${firstRunNote}
-
-${siteSections}
-
----
-
-请生成一份详实的《AI 官方内容追踪报告》，包含以下部分：
-
-1. **今日速览** — 3~5 句话概括最重要的新发布或动向，点出核心亮点
-
-2. **Anthropic / Claude 内容精选** — 按分类（news / research / engineering / learn 等）逐条整理重要内容：
-   - 每篇用 2~4 句话提炼核心观点、技术细节或业务意义
-   - 标注发布日期和原文链接
-   - 如首次全量，按时间线梳理重要里程碑
-
-3. **OpenAI 内容精选** — 同上，按 research / release / company / safety 等分类整理
-
-4. **战略信号解读** — 基于两家公司的发布节奏和内容重点，分析：
-   - 各自近期的技术优先级（模型能力 / 安全 / 产品化 / 生态）
-   - 竞争态势：谁在引领议题，谁在跟进
-   - 对开发者和企业用户的潜在影响
-
-5. **值得关注的细节** — 从标题、措辞、发布时机中提取隐含信号，例如：
-   - 新兴词汇或话题的首次出现
-   - 某类主题的密集发布（可能预示产品节点）
-   - 政策、合规、安全方面的动向
-
-${isAnyFirstRun ? "6. **内容格局总览** — 首次全量独有：汇总两家公司各内容类别的数量分布，并说明各自的内容运营风格（学术导向 vs 产品导向 vs 用户故事等）\n\n" : ""}语言要求：中文，专业深入，内容详实，适合 AI 领域研究者、产品经理和技术决策者阅读。每个条目必须附上 GitHub/官网链接。
-`;
-}
-

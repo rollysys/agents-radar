@@ -1,97 +1,139 @@
 # AI 开源趋势日报 2026-03-06
 
-> 数据来源: GitHub Trending + GitHub Search API | 生成时间: 2026-03-06 02:23 UTC
+> 数据来源: GitHub Trending + GitHub Search API | 生成时间: 2026-03-06 00:13 UTC
 
 ---
 
-# 🤖 AI 开源趋势日报（2026-03-06）
+# AI 开源趋势日报 | 2026-03-06
 
 ---
 
-## 一、过滤结果
+## 第一步：AI 相关性过滤
 
-**Trending 榜单筛选结果**：11 个项目中，排除 **aquasecurity/trivy**（通用安全扫描工具，非 AI 项目），保留 **10 个 AI 相关项目**。
+**Trending 榜单筛选结果（11→9个AI相关）**：
+- ✅ 保留：agency-agents、seomachine、shannon、airi、AReaL、mcp-for-beginners、codebuff、MoneyPrinterV2、ReMe
+- ❌ 排除：trivy（安全扫描工具）、hve-core（Hyper-V工程组件，非AI核心）
 
----
-
-## 二、分类汇总
-
-### 🔧 AI 基础工具
-
-| 项目 | Stars | 今日新增 | 说明 |
-|------|-------|----------|------|
-| [microsoft/mcp-for-beginners](https://github.com/microsoft/mcp-for-beginners) | - | +137 | Microsoft 官方 MCP 入门课程，跨语言实战教程，专注模型上下文协议 |
-| [agentscope-ai/ReMe](https://github.com/agentscope-ai/ReMe) | - | +194 | 智能体记忆管理工具包，支持记忆检索与 refinement |
-| [microsoft/hve-core](https://github.com/microsoft/hve-core) | - | +11 | Hypervelocity Engineering 组件库，Copilot 工程化实践 |
-| [KeygraphHQ/shannon](https://github.com/KeygraphHQ/shannon) | - | +2930 | **今日增长冠军** — 全 autonomous AI pentester，96.15% XBOW 基准通过率 |
-
-### 🤖 AI 智能体 / 工作流
-
-| 项目 | Stars | 今日新增 | 说明 |
-|------|-------|----------|------|
-| [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) | - | +1468 | 多专家智能体协作平台，覆盖前端、Reddit 运营等垂直场景 |
-| [moeru-ai/airi](https://github.com/moeru-ai/airi) | - | +3006 | **今日增长第二** — 自托管 AI Companion，支持实时语音、Minecraft/Factorio |
-| [activepieces/activepieces](https://github.com/activepieces/activepieces) | 21,087 | 主题热 | 工作流自动化平台，集成 ~400 MCP 服务器 |
-| [trycua/cua](https://github.com/trycua/cua) | 12,865 | 主题热 | 开源 Computer-Use Agent 基础设施，支持 macOS/Linux/Windows |
-| [e2b-dev/E2B](https://github.com/e2b-dev/E2B) | 11,134 | 主题热 | 企业级安全沙箱，为 Agent 提供真实工具环境 |
-| [alibaba/OpenSandbox](https://github.com/alibaba/OpenSandbox) | 6,394 | 主题热 | 通用沙箱平台，支持 Coding/GUI Agent、RL 训练等多场景 |
-
-### 📦 AI 应用
-
-| 项目 | Stars | 今日新增 | 说明 |
-|------|-------|----------|------|
-| [TheCraigHewitt/seomachine](https://github.com/TheCraigHewitt/seomachine) | - | +310 | Claude Code SEO 内容创作工作流，长文博客生成与优化 |
-| [FujiwaraChoki/MoneyPrinterV2](https://github.com/FujiwaraChoki/MoneyPrinterV2) | - | +511 | 自动化在线盈利流程 |
-| [CodebuffAI/codebuff](https://github.com/CodebuffAI/codebuff) | - | +275 | 终端代码生成工具 |
-| [CherryHQ/cherry-studio](https://github.com/CherryHQ/cherry-studio) | 40,826 | 主题热 | AI 生产力工作室，集成 300+ Assistant，支持多模型统一接入 |
-| [waoowaooAI/waoowaoo](https://github.com/waoowaooAI/waoowaoo) | 8,358 | 主题热 | 工业级 AI 影视生产平台，好莱坞标准工作流 |
-
-### 🧠 大模型 / 训练
-
-| 项目 | Stars | 今日新增 | 说明 |
-|------|-------|----------|------|
-| [inclusionAI/AReaL](https://github.com/inclusionAI/AReaL) | - | +173 | Lightning-Fast RL 框架，专注 LLM Reasoning 与 Agent 训练 |
-| [ollama/ollama](https://github.com/ollama/ollama) | 164,210 | 主题热 | 本地大模型运行标杆，支持 Kimi-K2.5、GLM-5、DeepSeek 等 |
-| [hiyouga/LlamaFactory](https://github.com/hiyouga/LlamaFactory) | 67,936 | 主题热 | 统一高效微调框架，支持 100+ LLM/VLM，ACL 2024 |
-| [vllm-project/vllm](https://github.com/vllm-project/vllm) | 72,148 | 主题热 | 高吞吐 LLM 推理与服务引擎 |
-| [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | 87,223 | 主题热 | PyTorch 从零实现 ChatGPT 式 LLM |
-
-### 🔍 RAG / 知识库
-
-| 项目 | Stars | 今日新增 | 说明 |
-|------|-------|----------|------|
-| [meilisearch/meilisearch](https://github.com/meilisearch/meilisearch) | 56,198 | 主题热 | 闪电般快速的 AI 混合搜索 API |
-| [Mintplex-Labs/anything-llm](https://github.com/Mintplex-Labs/anything-llm) | 55,666 | 主题热 | 全栈 AI 生产力加速器，端侧隐私优先 |
-| [milvus-io/milvus](https://github.com/milvus-io/milvus) | 43,151 | 主题热 | 云原生高性能向量数据库 |
-| [qdrant/qdrant](https://github.com/qdrant/qdrant) | 29,317 | 主题热 | 大规模向量搜索与数据库 |
-| [mem0ai/mem0](https://github.com/mem0ai/mem0) | 48,838 | 主题热 | AI Agent 通用记忆层 |
-| [Shubhamsaboo/awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps) | 99,855 | 主题热 | LLM Apps 与 RAG 优秀实践集 |
+**主题搜索**：79个仓库均为AI相关，全部保留
 
 ---
 
-## 三、今日速览
+## 第二步：多维分类
 
-今日 AI 开源呈现三大热点：**Agent 基础设施持续爆发**（shannon、airi、agency-agents 合计新增超 6,400 stars），**MCP 协议加速普及**（Microsoft 官方课程上线），以及**垂直领域 Agent 兴起**（AI Pentester、AI 影视、AI SEO）。向量数据库与 RAG 依然是社区基础设施热门，但新焦点已转向 Agent Memory 与 Computer-Use 方向。
+| 项目 | 主要分类 | 次要分类 |
+|:---|:---|:---|
+| agency-agents | 🤖 AI智能体/工作流 | 📦 AI应用 |
+| seomachine | 📦 AI应用 | 🤖 AI智能体/工作流 |
+| shannon | 🤖 AI智能体/工作流 | 📦 AI应用 |
+| airi | 📦 AI应用 | 🤖 AI智能体/工作流 |
+| AReaL | 🧠 大模型/训练 | |
+| mcp-for-beginners | 🔧 AI基础工具 | 🤖 AI智能体/工作流 |
+| codebuff | 🔧 AI基础工具 | 🤖 AI智能体/工作流 |
+| MoneyPrinterV2 | 📦 AI应用 | |
+| ReMe | 🔍 RAG/知识库 | 🤖 AI智能体/工作流 |
+| dify/langchain/open-webui 等 | 🔧 AI基础工具 | 🤖 AI智能体/工作流 |
+| mem0/claude-mem/cognee 等 | 🔍 RAG/知识库 | 🤖 AI智能体/工作流 |
+| milvus/qdrant/chroma 等 | 🔍 RAG/知识库 | |
+| ollama/vllm/transformers 等 | 🧠 大模型/训练 | 🔧 AI基础工具 |
+| browser-use/OpenHands 等 | 🤖 AI智能体/工作流 | 🔧 AI基础工具 |
+
+---
+
+## 第三步：完整报告
+
+### 1. 今日速览
+
+今日AI开源领域呈现**"智能体工具链爆发"**态势：微软MCP教程登榜标志协议标准化加速；网络安全AI智能体Shannon以96%攻击成功率刷新自主渗透测试标杆；多智能体协作框架agency-agents单日获1468星，显示开发者对"AI团队"模式的强烈需求。与此同时，记忆层技术（ReMe、mem0）与Claude Code生态插件持续升温，AI编程助手正从"单点工具"向"全流程记忆增强系统"演进。
 
 ---
 
-## 四、趋势信号分析
+### 2. 各维度热门项目
 
-今日 Trending 榜单释放明确信号：**AI Agent 正在从通用框架向垂直场景深度分化**。shannon 定位于 autonomous pentester，airi 瞄准陪伴与游戏场景，seomachine 专注 SEO 内容——每个项目都有清晰的垂直定位而非泛化 Agent。
+#### 🔧 AI 基础工具（框架、SDK、推理引擎、开发工具、CLI）
 
-技术栈层面，MCP（Model Context Protocol）首次出现官方入门课程，Microsoft 正在推动其成为 Agent 标准化通信协议。RL for Reasoning（AReaL）代表训练范式新方向，强调 lightning-fast 强化学习而非传统预训练。
+| 项目 | Stars | 今日新增 | 一句话说明 |
+|:---|:---|:---|:---|
+| [microsoft/mcp-for-beginners](https://github.com/microsoft/mcp-for-beginners) | 新上榜 | +137 | 微软官方MCP入门课程，覆盖.NET/Java/TS/Rust/Python五语言，推动Model Context Protocol成为AI工具互操作标准 |
+| [CodebuffAI/codebuff](https://github.com/CodebuffAI/codebuff) | 新上榜 | +275 | 终端代码生成工具，主打"自然语言→可运行代码"的极简交互 |
+| [langgenius/dify](https://github.com/langgenius/dify) | 131,337 | - | 生产级Agent工作流开发平台，RAG+Agent双引擎驱动 |
+| [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | 128,372 | - | Agent工程平台事实标准，今日主题搜索仍居榜首 |
+| [open-webui/open-webui](https://github.com/open-webui/open-webui) | 125,876 | - | 支持Ollama/OpenAPI的统一AI界面，本地化部署首选 |
+| [ollama/ollama](https://github.com/ollama/ollama) | 164,200 | - | 本地大模型运行标杆，已支持Kimi-K2.5/GLM-5/DeepSeek等最新模型 |
+| [vllm-project/vllm](https://github.com/vllm-project/vllm) | 72,137 | - | 高吞吐LLM推理引擎，生产环境部署核心基础设施 |
 
-值得关注的是 **Computer-Use Agent 基础设施正在补齐**：cua、OpenSandbox、E2B 分别从沙箱、SDK、benchmark 角度构建完整生态，目标是让 AI 能像人一样操作完整桌面环境。
+#### 🤖 AI 智能体/工作流（Agent 框架、自动化、多智能体）
+
+| 项目 | Stars | 今日新增 | 一句话说明 |
+|:---|:---|:---|:---|
+| [msitarzewski/agency-agents](https://github.com/msitarzewski/agency-agents) | 新上榜 | **+1468** | "完整AI agency"多智能体系统，含前端专家、社区运营等角色化Agent，今日增速冠军 |
+| [KeygraphHQ/shannon](https://github.com/KeygraphHQ/shannon) | 新上榜 | **+2930** | 全自主AI渗透测试工具，XBOW基准96.15%成功率，网络安全Agent新标杆 |
+| [browser-use/browser-use](https://github.com/browser-use/browser-use) | 79,687 | - | 让AI Agent操控浏览器的核心基础设施，Web自动化领域头部项目 |
+| [OpenHands/OpenHands](https://github.com/OpenHands/OpenHands) | 68,619 | - | AI驱动软件开发平台，"AI程序员"方向代表性开源方案 |
+| [trycua/cua](https://github.com/trycua/cua) | 12,861 | - | 计算机使用Agent（Computer-Use Agent）开源基础设施，支持macOS/Linux/Windows桌面控制 |
+| [activepieces/activepieces](https://github.com/activepieces/activepieces) | 21,086 | - | 集成~400个MCP服务器的AI工作流自动化平台 |
+| [CopilotKit/CopilotKit](https://github.com/CopilotKit/CopilotKit) | 29,186 | - | React/Angular前端Agent框架，专注生成式UI与嵌入式AI助手 |
+
+#### 📦 AI 应用（具体应用产品、垂直场景解决方案）
+
+| 项目 | Stars | 今日新增 | 一句话说明 |
+|:---|:---|:---|:---|
+| [moeru-ai/airi](https://github.com/moeru-ai/airi) | 新上榜 | **+3006** | 自托管"虚拟伴侣"系统，支持实时语音、Minecraft/Factorio游戏交互，今日新增星标最高 |
+| [TheCraigHewitt/seomachine](https://github.com/TheCraigHewitt/seomachine) | 新上榜 | +310 | Claude Code专用SEO长文工作区，垂直场景AI内容生产工具 |
+| [FujiwaraChoki/MoneyPrinterV2](https://github.com/FujiwaraChoki/MoneyPrinterV2) | 新上榜 | +511 | "自动化在线赚钱"系统，AI驱动内容变现的争议性但高关注项目 |
+| [CherryHQ/cherry-studio](https://github.com/CherryHQ/cherry-studio) | 40,820 | - | 300+助手的AI生产力工作室，统一接入主流LLM |
+| [waoowaooAI/waoowaoo](https://github.com/waoowaooAI/waoowaoo) | 8,328 | - | 工业级AI影视生产平台，从短片到真人电影的好莱坞标准工作流 |
+| [presenton/presenton](https://github.com/presenton/presenton) | 4,240 | - | 开源AI演示文稿生成器，Gamma/Beautiful AI替代方案 |
+
+#### 🧠 大模型/训练（模型权重、训练框架、微调工具）
+
+| 项目 | Stars | 今日新增 | 一句话说明 |
+|:---|:---|:---|:---|
+| [inclusionAI/AReaL](https://github.com/inclusionAI/AReaL) | 新上榜 | +173 | 轻量化RL训练框架，专注LLM推理与Agent能力强化，"简单灵活"定位 |
+| [huggingface/transformers](https://github.com/huggingface/transformers) | 157,449 | - | 模型定义框架标准，覆盖文本/视觉/音频/多模态全领域 |
+| [hiyouga/LlamaFactory](https://github.com/hiyouga/LlamaFactory) | 67,931 | - | 100+模型统一高效微调（ACL 2024），LoRA/QLoRA等方案集成 |
+| [rasbt/LLMs-from-scratch](https://github.com/rasbt/LLMs-from-scratch) | 87,213 | - | 从零实现ChatGPT式LLM，PyTorch教学标杆 |
+| [skyzh/tiny-llm](https://github.com/skyzh/tiny-llm) | 3,890 | - | Apple Silicon上的LLM推理服务课程，vLLM+Qwen实战 |
+| [0xPlaygrounds/rig](https://github.com/0xPlaygrounds/rig) | 6,277 | - | Rust模块化LLM应用框架，系统级性能导向 |
+
+#### 🔍 RAG/知识库（向量数据库、检索增强、知识管理）
+
+| 项目 | Stars | 今日新增 | 一句话说明 |
+|:---|:---|:---|:---|
+| [agentscope-ai/ReMe](https://github.com/agentscope-ai/ReMe) | 新上榜 | +194 | Agent记忆管理工具包，"记住我、精炼我"的主动式记忆架构 |
+| [mem0ai/mem0](https://github.com/mem0ai/mem0) | 48,832 | - | AI Agent通用记忆层，跨会话长期记忆的行业标准方案 |
+| [thedotmack/claude-mem](https://github.com/thedotmack/claude-mem) | 33,046 | - | Claude Code会话记忆插件，AI压缩+上下文注入，编程场景深度优化 |
+| [topoteretes/cognee](https://github.com/topoteretes/cognee) | 12,961 | - | 6行代码构建Agent记忆知识引擎，低门槛RAG新选择 |
+| [infiniflow/ragflow](https://github.com/infiniflow/ragflow) | 74,241 | - | 开源RAG引擎+Agent能力融合，上下文层构建领先方案 |
+| [milvus-io/milvus](https://github.com/milvus-io/milvus) | 43,150 | - | 云原生向量数据库，大规模ANN搜索基础设施 |
+| [qdrant/qdrant](https://github.com/qdrant/qdrant) | 29,312 | - | 高性能向量搜索引擎，Rust实现，云原生架构 |
 
 ---
 
-## 五、社区关注热点
+### 3. 趋势信号分析（约280字）
 
-- 🔥 **KeygraphHQ/shannon** — AI 安全测试进入 autonomous 时代，XBOW 基准 96% 通过率值得安全团队跟进
-- 🔥 **moeru-ai/airi** — 开源 AI Companion 新标杆，实时语音+游戏能力展示 Agent 消费化潜力
-- 🔥 **microsoft/mcp-for-beginners** — MCP 协议学习窗口期，早入局者可获生态先发优势
-- 🧠 **trycua/cua** + **alibaba/OpenSandbox** — Computer-Use Agent 基础设施组合，操作系统级 AI Agent 呼之欲出
-- 📚 **hiyouga/LlamaFactory** — 微调 100+ 模型的统一方案，企业私有化部署刚需
+**智能体基础设施进入"协议标准化+垂直场景"双轨爆发期**。今日两大信号尤为关键：一是微软官方MCP教程登榜，标志着Model Context Protocol从社区提案走向企业级标准，AI工具互操作性难题有望系统性解决；二是网络安全AI智能体Shannon以96%攻击成功率刷新自主渗透测试能力边界，证明Agent在**高风险决策场景**的实用化突破。
+
+**新兴技术栈方面**，Rust在AI基础设施层加速渗透——qdrant向量库、rig LLM框架、memvid记忆层均选用Rust，系统级性能与内存安全成为新刚需。同时，**"记忆层"（Memory Layer）**正从RAG的附属功能升级为独立架构：ReMe、claude-mem、cognee三项目同日活跃，显示开发者对Agent长期记忆、跨会话连贯性的迫切需求。
+
+与行业事件关联上，Claude Code生态持续扩张（seomachine、claude-mem、everything-claude-code），Anthropic的编程Agent正形成插件化工具链；而AReaL的轻量RL框架则呼应了DeepSeek-R1引发的推理模型训练热潮。
 
 ---
-*本日报由 [agents-radar](https://github.com/rollysys/agents-radar) 自动生成。*
+
+### 4. 社区关注热点
+
+- **🔥 [KeygraphHQ/shannon](https://github.com/KeygraphHQ/shannon)** — 网络安全Agent新标杆，96%自主渗透成功率证明AI在"红队测试"场景已具备实用价值，安全+AI交叉领域值得深耕
+
+- **🔥 [moeru-ai/airi](https://github.com/moeru-ai/airi)** — "虚拟伴侣+游戏Agent"融合形态，支持Minecraft/Factorio实时交互，AI角色从对话工具向"数字生命"演进的风向标
+
+- **🔥 [microsoft/mcp-for-beginners](https://github.com/microsoft/mcp-for-beginners)** — 微软背书MCP协议，五语言覆盖降低接入门槛，建议所有AI工具开发者关注以保障未来互兼容性
+
+- **🔥 [agentscope-ai/ReMe](https://github.com/agentscope-ai/ReMe)** + **[thedotmack/claude-mem](https://github.com/thedotmack/claude-mem)** — 记忆层工具同日爆发，Agent"遗忘问题"进入工程化解决阶段，长期记忆架构设计成为Agent开发核心技能
+
+- **🔥 [inclusionAI/AReaL](https://github.com/inclusionAI/AReaL)** — 轻量RL训练框架，"推理模型"训练门槛降低的信号，跟进DeepSeek-R1技术路线的实用工具
+
+---
+
+*报告生成时间：2026-03-06 | 数据来源：GitHub Trending & Search API*
+
+---
+*本日报由 [agents-radar](https://github.com/duanyytop/agents-radar) 自动生成。*

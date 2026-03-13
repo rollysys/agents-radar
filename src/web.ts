@@ -12,6 +12,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { sleep } from "./date.ts";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -124,25 +125,21 @@ async function httpGet(url: string): Promise<string> {
   }
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 // ---------------------------------------------------------------------------
 // Sitemap parsing (plain-text XML; no DOM needed)
 // ---------------------------------------------------------------------------
 
-function parseSitemapUrls(xml: string): Array<{ loc: string; lastmod?: string }> {
+export function parseSitemapUrls(xml: string): Array<{ loc: string; lastmod?: string }> {
   const results: Array<{ loc: string; lastmod?: string }> = [];
   for (const block of xml.match(/<url>[\s\S]*?<\/url>/g) ?? []) {
-    const loc     = block.match(/<loc>\s*(.*?)\s*<\/loc>/)?.[1];
+    const loc = block.match(/<loc>\s*(.*?)\s*<\/loc>/)?.[1];
     const lastmod = block.match(/<lastmod>\s*(.*?)\s*<\/lastmod>/)?.[1];
     if (loc) results.push({ loc, lastmod });
   }
   return results;
 }
 
-function isSitemapIndex(xml: string): boolean {
+export function isSitemapIndex(xml: string): boolean {
   return /<sitemapindex[\s>]/.test(xml);
 }
 
@@ -150,17 +147,19 @@ function isSitemapIndex(xml: string): boolean {
 // HTML content extraction
 // ---------------------------------------------------------------------------
 
-function extractTitle(html: string): string {
+export function extractTitle(html: string): string {
   return (
     // Prefer OpenGraph title for cleaner strings
-    html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']{1,200})["']/i)?.[1] ??
-    html.match(/<meta[^>]+content=["']([^"']{1,200})["'][^>]+property=["']og:title["']/i)?.[1] ??
-    html.match(/<title[^>]*>([^<]{1,200})<\/title>/i)?.[1] ??
-    ""
-  ).trim();
+    (
+      html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']{1,200})["']/i)?.[1] ??
+      html.match(/<meta[^>]+content=["']([^"']{1,200})["'][^>]+property=["']og:title["']/i)?.[1] ??
+      html.match(/<title[^>]*>([^<]{1,200})<\/title>/i)?.[1] ??
+      ""
+    ).trim()
+  );
 }
 
-function extractText(html: string): string {
+export function extractText(html: string): string {
   // Prefer <main> or <article> to avoid nav/header/footer boilerplate
   const source =
     html.match(/<main[^>]*>([\s\S]*?)<\/main>/i)?.[1] ??
@@ -182,7 +181,7 @@ function extractText(html: string): string {
     .slice(0, MAX_CONTENT_LENGTH);
 }
 
-function urlCategory(url: string): string {
+export function urlCategory(url: string): string {
   try {
     return new URL(url).pathname.split("/").filter(Boolean)[0] ?? "article";
   } catch {
@@ -191,7 +190,7 @@ function urlCategory(url: string): string {
 }
 
 /** Derive a human-readable title from the last URL path segment. */
-function titleFromUrl(url: string): string {
+export function titleFromUrl(url: string): string {
   try {
     const slug = new URL(url).pathname.split("/").filter(Boolean).pop() ?? "";
     return slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -204,9 +203,7 @@ function titleFromUrl(url: string): string {
 // URL discovery
 // ---------------------------------------------------------------------------
 
-async function discoverUrls(
-  site: "anthropic" | "openai",
-): Promise<Array<{ loc: string; lastmod?: string }>> {
+async function discoverUrls(site: "anthropic" | "openai"): Promise<Array<{ loc: string; lastmod?: string }>> {
   const cfg = SITE_CONFIGS[site];
   const results: Array<{ loc: string; lastmod?: string }> = [];
 
@@ -250,10 +247,10 @@ async function discoverUrls(
 
 const STATE_FILE = path.join("digests", "web-state.json");
 
-function emptyState(): WebState {
+export function emptyState(): WebState {
   return {
     anthropic: { lastChecked: "", seenUrls: {} },
-    openai:    { lastChecked: "", seenUrls: {} },
+    openai: { lastChecked: "", seenUrls: {} },
   };
 }
 
@@ -278,7 +275,7 @@ export async function fetchSiteContent(
   site: "anthropic" | "openai",
   state: WebState,
 ): Promise<WebFetchResult> {
-  const cfg       = SITE_CONFIGS[site];
+  const cfg = SITE_CONFIGS[site];
   const siteState = state[site];
   const isFirstRun = Object.keys(siteState.seenUrls).length === 0;
 
@@ -307,7 +304,7 @@ export async function fetchSiteContent(
 
   console.log(
     `  [web/${site}] ${isFirstRun ? "First run" : "Incremental"}: ` +
-    `${newUrls.length} new URLs, fetching content for ${toFetch.length}`,
+      `${newUrls.length} new URLs, fetching content for ${toFetch.length}`,
   );
 
   // Build items — either from full page fetches or from sitemap metadata only
@@ -315,10 +312,10 @@ export async function fetchSiteContent(
   if (cfg.metadataOnly) {
     for (const { loc, lastmod } of toFetch) {
       items.push({
-        url:      loc,
-        title:    titleFromUrl(loc),
-        lastmod:  lastmod ?? "",
-        content:  "",
+        url: loc,
+        title: titleFromUrl(loc),
+        lastmod: lastmod ?? "",
+        content: "",
         site,
         category: urlCategory(loc),
       });
@@ -329,10 +326,10 @@ export async function fetchSiteContent(
       try {
         const html = await httpGet(loc);
         items.push({
-          url:      loc,
-          title:    extractTitle(html),
-          lastmod:  lastmod ?? "",
-          content:  extractText(html),
+          url: loc,
+          title: extractTitle(html),
+          lastmod: lastmod ?? "",
+          content: extractText(html),
           site,
           category: urlCategory(loc),
         });

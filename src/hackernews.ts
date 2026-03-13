@@ -40,10 +40,21 @@ const HITS_PER_QUERY = 50;
 
 const QUERIES = [
   // AI (original)
-  "AI", "LLM", "GPT", "Claude", "OpenAI", "Anthropic", "machine learning",
-  "deep learning", "neural network",
+  "AI",
+  "LLM",
+  "GPT",
+  "Claude",
+  "OpenAI",
+  "Anthropic",
+  "machine learning",
+  "deep learning",
+  "neural network",
   // Autonomous driving (new)
-  "autonomous driving", "self-driving", "Tesla FSD", "Waymo", "robotaxi",
+  "autonomous driving",
+  "self-driving",
+  "Tesla FSD",
+  "Waymo",
+  "robotaxi",
 ];
 
 // ---------------------------------------------------------------------------
@@ -134,9 +145,7 @@ export async function fetchHackerNewsData(since: Date): Promise<HNFetchResult> {
     }))
     .sort((a, b) => b.score - a.score);
 
-  console.log(
-    `  [hn] queries: ${QUERIES.length}, fetched: ${allHits.length}, errors: ${errors.length}`,
-  );
+  console.log(`  [hn] queries: ${QUERIES.length}, fetched: ${allHits.length}, errors: ${errors.length}`);
 
   return { stories, totalFetched: allHits.length, errors };
 }

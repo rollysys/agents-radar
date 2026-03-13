@@ -2,13 +2,22 @@
  * LLM invocation, file I/O, and GitHub issue creation helpers.
  */
 
-import Anthropic from "@anthropic-ai/sdk";
 import fs from "node:fs";
 import path from "node:path";
+import { type Lang, FOOTER } from "./i18n.ts";
+import { sleep } from "./date.ts";
 
-const MODEL = process.env["ANTHROPIC_MODEL"] ?? "claude-sonnet-4-6";
-const API_KEY = process.env["ANTHROPIC_API_KEY"] ?? "";
-const BASE_URL = process.env["ANTHROPIC_BASE_URL"];
+// ---------------------------------------------------------------------------
+// LLM token budget constants
+// ---------------------------------------------------------------------------
+
+export const LLM_TOKENS_DEFAULT = 4096;
+export const LLM_TOKENS_TRENDING = 6144;
+export const LLM_TOKENS_WEB = 8192;
+export const LLM_TOKENS_ROLLUP = 8192;
+import { type LlmProvider, createProvider } from "./providers/index.ts";
+
+const provider: LlmProvider = createProvider();
 
 // ---------------------------------------------------------------------------
 // Concurrency limiter — prevents rate-limit (429) errors when many LLM calls
@@ -21,64 +30,52 @@ let llmSlots = LLM_CONCURRENCY;
 const llmQueue: Array<() => void> = [];
 
 function acquireSlot(): Promise<void> {
-  if (llmSlots > 0) { llmSlots--; return Promise.resolve(); }
+  if (llmSlots > 0) {
+    llmSlots--;
+    return Promise.resolve();
+  }
   return new Promise((resolve) => llmQueue.push(resolve));
 }
 
 function releaseSlot(): void {
   const next = llmQueue.shift();
-  if (next) { next(); } else { llmSlots++; }
+  if (next) {
+    next();
+  } else {
+    llmSlots++;
+  }
 }
 
 // ---------------------------------------------------------------------------
 // LLM
 // ---------------------------------------------------------------------------
 
-export async function callLlm(prompt: string, maxTokens = 4096): Promise<string> {
-  await acquireSlot();
-  try {
-    const isMinimax = BASE_URL?.includes("minimax");
+const MAX_RETRIES = 3;
+const RETRY_BASE_MS = 5_000; // 5 s, 10 s, 20 s
 
-    if (isMinimax) {
-      // Minimax: 使用 Bearer token，Anthropic 消息格式
-      const response = await fetch(`${BASE_URL}/v1/messages`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          max_tokens: maxTokens,
-          messages: [{ role: "user", content: prompt }],
-        }),
-      });
+export function is429(err: unknown): boolean {
+  return (err as { status?: number })?.status === 429 || String(err).includes("429");
+}
 
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`API error: ${response.status} ${error}`);
+export async function callLlm(prompt: string, maxTokens = LLM_TOKENS_DEFAULT): Promise<string> {
+  for (let attempt = 0; ; attempt++) {
+    await acquireSlot();
+    let released = false;
+    try {
+      return await provider.call(prompt, maxTokens);
+    } catch (err) {
+      if (attempt < MAX_RETRIES && is429(err)) {
+        releaseSlot();
+        released = true;
+        const wait = RETRY_BASE_MS * 2 ** attempt;
+        console.error(`[llm] 429 — retry ${attempt + 1}/${MAX_RETRIES} in ${wait / 1000}s...`);
+        await sleep(wait);
+        continue;
       }
-
-      const data = await response.json();
-      const textBlock = data.content?.find((c: any) => c.type === "text");
-      const block = textBlock || data.content?.[0];
-      if (!block?.text) throw new Error("Unexpected response type from LLM");
-      return block.text;
-    } else {
-      // Anthropic 官方 或 GLM Anthropic 兼容接口（bigmodel.cn/api/anthropic）
-      // 均通过 Anthropic SDK + ANTHROPIC_BASE_URL 自动路由
-      const client = new Anthropic();
-      const message = await client.messages.create({
-        model: MODEL,
-        max_tokens: maxTokens,
-        messages: [{ role: "user", content: prompt }],
-      });
-      const block = message.content[0];
-      if (block?.type !== "text") throw new Error("Unexpected response type from LLM");
-      return block.text;
+      throw err;
+    } finally {
+      if (!released) releaseSlot();
     }
-  } finally {
-    releaseSlot();
   }
 }
 
@@ -93,9 +90,8 @@ export function saveFile(content: string, ...segments: string[]): string {
   return filepath;
 }
 
-export function autoGenFooter(): string {
+export function autoGenFooter(lang: Lang = "zh"): string {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
-  return digestRepo
-    ? `\n\n---\n*本日报由 [agents-radar](https://github.com/${digestRepo}) 自动生成。*`
-    : "";
+  if (!digestRepo) return "";
+  return `\n\n---\n*${FOOTER.autoGen[lang]} [agents-radar](https://github.com/${digestRepo})${lang === "en" ? "." : " 自动生成。"}*`;
 }

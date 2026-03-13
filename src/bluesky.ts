@@ -49,19 +49,19 @@ interface TrackedAuthor {
 
 const TRACKED_AUTHORS: TrackedAuthor[] = [
   // AI Research
-  { handle: "karpathy.bsky.social",          category: "AI Research" },
-  { handle: "yann-lecun.bsky.social",         category: "AI Research" },
-  { handle: "drfeifei.bsky.social",           category: "AI Research" },
-  { handle: "melaniemitchell.bsky.social",    category: "AI Research" },
+  { handle: "karpathy.bsky.social", category: "AI Research" },
+  { handle: "yann-lecun.bsky.social", category: "AI Research" },
+  { handle: "drfeifei.bsky.social", category: "AI Research" },
+  { handle: "melaniemitchell.bsky.social", category: "AI Research" },
   // AI Engineering
-  { handle: "simonwillison.net",              category: "AI Engineering" },
-  { handle: "thomwolf.bsky.social",           category: "AI Engineering" },
-  { handle: "swyx.io",                        category: "AI Engineering" },
+  { handle: "simonwillison.net", category: "AI Engineering" },
+  { handle: "thomwolf.bsky.social", category: "AI Engineering" },
+  { handle: "swyx.io", category: "AI Engineering" },
   // AI Education
-  { handle: "howard.fm",                      category: "AI Education" },
-  { handle: "sebastianraschka.com",           category: "AI Education" },
+  { handle: "howard.fm", category: "AI Education" },
+  { handle: "sebastianraschka.com", category: "AI Education" },
   // AI Ethics
-  { handle: "timnitgebru.bsky.social",        category: "AI Ethics" },
+  { handle: "timnitgebru.bsky.social", category: "AI Ethics" },
 ];
 
 const SEARCH_KEYWORDS = [
@@ -154,14 +154,12 @@ function feedItemToPost(item: BskyFeedPost, source: string): BlueskyPost | null 
 // Fetch author feed (filter reposts, only posts since cutoff)
 // ---------------------------------------------------------------------------
 
-async function fetchAuthorPosts(
-  handle: string,
-  since: Date,
-): Promise<BlueskyPost[]> {
-  const data = await bskyGet<{ feed: BskyFeedPost[] }>(
-    "app.bsky.feed.getAuthorFeed",
-    { actor: handle, limit: "30", filter: "posts_no_replies" },
-  );
+async function fetchAuthorPosts(handle: string, since: Date): Promise<BlueskyPost[]> {
+  const data = await bskyGet<{ feed: BskyFeedPost[] }>("app.bsky.feed.getAuthorFeed", {
+    actor: handle,
+    limit: "30",
+    filter: "posts_no_replies",
+  });
 
   const posts: BlueskyPost[] = [];
   for (const item of data.feed ?? []) {
@@ -190,15 +188,14 @@ interface BskySearchResult {
   }>;
 }
 
-async function searchPosts(
-  keyword: string,
-  since: Date,
-): Promise<BlueskyPost[]> {
+async function searchPosts(keyword: string, since: Date): Promise<BlueskyPost[]> {
   const sinceStr = since.toISOString().replace(/\.\d{3}Z$/, "Z");
-  const data = await bskyGet<BskySearchResult>(
-    "app.bsky.feed.searchPosts",
-    { q: keyword, sort: "top", since: sinceStr, limit: "25" },
-  );
+  const data = await bskyGet<BskySearchResult>("app.bsky.feed.searchPosts", {
+    q: keyword,
+    sort: "top",
+    since: sinceStr,
+    limit: "25",
+  });
 
   const posts: BlueskyPost[] = [];
   for (const p of data.posts ?? []) {
@@ -278,7 +275,7 @@ export async function fetchBlueskyData(since: Date): Promise<BlueskyFetchResult>
   for (const err of errors) console.error(`  ${err}`);
   console.log(
     `  [bluesky] authors: ${authorPosts.length}, search: ${searchPostsFlat.length}, ` +
-    `deduped: ${deduped.length}, errors: ${errors.length}`,
+      `deduped: ${deduped.length}, errors: ${errors.length}`,
   );
 
   return {

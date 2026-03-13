@@ -100,10 +100,7 @@ interface RedditListing {
 // Fetch subreddit
 // ---------------------------------------------------------------------------
 
-async function fetchSubreddit(
-  subreddit: string,
-  since: Date,
-): Promise<RedditPost[]> {
+async function fetchSubreddit(subreddit: string, since: Date): Promise<RedditPost[]> {
   const sinceTs = Math.floor(since.getTime() / 1000);
   const data = await redditGet<RedditListing>(
     `https://old.reddit.com/r/${subreddit}/hot.json?limit=${POSTS_PER_SUB}&raw_json=1`,
@@ -154,9 +151,7 @@ export async function fetchRedditData(since: Date): Promise<RedditFetchResult> {
   // Sort by score descending
   deduped.sort((a, b) => b.score - a.score);
 
-  console.log(
-    `  [reddit] fetched: ${allPosts.length}, deduped: ${deduped.length}, errors: ${errors.length}`,
-  );
+  console.log(`  [reddit] fetched: ${allPosts.length}, deduped: ${deduped.length}, errors: ${errors.length}`);
 
   return { posts: deduped, totalFetched: allPosts.length, errors };
 }

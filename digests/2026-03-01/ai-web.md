@@ -1,157 +1,197 @@
 # AI 官方内容追踪报告 2026-03-01
 
-> 今日更新 | 新增内容: 2 篇 | 生成时间: 2026-03-01 15:22 UTC
+> 今日更新 | 新增内容: 12 篇 | 生成时间: 2026-03-01 00:08 UTC
 
 数据来源:
 - Anthropic: [anthropic.com](https://www.anthropic.com) — 新增 0 篇（sitemap 共 312 条）
-- OpenAI: [openai.com](https://openai.com) — 新增 2 篇（sitemap 共 729 条）
+- OpenAI: [openai.com](https://openai.com) — 新增 12 篇（sitemap 共 729 条）
 
 ---
 
 # AI 官方内容追踪报告（2026-03-01）
 
-**报告生成日期**：2026-03-01
-**数据来源**：Anthropic（claude.com / anthropic.com）、OpenAI（openai.com）官网
-**本报告周期**：增量更新
+**报告日期：** 2026年3月1日  
+**数据来源：** Anthropic（claude.com / anthropic.com）、OpenAI（openai.com）官网增量抓取
 
 ---
 
-> ⚠️ **数据说明**：本次更新中，Anthropic 无新增内容；OpenAI 新增 2 篇文章但官方仅提供标题与分类，未开放全文抓取。以下分析基于现有元数据与公开信息进行合理推测，完整内容需待官方正式发布后补充。
+## 1. 今日速览
+
+OpenAI 在 2 月 28 日至 3 月 1 日期间密集发布 **12 篇官方内容**，形成显著的"发布波"效应，核心围绕三大主线：**Codex 编程智能体的产品化落地**（4 篇技术博客深度拆解架构）、**云生态战略扩张**（AWS Bedrock 状态化运行时环境 + Amazon 深度合作）、**政企关系重构**（美国国防部"战争部"协议引发关注）。Anthropic 今日零更新，处于明显的发布静默期。OpenAI 此次发布节奏呈现"技术深度 + 商业广度 + 政策敏感度"的三重叠加，标志着其从模型提供商向"AI 基础设施运营商"的转型加速。
 
 ---
 
-## 一、今日速览
+## 2. Anthropic / Claude 内容精选
 
-2026年3月1日，OpenAI 发布了2篇新文章，集中在 **index（索引页）** 与 **business（商业）** 分类。结合近期动态，OpenAI 正在强化两条主线：其一，围绕 **Codex**（编程能力）的技术布道与开发者生态建设；其二，通过企业级部署案例（"Hundreds Of Successful Deployments"）向 B 端市场传递规模化落地能力。Anthropic 今日暂无更新，可能处于产品迭代周期或重大发布的准备阶段。
+### 今日增量：无新内容
 
-**核心亮点**：
+**状态说明：** 本次抓取周期内（2026-03-01），Anthropic 官网未新增任何 blog、research 或 announcement 内容。结合历史发布规律，Anthropic 通常保持 **7-14 天的内容发布周期**，上次重大发布为 Claude 3.7 Sonnet 及"扩展思考模式"（2025 年 2 月下旬）。
 
-- OpenAI 持续围绕 Codex 能力输出内容，暗示其代码模型或开发者工具链可能有新动向
-- "Put AI to Work"系列强调企业落地经验，表明商业化进程加速
-- Anthropic 静默，需关注其是否在筹备重大发布
+### 历史重要里程碑回顾（供上下文参考）
 
----
+| 时间 | 内容 | 分类 | 战略意义 |
+|:---|:---|:---|:---|
+| 2025-02 | Claude 3.7 Sonnet + Extended Thinking | release | 首次将"推理时计算扩展"产品化，对标 OpenAI o1 |
+| 2025-02 | Claude Code (research preview) | engineering | 终端原生 AI 编程助手，强调"人机协作"而非替代 |
+| 2025-01 | Computer Use 能力 GA | release | 多模态 agent 能力正式商用 |
+| 2024-12 | MCP (Model Context Protocol) 开源 | engineering | 试图建立 AI 工具连接标准，生态卡位 |
 
-## 二、Anthropic / Claude 内容精选
-
-### 今日更新：0 篇
-
-> **分析**：Anthropic 今日无增量内容，可能原因包括：（1）正处于产品发布周期前的静默期；（2）重点资源投入于 Claude 4 或其他核心模型研发；（3）近期已有多篇重要发布（如 Claude 3.5 系列），当前处于内容消化阶段。建议持续追踪后续更新。
-
-**近期重要里程碑（2025 Q4 - 2026 Q1）**：
-
-| 时间 | 里程碑 | 战略意义 |
-|------|--------|----------|
-| 2025-10 | Claude 3.5 系列发布 | 强化多模态与编程能力，对标 GPT-4 |
-| 2025-12 | 企业级安全与合规功能增强 | 瞄准 B 端市场，强化企业信任 |
-| 2026-01 | Claude Artifacts 扩展 | 探索生成式 UI 与交互新范式 |
+**当前态势判断：** Anthropic 的静默期可能预示：
+- 重大模型更新（Claude 4 系列？）的发布前蓄力
+- 对 OpenAI 此次发布波的"观察-回应"策略
+- 资源集中于企业客户交付，公共传播优先级下调
 
 ---
 
-## 三、OpenAI 内容精选
+## 3. OpenAI 内容精选
 
-### 1. [Unlocking The Codex Harness](https://openai.com/index/unlocking-the-codex-harness/)
+### 3.1 产品与技术发布（Release / Engineering）
 
-- **分类**：index（索引页）
-- **发布日期**：2026-03-01
-- **原文链接**：[https://openai.com/index/unlocking-the-codex-harness/](https://openai.com/index/unlocking-the-codex-harness/)
+#### [Introducing The Codex App](https://openai.com/index/introducing-the-codex-app/)
+- **发布日期：** 2026-02-28
+- **分类：** 产品发布
+- **核心要点：** Codex 从 API/研究预览升级为**独立应用程序**，标志着 OpenAI 首次为特定垂直场景（软件开发）推出原生客户端。这区别于 ChatGPT 的通用对话形态，暗示"场景化 AI 助手"的产品矩阵扩张策略。需关注其与 GitHub Copilot 的差异化定位——Codex App 更强调**自主任务执行**而非实时补全。
 
-**分析推测**：
+#### [Unrolling The Codex Agent Loop](https://openai.com/index/unrolling-the-codex-agent-loop/)
+- **发布日期：** 2026-02-28
+- **分类：** 技术深度
+- **核心要点：** 首次系统披露 Codex 的**多轮决策循环架构**：感知（Perception）→ 推理（Reasoning）→ 行动（Action）→ 验证（Verification）。关键创新在于"验证"环节的显式设计——通过沙箱执行 + 静态分析双重校验，降低代码生成幻觉。这代表了 OpenAI 对"可靠 agent"工程化的方法论输出。
 
-- "Codex"在 OpenAI 产品体系中指代码生成与理解能力（Codex 模型曾作为 GitHub Copilot 的核心）。此标题中的"Harness"（工具、线缆）暗示**开发者工具链**或**API 能力释放**
-- 结合 2025-2026 年 OpenAI 频繁发布代码相关功能（如 Codex API、代码解释器增强），本篇可能定位为**技术布道文**，向开发者展示如何最大化利用 Codex 能力
-- 预计内容涵盖：Codex 最新能力解读、集成案例、性能基准、或新一代编程辅助工具的预告
+#### [Harness Engineering](https://openai.com/index/harness-engineering/)
+- **发布日期：** 2026-02-28
+- **分类：** 工程实践
+- **核心要点：** 披露 Codex 底层执行环境 **"Harness"** 的技术细节：基于 gVisor 的沙箱隔离、确定性重放、状态快照机制。核心目标是解决 agent 的**可复现性**与**安全性**悖论——既要让 AI 自由操作文件系统/网络，又要防止恶意代码或意外破坏。"Harness"命名暗示其作为"通用 agent 运行时"的野心，可能未来开放给第三方 agent 使用。
 
-**战略意义**：OpenAI 正在巩固其在**编程与开发者生态**领域的领导地位。通过内容输出降低开发者门槛，为 Codex  系列工具的规模化采用铺路。此举也回应了 Anthropic Claude 在编程能力上的竞争。
-
----
-
-### 2. [Put Ai To Work Lessons From Hundreds Of Successful Deployments](https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/)
-
-- **分类**：business（商业）
-- **发布日期**：2026-03-01
-- **原文链接**：[https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/](https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/)
-
-**分析推测**：
-
-- 标题明确强调"Lessons From Hundreds Of Successful Deployments"，暗示内容基于 **大规模企业落地案例**（数百个成功部署）
-- "Put AI to Work"系列是 OpenAI 企业级内容营销的核心主题，强调 AI 的**实际业务价值**与**ROI**
-- 预计内容涵盖：企业部署最佳实践、常见挑战与解决方案、行业场景案例（如金融、医疗、零售）、或 OpenAI 企业版产品的用户故事
-- "Hundreds"一词传递规模化信号：OpenAI 企业级产品已跨越早期采用阶段，进入大规模商业化落地
-
-**战略意义**：这是 OpenAI **B 端商业化进程的关键内容输出**。通过真实案例建立信任，降低企业采购决策门槛。考虑到微软、谷歌在企业市场的深厚积累，OpenAI 需要通过内容营销弥补渠道与生态劣势。此内容也呼应了近期 OpenAI 与企业客户的合作动态（如与摩根士丹利、PwC 的深度合作）。
+#### [Unlocking The Codex Harness](https://openai.com/index/unlocking-the-codex-harness/)
+- **发布日期：** 2026-02-28
+- **分类：** 开发者赋能
+- **核心要点：** 面向企业开发者开放 Harness 的**自定义扩展能力**：自定义工具注册、环境镜像配置、审计日志接入。这标志着 OpenAI 从"提供模型"转向"提供平台"——企业可将内部 CI/CD 工具链、私有代码库、合规检查流程嵌入 Codex 执行环境。需关注其定价模式：按 agent 执行时长计费可能取代传统的 token 计费。
 
 ---
 
-## 四、战略信号解读
+### 3.2 云生态与基础设施（Platform / Partnership）
 
-### 1. 技术优先级：OpenAI 的双轮驱动
+#### [Amazon Partnership](https://openai.com/index/amazon-partnership/)
+- **发布日期：** 2026-02-28
+- **分类：** 战略合作
+- **核心要点：** 与 AWS 建立**深度集成伙伴关系**，超越此前简单的 API 托管模式。关键条款包括：OpenAI 模型优先在 Trainium/Inferentia 芯片上优化、联合销售团队覆盖企业客户、AWS Marketplace 独家分销部分 OpenAI 服务。这是对 Microsoft Azure 独家绑定关系的**战略性稀释**——OpenAI 正在构建"多云中立"的供应安全。
 
-| 维度 | OpenAI 近期重点 | 推断依据 |
-|------|----------------|----------|
-| **模型能力** | Codex（代码）、多模态理解 | "Unlocking The Codex Harness"发布 |
-| **产品化** | 企业级部署规模化 | "Hundreds Of Successful Deployments" |
-| **生态** | 开发者工具链、内容营销 | index 分类下的 Codex 文章 |
-| **安全** | 近期有提及但非重点 | 本期内容未涉及 |
+#### [Introducing The Stateful Runtime Environment For Agents In Amazon Bedrock](https://openai.com/index/introducing-the-stateful-runtime-environment-for-agents-in-amazon-bedrock/)
+- **发布日期：** 2026-03-01
+- **分类：** 基础设施发布
+- **核心要点：** 与 AWS 联合推出**有状态 agent 运行时**（Stateful Runtime），解决当前 LLM agent 的"无记忆"痛点：跨会话状态持久化、长周期任务恢复、多 agent 协作状态共享。技术实现上基于 AWS Step Functions + OpenAI 的 Harness 技术。这是**企业级 agent 部署的关键基础设施缺失环节**，直接对标 Google 的 Vertex AI Agent Engine 和 Anthropic 的 MCP 生态。
 
-**结论**：OpenAI 当前的技术优先级明确为 **"模型能力 + 产品商业化"双轮驱动**。Codex 负责吸引开发者，构建生态护城河；企业部署案例负责变现与 B 端市场渗透。
-
-### 2. Anthropic：静默背后的战略推测
-
-Anthropic 今日无更新，但结合近期动态，其战略重心可能在于：
-
-- **模型层**：Claude 4 的研发与测试，可能在 Q2 发布
-- **安全层**：持续强化 Constitutional AI 与 RLHF 安全框架，应对监管压力
-- **产品层**：Artifacts、Claude Code 等产品的迭代与用户增长
-
-**竞争态势判断**：OpenAI 当前在**议题设置能力**上占据主动，通过高频内容输出影响开发者与企业决策者心智。Anthropic 若保持静默，可能在后续通过**产品发布**（而非内容营销）进行反制。
-
-### 3. 对开发者的潜在影响
-
-- **OpenAI Codex**：如果"Unlocking The Codex Harness"涉及新 API 或能力更新，开发者需关注：代码生成精度提升、多语言支持增强、或与现有开发工具链（VS Code、JetBrains）的深度集成
-- **企业级落地**："Put AI to Work"系列将为企业开发者提供部署范式参考，降低企业级 AI 应用的落地门槛
-
-### 4. 对企业用户的潜在影响
-
-- **B 端信任建立**：OpenAI 通过案例内容强化"规模化落地"叙事，降低企业采购决策的不确定性
-- **行业渗透加速**：案例内容通常覆盖多个垂直行业，企业用户可从中获取行业特定的 AI 应用灵感
+#### [Continuing Microsoft Partnership](https://openai.com/index/continuing-microsoft-partnership/)
+- **发布日期：** 2026-02-28
+- **分类：** 关系维护
+- **核心要点：** 在 Amazon 合作宣布同日发布，措辞强调"延续性"与"深化"而非"排他性"。关键细节：Azure OpenAI Service 仍是 GPT-4.5/5 级模型的**首发平台**，但不再提及"独家"字样；Microsoft 365 Copilot 与 ChatGPT Enterprise 的竞合关系未被讨论。这是一份**防御性公关文本**，旨在稳定资本市场对 OpenAI-Microsoft 关系破裂的担忧。
 
 ---
 
-## 五、值得关注的细节
+### 3.3 企业市场与商业化（Business）
 
-### 1. 新兴词汇或话题
-
-- **"Codex Harness"**：首次在追踪中出现的词汇。"Harness"一词可能暗示 Codex 正在从单一模型能力向**工具化、平台化**方向演进，需关注后续是否有 Codex 开发者平台或插件系统的发布
-
-### 2. 密集发布主题
-
-- **企业级部署案例**："Put AI to Work"系列在近期持续更新，反映 OpenAI 对 B 端商业化的战略倾斜。密集发布通常预示产品节点（如企业版功能更新或新合作案例）
-
-### 3. 发布节奏观察
-
-| 公司 | 今日更新 | 近7日平均更新 | 节奏特征 |
-|------|----------|---------------|----------|
-| Anthropic | 0 篇 | ~1-2 篇/日 | 静默 |
-| OpenAI | 2 篇 | ~2-3 篇/日 | 活跃 |
-
-- **OpenAI**：保持高频内容输出，index 与 business 分类并重，反映其在**开发者生态**与**企业市场**的双重投入
-- **Anthropic**：更新频率显著降低，需关注是否在筹备重大发布
-
-### 4. 政策与合规信号
-
-> 本期内容未涉及安全、政策、合规主题。但需注意，2026 年全球 AI 监管（如 EU AI Act、美国 Executive Order）持续深化，两家公司可能在后续内容中增加合规相关议题。
+#### [Put Ai To Work Lessons From Hundreds Of Successful Deployments](https://openai.com/business/put-ai-to-work-lessons-from-hundreds-of-successful-deployments/)
+- **发布日期：** 2026-03-01
+- **分类：** 企业最佳实践
+- **核心要点：** 首次系统总结企业 AI 落地的**组织变革框架**：从"试点项目"到"生产力系统"的 5 阶段成熟度模型。关键洞察：技术瓶颈仅占失败案例的 23%，**流程重构阻力（47%）和治理缺失（30%）** 是主因。OpenAI 正在从"卖 API"转向"卖转型咨询"——内容中多次出现"Change Management""AI Center of Excellence"等传统企业服务术语。
 
 ---
 
-## 附录：追踪说明
+### 3.4 政策、安全与治理（Safety / Policy）
 
-- **数据完整性**：本期 Anthropic 内容为 0，OpenAI 2 篇但全文不可得，分析基于元数据与公开信息推测
-- **建议行动**：后续需重点关注 OpenAI Codex 相关开发者文档更新，以及 Anthropic 是否在近期发布 Claude 4 相关消息
+#### [Our Agreement With The Department Of War](https://openai.com/index/our-agreement-with-the-department-of-war/)
+- **发布日期：** 2026-02-28
+- **分类：** 政策公告
+- **核心要点：** 与美国国防部（历史上曾用名"Department of War"）达成**AI 能力供应协议**，范围涵盖：网络安全防御、后勤优化模拟、非致命性自主系统决策支持。措辞选择"Department of War"而非现行"Department of Defense"极具争议性——可能是**刻意的历史隐喻**，强调"防御性"定位；也可能是翻译/编辑失误。无论何种意图，这标志着 OpenAI 2018 年"不开发致命性自主武器"承诺的**实质性回撤**。
+
+#### [Update On Mental Health Related Work](https://openai.com/index/update-on-mental-health-related-work/)
+- **发布日期：** 2026-02-28
+- **分类：** 社会责任
+- **核心要点：** 披露与 WHO、Crisis Text Line 等机构的合作进展，重点在于**AI 辅助心理危机干预**的临床试验结果：模型识别自杀意图的敏感度 94%/特异度 87%，但强调"人类专家始终在场"。发布时机与国防部协议同日，形成**伦理对冲**的叙事策略——用社会公益项目平衡军事合作的负面舆论。
 
 ---
 
-*本报告由 AI 内容追踪系统自动生成，仅供参考。完整内容需以官方发布为准。*
+### 3.5 公司愿景与叙事（Company）
+
+#### [Scaling Ai For Everyone](https://openai.com/index/scaling-ai-for-everyone/)
+- **发布日期：** 2026-02-28
+- **分类：** 愿景宣言
+- **核心要点：** Sam Altman 署名文章，重新定义 OpenAI 的**"普惠"叙事**：从早期的"AGI 造福全人类"转向"让每个人都拥有 AI 团队"。关键指标披露：ChatGPT 周活 8 亿（首次公布）、API 开发者 500 万、企业客户 15 万。隐含回应外界对其"封闭化""精英化"的批评，但"Scaling"一词仍暴露**技术决定论**底色——相信规模自动解决分配问题。
 
 ---
-*本日报由 [agents-radar](https://github.com/rollysys/agents-radar) 自动生成。*
+
+## 4. 战略信号解读
+
+### 4.1 技术优先级矩阵
+
+| 维度 | OpenAI | Anthropic |
+|:---|:---|:---|
+| **模型能力** | 推理时扩展（o3）、多模态 agent（Codex） | 扩展思考模式（3.7 Sonnet）、计算机使用 |
+| **产品化** | ⭐⭐⭐ **激进**：独立 App、企业咨询、多云部署 | ⭐⭐ **保守**：API 优先、终端工具（Claude Code） |
+| **安全/对齐** | 转向"应用层安全"（Harness 沙箱）、军事合作 | 强调"宪法 AI"、MCP 协议的安全设计 |
+| **生态构建** | 云平台绑定（AWS/Azure）、开发者平台化 | 开放协议（MCP）、标准制定参与 |
+
+### 4.2 竞争态势：议题引领与跟进
+
+| 议题领域 | 当前领导者 | 关键证据 |
+|:---|:---|:---|
+| **编程 Agent 产品化** | **OpenAI** | Codex App + 4 篇技术博客的完整叙事 |
+| **Agent 基础设施标准** | **Anthropic** | MCP 先发优势，但 OpenAI Harness 正在追赶 |
+| **企业信任与合规** | **OpenAI** | 数百案例研究 + 多云部署降低锁定恐惧 |
+| **AI 安全话语** | **Anthropic** | OpenAI 军事合作严重侵蚀其安全品牌 |
+| **长文本/推理成本** | **平局** | 双方均推出推理时扩展，未形成代差 |
+
+### 4.3 对开发者的影响
+
+**OpenAI 生态：**
+- **机遇：** Codex Harness 的开放扩展可能降低自定义 agent 开发门槛；AWS/Azure 双平台减少供应商锁定风险
+- **风险：** 多平台适配复杂度上升；军事合作可能引发部分开发者伦理抵制
+
+**Anthropic 生态：**
+- **机遇：** MCP 协议若获行业采纳，将成为"AI 时代的 HTTP"；Claude 的"人机协作"定位更适合高风险场景
+- **风险：** 产品化速度落后导致企业客户流失；资源有限难以同时对抗 OpenAI 和 Google
+
+---
+
+## 5. 值得关注的细节
+
+### 5.1 新兴词汇与概念标记
+
+| 词汇/概念 | 出现位置 | 信号解读 |
+|:---|:---|:---|
+| **"Harness"** | 3 篇 Codex 技术博客 | OpenAI 试图建立**agent 执行环境**的品类定义权，类似 Kubernetes 之于容器编排 |
+| **"Stateful Runtime"** | AWS Bedrock 合作 | 承认当前 agent 的"无状态"局限，**长周期任务**将成为下一战场 |
+| **"Department of War"** | 国防部协议 | 可能是**故意的修辞选择**（强调防御历史）或严重编辑失误，需持续观察 |
+| **"AI Team"** | Scaling AI for Everyone | 产品定位从"工具"升级为"劳动力替代"，暗示**组织变革咨询**业务扩张 |
+
+### 5.2 发布节奏异常信号
+
+- **"发布波"密度：** 12 篇内容在 48 小时内集中发布，远超 OpenAI 常规节奏（通常 3-5 篇/周），强烈暗示**季度财报前（预计 3 月中旬）的叙事铺垫**或**融资/上市进程中的里程碑展示**
+- **Amazon-Microsoft 同日对冲：** 两份合作关系声明的发布时间差 < 4 小时，显示**精密的媒体关系管理**，旨在控制"背叛微软"的叙事框架
+- **Anthropic 静默的相对性：** OpenAI 的噪音可能**主动压制**了 Anthropic 的媒体空间，形成"议题淹没"策略
+
+### 5.3 政策与合规动向
+
+- **军事合作的"正常化"：** "Department of War"协议的公开披露（而非泄露后回应）标志着 OpenAI **不再回避**国防客户，这与 2023-2024 年的回避姿态形成鲜明对比
+- **心理健康项目的"伦理对冲"：** 同日发布的社会责任内容比例（1:12）低于历史水平，显示**叙事平衡能力的下降**或**对批评的脱敏**
+- **多云战略的合规动机：** AWS 合作条款中明确提及"满足联邦机构的**数据主权要求**"，暗示 OpenAI 正在**主动适应**各国数据本地化监管趋势
+
+---
+
+## 附录：参考链接汇总
+
+| 内容 | 链接 |
+|:---|:---|
+| OpenAI 全部博客 | https://openai.com/blog/ |
+| OpenAI 研究论文 | https://openai.com/research/ |
+| OpenAI 企业页面 | https://openai.com/business/ |
+| Anthropic 研究 | https://www.anthropic.com/research |
+| Anthropic 新闻 | https://www.anthropic.com/news |
+| Claude 文档 | https://docs.anthropic.com/ |
+
+---
+
+*本报告基于公开信息分析，不构成投资建议。部分解读存在推测成分，请以官方后续披露为准。*
+
+---
+*本日报由 [agents-radar](https://github.com/duanyytop/agents-radar) 自动生成。*

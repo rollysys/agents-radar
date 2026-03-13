@@ -55,6 +55,13 @@ export interface GitHubRelease {
   published_at: string;
 }
 
+export interface RepoFetch {
+  cfg: RepoConfig;
+  issues: GitHubItem[];
+  prs: GitHubItem[];
+  releases: GitHubRelease[];
+}
+
 // ---------------------------------------------------------------------------
 // Internals
 // ---------------------------------------------------------------------------
@@ -64,8 +71,8 @@ const MAX_PAGES = 5;
 
 function headers(): Record<string, string> {
   return {
-    Authorization:          `Bearer ${process.env["GITHUB_TOKEN"] ?? ""}`,
-    Accept:                 "application/vnd.github+json",
+    Authorization: `Bearer ${process.env["GITHUB_TOKEN"] ?? ""}`,
+    Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
   };
 }
@@ -85,19 +92,17 @@ async function fetchItemPage(
   page: number,
 ): Promise<GitHubItem[]> {
   const params: Record<string, string> = {
-    state: "all", sort: "updated", direction: "desc",
-    per_page: "100", page: String(page),
+    state: "all",
+    sort: "updated",
+    direction: "desc",
+    per_page: "100",
+    page: String(page),
   };
   // /pulls does not support `since`; filter client-side instead
   if (itemType === "issues") params["since"] = since.toISOString();
 
-  const items = await githubGet<GitHubItem[]>(
-    `https://api.github.com/repos/${repo}/${itemType}`,
-    params,
-  );
-  return itemType === "pulls"
-    ? items.filter((i) => new Date(i.updated_at) >= since)
-    : items;
+  const items = await githubGet<GitHubItem[]>(`https://api.github.com/repos/${repo}/${itemType}`, params);
+  return itemType === "pulls" ? items.filter((i) => new Date(i.updated_at) >= since) : items;
 }
 
 // ---------------------------------------------------------------------------
@@ -116,16 +121,17 @@ export async function fetchRecentItems(
 ): Promise<GitHubItem[]> {
   if (!cfg.paginated) {
     const params: Record<string, string> = {
-      state: "all", sort: "updated", direction: "desc", per_page: "50",
+      state: "all",
+      sort: "updated",
+      direction: "desc",
+      per_page: "50",
     };
     if (itemType === "issues") params["since"] = since.toISOString();
     const items = await githubGet<GitHubItem[]>(
       `https://api.github.com/repos/${cfg.repo}/${itemType}`,
       params,
     );
-    return itemType === "pulls"
-      ? items.filter((i) => new Date(i.updated_at) >= since)
-      : items;
+    return itemType === "pulls" ? items.filter((i) => new Date(i.updated_at) >= since) : items;
   }
 
   const all: GitHubItem[] = [];
@@ -141,10 +147,9 @@ export async function fetchRecentItems(
 }
 
 export async function fetchRecentReleases(repo: string, since: Date): Promise<GitHubRelease[]> {
-  const releases = await githubGet<GitHubRelease[]>(
-    `https://api.github.com/repos/${repo}/releases`,
-    { per_page: "10" },
-  );
+  const releases = await githubGet<GitHubRelease[]>(`https://api.github.com/repos/${repo}/releases`, {
+    per_page: "10",
+  });
   return releases.filter((r) => new Date(r.published_at) >= since);
 }
 
@@ -168,39 +173,67 @@ export async function ensureLabel(name: string, color: string): Promise<void> {
 export async function fetchSkillsData(repo: string): Promise<{ prs: GitHubItem[]; issues: GitHubItem[] }> {
   const [prs, issuesRaw] = await Promise.all([
     githubGet<GitHubItem[]>(`https://api.github.com/repos/${repo}/pulls`, {
-      state: "open", sort: "popularity", direction: "desc", per_page: "50",
+      state: "open",
+      sort: "popularity",
+      direction: "desc",
+      per_page: "50",
     }),
     githubGet<GitHubItem[]>(`https://api.github.com/repos/${repo}/issues`, {
-      state: "all", sort: "comments", direction: "desc", per_page: "50",
+      state: "all",
+      sort: "comments",
+      direction: "desc",
+      per_page: "50",
     }),
   ]);
   return { prs, issues: issuesRaw.filter((i) => !i.pull_request) };
 }
 
+const GITHUB_ISSUE_BODY_LIMIT = 65536;
+const TRUNCATION_NOTICE = "\n\n---\n> ⚠️ 内容超过 GitHub Issue 上限，完整报告见提交的 Markdown 文件。";
+
+/** GitHub label colors by label name. Default: "0075ca". */
+const LABEL_COLORS: Record<string, string> = {
+  openclaw: "e11d48",
+  trending: "f9a825",
+  hn: "ff6600",
+  weekly: "7c3aed",
+  monthly: "0d9488",
+  "digest-en": "1d76db",
+  "openclaw-en": "f472b6",
+  "web-en": "6366f1",
+  "trending-en": "fbbf24",
+  "hn-en": "fb923c",
+};
+
 /**
- * Escape `@username` mentions so GitHub doesn't send notifications.
- * Inserts a zero-width space (U+200B) between `@` and the username.
+ * Break GitHub URLs in issue body to prevent cross-repository references.
+ * Inserts a zero-width space in "github.com" so GitHub's auto-linker
+ * won't create "mentioned this issue" notifications on external repos.
+ */
+function neutralizeGitHubRefs(text: string): string {
+  return text.replace(/https:\/\/github\.com\//g, "https://github\u200B.com/");
+}
+
+/**
+ * Inserts a zero-width space (U+200B) after `@` so GitHub doesn't parse
+ * usernames in digest content as real @mentions and spam innocent people.
  */
 function escapeMentions(text: string): string {
   return text.replace(/@([a-zA-Z0-9])/g, "@\u200B$1");
 }
 
-export async function createGitHubIssue(
-  title: string,
-  body: string,
-  label: string,
-): Promise<string> {
+export async function createGitHubIssue(title: string, body: string, label: string): Promise<string> {
   const digestRepo = process.env["DIGEST_REPO"] ?? "";
-  const LABEL_COLORS: Record<string, string> = {
-    openclaw: "e11d48",
-    trending: "f9a825",
-    social: "1d9bf0",
-  };
+  body = neutralizeGitHubRefs(body);
+  body = escapeMentions(body);
+  if (body.length > GITHUB_ISSUE_BODY_LIMIT) {
+    body = body.slice(0, GITHUB_ISSUE_BODY_LIMIT - TRUNCATION_NOTICE.length) + TRUNCATION_NOTICE;
+  }
   await ensureLabel(label, LABEL_COLORS[label] ?? "0075ca");
   const resp = await fetch(`https://api.github.com/repos/${digestRepo}/issues`, {
     method: "POST",
     headers: { ...headers(), "Content-Type": "application/json" },
-    body: JSON.stringify({ title, body: escapeMentions(body), labels: [label] }),
+    body: JSON.stringify({ title, body, labels: [label] }),
   });
   if (!resp.ok) throw new Error(`Failed to create issue: ${await resp.text()}`);
   const data = (await resp.json()) as { html_url: string };
