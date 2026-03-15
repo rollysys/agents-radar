@@ -162,19 +162,27 @@ export function buildWebReportPrompt(results: WebFetchResult[], dateStr: string,
         return `## ${siteName}\n\n${noContent}`;
       }
 
-      const unableToExtract = lang === "en" ? "(Unable to extract text content)" : "（无法提取文本内容）";
       const categoryLabel = lang === "en" ? "Category" : "分类";
       const dateLabel = lang === "en" ? "Published/Updated" : "发布/更新";
       const unknownDate = lang === "en" ? "unknown" : "未知";
       const excerptLabel = lang === "en" ? "Excerpt" : "内容节选";
+      const metadataOnlyNote =
+        lang === "en"
+          ? "(metadata-only: title derived from URL slug, may be inaccurate; no article text available)"
+          : "（仅元数据：标题由 URL 路径推断，可能不准确；无法获取正文内容）";
       const itemsText = newItems
-        .map((item) =>
-          [
+        .map((item) => {
+          const lines = [
             `### [${item.title || item.url}](${item.url})`,
             `- ${categoryLabel}: ${item.category} | ${dateLabel}: ${item.lastmod.slice(0, 10) || unknownDate}`,
-            `- ${excerptLabel}: ${item.content || unableToExtract}`,
-          ].join("\n"),
-        )
+          ];
+          if (item.content) {
+            lines.push(`- ${excerptLabel}: ${item.content}`);
+          } else {
+            lines.push(`- ${metadataOnlyNote}`);
+          }
+          return lines.join("\n");
+        })
         .join("\n\n");
 
       const lp = lang === "en" ? "(" : "（";
@@ -211,6 +219,7 @@ Generate a detailed AI Official Content Tracking Report in English with these se
    - If first full crawl, trace important milestones chronologically
 
 3. **OpenAI Content Highlights** — Same structure, organized by research / release / company / safety categories
+   - ⚠️ Note: OpenAI data is metadata-only (titles derived from URL slugs, no article text). Only list URLs and categories objectively. Do NOT speculate on title meanings or fabricate content summaries. If information is insufficient for analysis, state the data limitation clearly.
 
 4. **Strategic Signal Analysis** — Based on both companies' release cadence and content focus, analyze:
    - Each company's recent technical priorities (model capabilities / safety / productization / ecosystem)
@@ -244,6 +253,7 @@ ${siteSections}
    - 如首次全量，按时间线梳理重要里程碑
 
 3. **OpenAI 内容精选** — 同上，按 research / release / company / safety 等分类整理
+   - ⚠️ 注意：OpenAI 数据为仅元数据模式（标题由 URL 路径推断，无正文）。请仅基于 URL 和分类进行客观列举，不要对标题含义进行推测性解读或编造内容摘要。如果信息不足以分析，直接说明数据受限即可。
 
 4. **战略信号解读** — 基于两家公司的发布节奏和内容重点，分析：
    - 各自近期的技术优先级（模型能力 / 安全 / 产品化 / 生态）

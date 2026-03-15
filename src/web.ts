@@ -291,11 +291,14 @@ export async function fetchSiteContent(
     return b.lastmod.localeCompare(a.lastmod);
   });
 
-  // New = not seen before, OR lastmod is newer than what we stored
+  // New = not seen before, OR (for non-metadataOnly sites) lastmod is newer.
+  // For metadataOnly sites (e.g. OpenAI), lastmod reflects sitemap generation
+  // time rather than content publication — ignore lastmod changes to avoid
+  // flagging hundreds of unchanged URLs as "new" on every run.
   const newUrls = allDiscovered.filter(({ loc, lastmod }) => {
     const prev = siteState.seenUrls[loc];
     if (!prev) return true;
-    if (lastmod && lastmod > prev) return true;
+    if (!cfg.metadataOnly && lastmod && lastmod > prev) return true;
     return false;
   });
 
