@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-03-15T02:41:23.461Z",
+    "lastChecked": "2026-03-16T02:41:54.051Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -324,7 +324,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-03-15T02:41:25.750Z",
+    "lastChecked": "2026-03-16T02:41:55.470Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-03-14T04:18:44.785Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-03-14T04:28:27.477Z",
@@ -828,7 +828,7 @@
       "https://openai.com/index/dall-e-2/": "2026-03-14T08:58:50.138Z",
       "https://openai.com/index/ten-years/": "2026-01-08T17:45:05.086Z",
       "https://openai.com/index/strengthening-chatgpt-responses-in-sensitive-conversations/": "2026-01-08T17:44:14.701Z",
-      "https://openai.com/index/mattels-iconic-brands/": "2026-03-14T04:43:07.819Z",
+      "https://openai.com/index/mattels-iconic-brands/": "2026-03-15T22:39:57.963Z",
       "https://openai.com/business/solving-complex-problems-with-openai-o1-models/": "2025-12-26T20:56:27.995Z",
       "https://openai.com/business/put-ai-to-work-for-marketing-teams/": "2025-12-26T20:48:59.966Z",
       "https://openai.com/business/put-ai-to-work-automate-and-scale-financial-operations/": "2025-12-26T18:50:32.418Z",
@@ -953,7 +953,7 @@
       "https://openai.com/index/openai-to-acquire-promptfoo/": "2026-03-11T23:41:05.738Z",
       "https://openai.com/index/new-ways-to-learn-math-and-science-in-chatgpt/": "2026-03-14T12:25:33.332Z",
       "https://openai.com/index/instruction-hierarchy-challenge/": "2026-03-14T12:26:01.038Z",
-      "https://openai.com/index/equip-responses-api-computer-environment/": "2026-03-14T23:33:12.733Z"
+      "https://openai.com/index/equip-responses-api-computer-environment/": "2026-03-15T21:26:11.280Z"
     }
   }
 }
