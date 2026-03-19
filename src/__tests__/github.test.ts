@@ -53,7 +53,8 @@ describe("GitHub fetch helpers", () => {
   it("retries transient GitHub API failures before succeeding", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn()
+      vi
+        .fn()
         .mockResolvedValueOnce(new Response("server error", { status: 500 }))
         .mockResolvedValueOnce(
           new Response(JSON.stringify([TEST_ISSUE]), {

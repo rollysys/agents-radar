@@ -98,7 +98,9 @@ async function githubGet<T>(url: string, params: Record<string, string> = {}): P
     } catch (err) {
       if (attempt < GITHUB_RETRY_DELAYS_MS.length) {
         const delay = GITHUB_RETRY_DELAYS_MS[attempt]!;
-        console.warn(`  [github] Network error for ${url}; retrying in ${delay}ms (${attempt + 1}/${GITHUB_RETRY_DELAYS_MS.length})`);
+        console.warn(
+          `  [github] Network error for ${url}; retrying in ${delay}ms (${attempt + 1}/${GITHUB_RETRY_DELAYS_MS.length})`,
+        );
         await sleep(delay);
         continue;
       }
