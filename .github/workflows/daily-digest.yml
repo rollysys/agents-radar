@@ -52,7 +52,7 @@ jobs:
             echo "No new digest files to commit"
           else
             DATE=$(date -u +%Y-%m-%d)
-            git commit -m "digest: ${DATE} daily digest"
+            HUSKY=0 git commit -m "digest: ${DATE} daily digest"
             git pull --rebase
             git push
           fi
@@ -64,7 +64,7 @@ jobs:
         run: |
           git add manifest.json feed.xml
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update manifest.json"
+            HUSKY=0 git commit -m "chore: update manifest.json"
             git pull --rebase
             git push
           fi
@@ -75,4 +75,3 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID || '@agents_radar' }}
           PAGES_URL: https://duanyytop.github.io/agents-radar
         run: pnpm notify
-

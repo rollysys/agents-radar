@@ -50,7 +50,7 @@ jobs:
             echo "No weekly report to commit"
           else
             WEEK=$(date -u +%Y-W%V)
-            git commit -m "digest: ${WEEK} weekly digest"
+            HUSKY=0 git commit -m "digest: ${WEEK} weekly digest"
             git pull --rebase
             git push
           fi
@@ -62,7 +62,7 @@ jobs:
         run: |
           git add manifest.json feed.xml
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update manifest.json"
+            HUSKY=0 git commit -m "chore: update manifest.json"
             git pull --rebase
             git push
           fi
