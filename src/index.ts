@@ -11,6 +11,7 @@
 
 import {
   type GitHubItem,
+  type GitHubRelease,
   type RepoFetch,
   fetchRecentItems,
   fetchRecentReleases,
@@ -57,6 +58,44 @@ function requireEnv(name: string): string {
   return value;
 }
 
+function settledValue<T>(
+  cfg: RepoFetch["cfg"],
+  resource: string,
+  result: PromiseSettledResult<T>,
+  fallback: T,
+): T {
+  if (result.status === "fulfilled") {
+    return result.value;
+  }
+
+  console.error(`  [${cfg.id}] Failed to fetch ${resource}: ${result.reason}`);
+  return fallback;
+}
+
+async function fetchRepoData(cfg: RepoFetch["cfg"], since: Date): Promise<RepoFetch> {
+  const [issuesResult, prsResult, releasesResult] = await Promise.allSettled([
+    fetchRecentItems(cfg, "issues", since),
+    fetchRecentItems(cfg, "pulls", since),
+    fetchRecentReleases(cfg.repo, since),
+  ]);
+
+  const issuesRaw = settledValue(cfg, "issues", issuesResult, [] as GitHubItem[]);
+  const prs = settledValue(cfg, "pulls", prsResult, [] as GitHubItem[]);
+  const releases = settledValue(cfg, "releases", releasesResult, [] as GitHubRelease[]);
+  const issues = issuesRaw.filter((i) => !i.pull_request);
+
+  if (
+    issuesResult.status === "rejected" &&
+    prsResult.status === "rejected" &&
+    releasesResult.status === "rejected"
+  ) {
+    console.error(`  [${cfg.id}] All GitHub fetches failed; continuing with empty activity.`);
+  }
+
+  console.log(`  [${cfg.id}] issues: ${issues.length}, prs: ${prs.length}, releases: ${releases.length}`);
+  return { cfg, issues, prs, releases };
+}
+
 // ---------------------------------------------------------------------------
 // Phase 1: Fetch
 // ---------------------------------------------------------------------------
@@ -75,24 +114,16 @@ async function fetchAllData(
   console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, hn`);
 
   const [fetched, skillsData, webResults, trendingData, hnData] = await Promise.all([
-    Promise.all(
-      allConfigs.map(async (cfg) => {
-        const [issuesRaw, prs, releases] = await Promise.all([
-          fetchRecentItems(cfg, "issues", since),
-          fetchRecentItems(cfg, "pulls", since),
-          fetchRecentReleases(cfg.repo, since),
-        ]);
-        const issues = issuesRaw.filter((i) => !i.pull_request);
-        console.log(
-          `  [${cfg.id}] issues: ${issues.length}, prs: ${prs.length}, releases: ${releases.length}`,
-        );
-        return { cfg, issues, prs, releases };
+    Promise.all(allConfigs.map((cfg) => fetchRepoData(cfg, since))),
+    fetchSkillsData(CLAUDE_SKILLS_REPO)
+      .then((d) => {
+        console.log(`  [claude-code-skills] prs: ${d.prs.length}, issues: ${d.issues.length}`);
+        return d;
+      })
+      .catch((err): { prs: GitHubItem[]; issues: GitHubItem[] } => {
+        console.error(`  [claude-code-skills] fetch failed: ${err}`);
+        return { prs: [], issues: [] };
       }),
-    ),
-    fetchSkillsData(CLAUDE_SKILLS_REPO).then((d) => {
-      console.log(`  [claude-code-skills] prs: ${d.prs.length}, issues: ${d.issues.length}`);
-      return d;
-    }),
     Promise.all([
       fetchSiteContent("anthropic", webState).catch((err): WebFetchResult => {
         console.error(`  [web/anthropic] fetch failed: ${err}`);

@@ -68,6 +68,7 @@ export interface RepoFetch {
 
 /** Maximum pages to fetch for paginated repos (100 items/page). */
 const MAX_PAGES = 5;
+const GITHUB_RETRY_DELAYS_MS = [1000, 3000, 7000];
 
 function headers(): Record<string, string> {
   return {
@@ -77,12 +78,51 @@ function headers(): Record<string, string> {
   };
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryableGitHubStatus(status: number): boolean {
+  return status === 429 || status >= 500;
+}
+
 async function githubGet<T>(url: string, params: Record<string, string> = {}): Promise<T> {
   const u = new URL(url);
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
-  const resp = await fetch(u.toString(), { headers: headers() });
-  if (!resp.ok) throw new Error(`GitHub API error ${resp.status} (${url}): ${await resp.text()}`);
-  return resp.json() as Promise<T>;
+
+  for (let attempt = 0; attempt <= GITHUB_RETRY_DELAYS_MS.length; attempt++) {
+    let resp: Response;
+
+    try {
+      resp = await fetch(u.toString(), { headers: headers() });
+    } catch (err) {
+      if (attempt < GITHUB_RETRY_DELAYS_MS.length) {
+        const delay = GITHUB_RETRY_DELAYS_MS[attempt]!;
+        console.warn(`  [github] Network error for ${url}; retrying in ${delay}ms (${attempt + 1}/${GITHUB_RETRY_DELAYS_MS.length})`);
+        await sleep(delay);
+        continue;
+      }
+      throw err;
+    }
+
+    if (resp.ok) {
+      return resp.json() as Promise<T>;
+    }
+
+    const body = await resp.text();
+    if (attempt < GITHUB_RETRY_DELAYS_MS.length && isRetryableGitHubStatus(resp.status)) {
+      const delay = GITHUB_RETRY_DELAYS_MS[attempt]!;
+      console.warn(
+        `  [github] ${url} failed with ${resp.status}; retrying in ${delay}ms (${attempt + 1}/${GITHUB_RETRY_DELAYS_MS.length})`,
+      );
+      await sleep(delay);
+      continue;
+    }
+
+    throw new Error(`GitHub API error ${resp.status} (${url}): ${body}`);
+  }
+
+  throw new Error(`GitHub API retry loop exhausted for ${url}`);
 }
 
 async function fetchItemPage(
