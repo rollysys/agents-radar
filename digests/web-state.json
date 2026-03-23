@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-03-22T02:33:40.866Z",
+    "lastChecked": "2026-03-23T02:34:00.773Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -328,7 +328,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-03-22T02:33:42.200Z",
+    "lastChecked": "2026-03-23T02:34:00.675Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-03-19T19:16:00.688Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-03-17T22:15:06.593Z",
@@ -832,7 +832,7 @@
       "https://openai.com/index/dall-e-2/": "2026-03-14T08:58:50.138Z",
       "https://openai.com/index/ten-years/": "2026-01-08T17:45:05.086Z",
       "https://openai.com/index/strengthening-chatgpt-responses-in-sensitive-conversations/": "2026-03-19T19:22:19.691Z",
-      "https://openai.com/index/mattels-iconic-brands/": "2026-03-20T06:43:29.041Z",
+      "https://openai.com/index/mattels-iconic-brands/": "2026-03-23T01:53:30.275Z",
       "https://openai.com/business/solving-complex-problems-with-openai-o1-models/": "2025-12-26T20:56:27.995Z",
       "https://openai.com/business/put-ai-to-work-for-marketing-teams/": "2025-12-26T20:48:59.966Z",
       "https://openai.com/business/put-ai-to-work-automate-and-scale-financial-operations/": "2025-12-26T18:50:32.418Z",
@@ -862,7 +862,7 @@
       "https://openai.com/index/gpt-5-system-card-update-gpt-5-2/": "2026-02-27T19:19:32.052Z",
       "https://openai.com/chatgpt/education/": "2025-12-16T00:43:08.751Z",
       "https://openai.com/index/gpt-5-new-era-of-work/": "2026-03-19T19:16:53.643Z",
-      "https://openai.com/index/evaluating-fairness-in-chatgpt/": "2026-03-14T08:57:16.574Z",
+      "https://openai.com/index/evaluating-fairness-in-chatgpt/": "2026-03-22T06:27:14.701Z",
       "https://openai.com/index/accelerating-life-sciences-research-with-retro-biosciences/": "2026-03-10T12:13:47.080Z",
       "https://openai.com/index/intuit-partnership/": "2025-12-13T00:46:23.156Z",
       "https://openai.com/index/buy-it-in-chatgpt/": "2026-03-19T19:20:26.888Z",
