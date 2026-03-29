@@ -1,5 +1,15 @@
-import { describe, it, expect } from "vitest";
-import { toWeekStr } from "../rollup.ts";
+import fs from "node:fs";
+import path from "node:path";
+import { afterEach, describe, it, expect } from "vitest";
+import { readDailyDigest, toWeekStr } from "../rollup.ts";
+
+const TEST_DATES = ["2099-12-30", "2099-12-31"];
+
+afterEach(() => {
+  for (const date of TEST_DATES) {
+    fs.rmSync(path.join("digests", date), { recursive: true, force: true });
+  }
+});
 
 describe("toWeekStr", () => {
   it("returns correct ISO week for a known date", () => {
@@ -27,5 +37,21 @@ describe("toWeekStr", () => {
     // 2026-01-12 is a Monday in week 3
     const result = toWeekStr(new Date("2026-01-12"));
     expect(result).toBe("2026-W03");
+  });
+});
+
+describe("readDailyDigest", () => {
+  it("reads and concatenates all available report types for a date", () => {
+    const date = "2099-12-30";
+    const dir = path.join("digests", date);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, "ai-cli.md"), "CLI report");
+    fs.writeFileSync(path.join(dir, "ai-hn.md"), "HN report");
+
+    expect(readDailyDigest(date)).toBe("CLI report\n\nHN report");
+  });
+
+  it("returns null when no digest files exist for the date", () => {
+    expect(readDailyDigest("2099-12-31")).toBeNull();
   });
 });
