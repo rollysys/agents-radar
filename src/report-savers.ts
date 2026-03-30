@@ -3,12 +3,13 @@
  * Extracted from index.ts for separation of concerns.
  */
 
-import { type Lang, WEB_REPORT, TRENDING_REPORT, HN_REPORT, ISSUE_LABELS } from "./i18n.ts";
-import { buildWebReportPrompt, buildHnPrompt } from "./prompts-data.ts";
+import { type Lang, WEB_REPORT, TRENDING_REPORT, HN_REPORT, PH_REPORT, ISSUE_LABELS } from "./i18n.ts";
+import { buildWebReportPrompt, buildHnPrompt, buildPhPrompt } from "./prompts-data.ts";
 import { callLlm, saveFile, LLM_TOKENS_WEB } from "./report.ts";
 import { createGitHubIssue } from "./github.ts";
 import { saveWebState, type WebFetchResult, type WebState } from "./web.ts";
 import type { HnData } from "./hn.ts";
+import type { PhData } from "./ph.ts";
 import type { TrendingData } from "./trending.ts";
 
 // ---------------------------------------------------------------------------
@@ -155,5 +156,52 @@ export async function saveHnReport(
     }
   } catch (err) {
     console.error(`  [hn/${lang}] Report generation failed: ${err}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Product Hunt
+// ---------------------------------------------------------------------------
+
+export async function savePhReport(
+  phData: PhData,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+  lang: Lang = "zh",
+): Promise<void> {
+  if (!phData.fetchSuccess) {
+    console.log(`  [ph/${lang}] No data available, skipping report.`);
+    return;
+  }
+
+  console.log(`  [ph/${lang}] Calling LLM for Product Hunt report...`);
+  try {
+    const phSummary = await callLlm(buildPhPrompt(phData, dateStr, lang));
+    const fileName = lang === "en" ? "ai-ph-en.md" : "ai-ph.md";
+    const header =
+      lang === "en"
+        ? `# ${PH_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> Source: [Product Hunt](https://www.producthunt.com/) | ` +
+          `${phData.products.length} products | Generated: ${utcStr} UTC\n\n` +
+          `---\n\n`
+        : `# ${PH_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> 数据来源: [Product Hunt](https://www.producthunt.com/) | ` +
+          `共 ${phData.products.length} 个产品 | 生成时间: ${utcStr} UTC\n\n` +
+          `---\n\n`;
+
+    const phContent = header + phSummary + footer;
+
+    console.log(`  Saved ${saveFile(phContent, dateStr, fileName)}`);
+
+    if (digestRepo) {
+      const phTitle = PH_REPORT.issueTitle(dateStr, lang);
+      const phLabel = ISSUE_LABELS.ph[lang];
+      const phUrl = await createGitHubIssue(phTitle, phContent, phLabel);
+      console.log(`  Created PH issue (${lang}): ${phUrl}`);
+    }
+  } catch (err) {
+    console.error(`  [ph/${lang}] Report generation failed: ${err}`);
   }
 }
