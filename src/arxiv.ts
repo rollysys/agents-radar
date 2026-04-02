@@ -145,8 +145,10 @@ export async function fetchArxivData(): Promise<ArxivData> {
     }
   }
 
-  // Sort by published date (newest first), take top results
+  // Filter to last 48h (ArXiv has a ~1-day publishing delay, so 24h would miss today's batch)
+  const cutoff = Date.now() - 48 * 60 * 60 * 1000;
   const papers = [...seen.values()]
+    .filter((p) => new Date(p.published).getTime() > cutoff)
     .sort((a, b) => new Date(b.published).getTime() - new Date(a.published).getTime())
     .slice(0, ARXIV_MAX_RESULTS);
 
