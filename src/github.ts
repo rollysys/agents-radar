@@ -247,6 +247,12 @@ const LABEL_COLORS: Record<string, string> = {
   "trending-en": "fbbf24",
   "hn-en": "fb923c",
   "ph-en": "e8854a",
+  arxiv: "b31b1b",
+  "arxiv-en": "d44a4a",
+  hf: "ff9d00",
+  "hf-en": "ffb84d",
+  community: "2563eb",
+  "community-en": "60a5fa",
 };
 
 /**

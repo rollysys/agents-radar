@@ -81,6 +81,24 @@ export const PH_REPORT = {
     lang === "en" ? `🚀 Product Hunt AI Digest ${dateStr}` : `🚀 Product Hunt AI 产品日报 ${dateStr}`,
 } as const;
 
+export const ARXIV_REPORT = {
+  title: t("ArXiv AI 研究日报", "ArXiv AI Research Digest"),
+  issueTitle: (dateStr: string, lang: Lang) =>
+    lang === "en" ? `📚 ArXiv AI Research Digest ${dateStr}` : `📚 ArXiv AI 研究日报 ${dateStr}`,
+} as const;
+
+export const HF_REPORT = {
+  title: t("Hugging Face 热门模型日报", "Hugging Face Trending Models Digest"),
+  issueTitle: (dateStr: string, lang: Lang) =>
+    lang === "en" ? `🤗 Hugging Face Trending Models ${dateStr}` : `🤗 Hugging Face 热门模型日报 ${dateStr}`,
+} as const;
+
+export const COMMUNITY_REPORT = {
+  title: t("技术社区 AI 动态日报", "Tech Community AI Digest"),
+  issueTitle: (dateStr: string, lang: Lang) =>
+    lang === "en" ? `💬 Tech Community AI Digest ${dateStr}` : `💬 技术社区 AI 动态日报 ${dateStr}`,
+} as const;
+
 export const WEEKLY_REPORT = {
   title: t("AI 工具生态周报", "AI Tools Ecosystem Weekly Report"),
   coverage: t("覆盖日期", "Coverage"),
@@ -99,6 +117,9 @@ export const ISSUE_LABELS = {
   trending: t("trending", "trending-en"),
   hn: t("hn", "hn-en"),
   ph: t("ph", "ph-en"),
+  arxiv: t("arxiv", "arxiv-en"),
+  hf: t("hf", "hf-en"),
+  community: t("community", "community-en"),
 } as const;
 
 export const CLI_ISSUE_TITLE = (dateStr: string, lang: Lang) =>
@@ -136,6 +157,12 @@ export const REPORT_LABELS: Record<string, string> = {
   "ai-hn-en": "Hacker News AI Community Digest",
   "ai-ph": "Product Hunt AI 产品日报",
   "ai-ph-en": "Product Hunt AI Products Digest",
+  "ai-arxiv": "ArXiv AI 研究日报",
+  "ai-arxiv-en": "ArXiv AI Research Digest",
+  "ai-hf": "Hugging Face 热门模型日报",
+  "ai-hf-en": "Hugging Face Trending Models Digest",
+  "ai-community": "技术社区 AI 动态日报",
+  "ai-community-en": "Tech Community AI Digest",
   "ai-weekly": "AI 工具生态周报",
   "ai-weekly-en": "AI Tools Weekly Digest",
   "ai-monthly": "AI 工具生态月报",
@@ -149,6 +176,9 @@ export const NOTIFY_LABELS: Record<string, Record<Lang, string>> = {
   "ai-trending": t("GitHub 趋势", "GitHub Trends"),
   "ai-hn": t("HN 社区动态", "HN Community"),
   "ai-ph": t("Product Hunt", "Product Hunt"),
+  "ai-arxiv": t("ArXiv 研究", "ArXiv Research"),
+  "ai-hf": t("HF 模型", "HF Models"),
+  "ai-community": t("技术社区", "Tech Community"),
   "ai-weekly": t("AI 工具生态周报", "AI Tools Weekly"),
   "ai-monthly": t("AI 工具生态月报", "AI Tools Monthly"),
 };

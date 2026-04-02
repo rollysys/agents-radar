@@ -29,11 +29,23 @@ import {
 import { buildTrendingPrompt } from "./prompts-data.ts";
 import { callLlm, saveFile, autoGenFooter, LLM_TOKENS_TRENDING } from "./report.ts";
 import { buildCliReportContent, buildOpenclawReportContent } from "./report-builders.ts";
-import { saveWebReport, saveTrendingReport, saveHnReport, savePhReport } from "./report-savers.ts";
+import {
+  saveWebReport,
+  saveTrendingReport,
+  saveHnReport,
+  savePhReport,
+  saveArxivReport,
+  saveHfReport,
+  saveCommunityReport,
+} from "./report-savers.ts";
 import { loadWebState, fetchSiteContent, type WebFetchResult, type WebState } from "./web.ts";
 import { fetchTrendingData, type TrendingData } from "./trending.ts";
 import { fetchHnData, type HnData } from "./hn.ts";
 import { fetchPhData, type PhData } from "./ph.ts";
+import { fetchArxivData, type ArxivData } from "./arxiv.ts";
+import { fetchHfData, type HfData } from "./hf.ts";
+import { fetchDevtoData, type DevtoData } from "./devto.ts";
+import { fetchLobstersData, type LobstersData } from "./lobsters.ts";
 import { loadConfig } from "./config.ts";
 import { toCstDateStr, toUtcStr } from "./date.ts";
 import { type Lang, MSG, ISSUE_LABELS, CLI_ISSUE_TITLE, OPENCLAW_ISSUE_TITLE } from "./i18n.ts";
@@ -111,11 +123,28 @@ async function fetchAllData(
   trendingData: TrendingData;
   hnData: HnData;
   phData: PhData;
+  arxivData: ArxivData;
+  hfData: HfData;
+  devtoData: DevtoData;
+  lobstersData: LobstersData;
 }> {
   const allConfigs = [...CLI_REPOS, OPENCLAW, ...OPENCLAW_PEERS];
-  console.log(`  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, hn, ph`);
+  console.log(
+    `  Tracking: ${allConfigs.map((r) => r.id).join(", ")}, claude-code-skills, web, hn, ph, arxiv, hf, devto, lobsters`,
+  );
 
-  const [fetched, skillsData, webResults, trendingData, hnData, phData] = await Promise.all([
+  const [
+    fetched,
+    skillsData,
+    webResults,
+    trendingData,
+    hnData,
+    phData,
+    arxivData,
+    hfData,
+    devtoData,
+    lobstersData,
+  ] = await Promise.all([
     Promise.all(allConfigs.map((cfg) => fetchRepoData(cfg, since))),
     fetchSkillsData(CLAUDE_SKILLS_REPO)
       .then((d) => {
@@ -151,9 +180,24 @@ async function fetchAllData(
     ),
     fetchHnData().catch((): HnData => ({ stories: [], fetchSuccess: false })),
     fetchPhData().catch((): PhData => ({ products: [], fetchSuccess: false })),
+    fetchArxivData().catch((): ArxivData => ({ papers: [], fetchSuccess: false })),
+    fetchHfData().catch((): HfData => ({ models: [], fetchSuccess: false })),
+    fetchDevtoData().catch((): DevtoData => ({ articles: [], fetchSuccess: false })),
+    fetchLobstersData().catch((): LobstersData => ({ stories: [], fetchSuccess: false })),
   ]);
 
-  return { fetched, skillsData, webResults, trendingData, hnData, phData };
+  return {
+    fetched,
+    skillsData,
+    webResults,
+    trendingData,
+    hnData,
+    phData,
+    arxivData,
+    hfData,
+    devtoData,
+    lobstersData,
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -275,10 +319,18 @@ async function main(): Promise<void> {
 
   // 1. Fetch all data in parallel
   const webState = loadWebState();
-  const { fetched, skillsData, webResults, trendingData, hnData, phData } = await fetchAllData(
-    since,
-    webState,
-  );
+  const {
+    fetched,
+    skillsData,
+    webResults,
+    trendingData,
+    hnData,
+    phData,
+    arxivData,
+    hfData,
+    devtoData,
+    lobstersData,
+  } = await fetchAllData(since, webState);
 
   const peerIds = new Set(OPENCLAW_PEERS.map((p) => p.id));
   const fetchedCli = fetched.filter((f) => f.cfg.id !== OPENCLAW.id && !peerIds.has(f.cfg.id));
@@ -348,6 +400,9 @@ async function main(): Promise<void> {
     saveTrendingReport(trendingData, zhSummaries.trendingSummary, utcStr, dateStr, digestRepo, ft, "zh"),
     saveHnReport(hnData, utcStr, dateStr, digestRepo, ft, "zh"),
     savePhReport(phData, utcStr, dateStr, digestRepo, ft, "zh"),
+    saveArxivReport(arxivData, utcStr, dateStr, digestRepo, ft, "zh"),
+    saveHfReport(hfData, utcStr, dateStr, digestRepo, ft, "zh"),
+    saveCommunityReport(devtoData, lobstersData, utcStr, dateStr, digestRepo, ft, "zh"),
   ]);
 
   // 5. Create GitHub issues for CLI + OpenClaw (zh only)

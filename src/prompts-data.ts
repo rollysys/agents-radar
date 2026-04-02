@@ -9,6 +9,10 @@ import type { WebFetchResult } from "./web.ts";
 import type { TrendingData } from "./trending.ts";
 import type { HnData } from "./hn.ts";
 import type { PhData } from "./ph.ts";
+import type { ArxivData } from "./arxiv.ts";
+import type { HfData } from "./hf.ts";
+import type { DevtoData } from "./devto.ts";
+import type { LobstersData } from "./lobsters.ts";
 import type { Lang } from "./i18n.ts";
 export function buildTrendingPrompt(data: TrendingData, dateStr: string, lang: Lang = "zh"): string {
   const trendingSection =
@@ -535,6 +539,312 @@ ${productsText}
    - 开源 vs 闭源的趋势
 
 4. **值得试用** — 列出 2~3 个最值得开发者试用的产品，简述理由
+
+语言要求：中文，简洁专业，保留所有原文链接。
+`;
+}
+
+// ---------------------------------------------------------------------------
+// ArXiv prompt
+// ---------------------------------------------------------------------------
+
+export function buildArxivPrompt(data: ArxivData, dateStr: string, lang: Lang = "zh"): string {
+  const papersText = data.papers
+    .map((p, i) => {
+      const authors =
+        p.authors.length > 3 ? p.authors.slice(0, 3).join(", ") + " et al." : p.authors.join(", ");
+      const cats = p.categories.slice(0, 3).join(", ");
+      return lang === "en"
+        ? `${i + 1}. **${p.title}**\n` +
+            `   Link: ${p.url}\n` +
+            `   Authors: ${authors} | Categories: ${cats}\n` +
+            `   Published: ${p.published.slice(0, 10)}\n` +
+            `   Abstract: ${p.summary.slice(0, 300)}${p.summary.length > 300 ? "..." : ""}`
+        : `${i + 1}. **${p.title}**\n` +
+            `   链接: ${p.url}\n` +
+            `   作者: ${authors} | 分类: ${cats}\n` +
+            `   发布: ${p.published.slice(0, 10)}\n` +
+            `   摘要: ${p.summary.slice(0, 300)}${p.summary.length > 300 ? "..." : ""}`;
+    })
+    .join("\n\n");
+
+  if (lang === "en") {
+    return `You are an AI research analyst. The following are recent AI-related papers from ArXiv as of ${dateStr} (${data.papers.length} papers from cs.AI, cs.CL, cs.LG):
+
+---
+
+${papersText}
+
+---
+
+Generate a structured ArXiv AI Research Digest in English:
+
+1. **Today's Highlights** — 3-5 sentences on the most significant research directions and breakthroughs
+
+2. **Key Papers** — Select 8-15 most important papers, organized by theme:
+   - 🧠 Large Language Models (architecture, training, alignment, evaluation)
+   - 🤖 Agents & Reasoning (planning, tool use, multi-agent, chain-of-thought)
+   - 🔧 Methods & Frameworks (new techniques, benchmarks, efficiency improvements)
+   - 📊 Applications (domain-specific, multimodal, code generation)
+
+   For each paper:
+   - Title (with ArXiv link)
+   - Authors (abbreviated)
+   - One sentence: key contribution and why it matters
+
+3. **Research Trend Signal** — 100-200 words on emerging research directions visible from today's submissions
+
+4. **Worth Deep Reading** — 2-3 papers most worth reading in full, with reasoning
+
+Style: English, concise and professional, preserve all ArXiv links.
+`;
+  }
+
+  return `你是 AI 研究分析师。以下是 ${dateStr} ArXiv 上最新的 AI 相关论文（共 ${data.papers.length} 篇，来自 cs.AI、cs.CL、cs.LG）：
+
+---
+
+${papersText}
+
+---
+
+请生成一份结构清晰的《ArXiv AI 研究日报》，要求：
+
+1. **今日速览** — 3~5 句话，概括今日最值得关注的研究方向和突破
+
+2. **重点论文** — 选出 8~15 篇最重要的论文，按主题分类：
+   - 🧠 大语言模型（架构、训练、对齐、评估）
+   - 🤖 智能体与推理（规划、工具使用、多智能体、思维链）
+   - 🔧 方法与框架（新技术、基准测试、效率优化）
+   - 📊 应用（垂直领域、多模态、代码生成）
+
+   每篇论文包含：
+   - 标题（附 ArXiv 链接）
+   - 作者（缩写）
+   - 一句话说明：核心贡献和为什么值得关注
+
+3. **研究趋势信号** — 100~200 字，从今日投稿中观察到的新兴研究方向
+
+4. **值得精读** — 2~3 篇最值得完整阅读的论文，简述理由
+
+语言要求：中文，简洁专业，保留所有 ArXiv 链接。
+`;
+}
+
+// ---------------------------------------------------------------------------
+// Hugging Face prompt
+// ---------------------------------------------------------------------------
+
+export function buildHfPrompt(data: HfData, dateStr: string, lang: Lang = "zh"): string {
+  const modelsText = data.models
+    .map((m, i) =>
+      lang === "en"
+        ? `${i + 1}. **${m.id}**\n` +
+          `   Link: ${m.url}\n` +
+          `   Author: ${m.author} | Pipeline: ${m.pipelineTag || "N/A"}\n` +
+          `   Likes: ${m.likes.toLocaleString()} | Downloads: ${m.downloads.toLocaleString()}\n` +
+          `   Tags: ${m.tags.slice(0, 5).join(", ")}`
+        : `${i + 1}. **${m.id}**\n` +
+          `   链接: ${m.url}\n` +
+          `   作者: ${m.author} | 任务: ${m.pipelineTag || "N/A"}\n` +
+          `   点赞: ${m.likes.toLocaleString()} | 下载: ${m.downloads.toLocaleString()}\n` +
+          `   标签: ${m.tags.slice(0, 5).join(", ")}`,
+    )
+    .join("\n\n");
+
+  if (lang === "en") {
+    return `You are an AI model ecosystem analyst. The following are trending models on Hugging Face Hub as of ${dateStr} (${data.models.length} models, sorted by weekly likes):
+
+---
+
+${modelsText}
+
+---
+
+Generate a structured Hugging Face Trending Models Digest in English:
+
+1. **Today's Highlights** — 3-5 sentences on the most notable model releases and trends on Hugging Face
+
+2. **Trending Models** — Organized by category, each with:
+   - Model name (with HF link)
+   - Author, likes, downloads
+   - One sentence: what it is, why it's trending
+
+   Categories:
+   - 🧠 Language Models (LLMs, chat models, instruction-tuned)
+   - 🎨 Multimodal & Generation (image, video, audio, text-to-X)
+   - 🔧 Specialized Models (code, math, medical, embeddings)
+   - 📦 Fine-tunes & Quantizations (community fine-tunes, GGUF, AWQ)
+
+3. **Ecosystem Signal** — 100-200 words analyzing model ecosystem trends:
+   - Which model families are gaining momentum?
+   - Open-weight vs proprietary trends
+   - Notable quantization or fine-tuning activity
+
+4. **Worth Exploring** — 2-3 models most worth trying or studying, with reasoning
+
+Style: English, concise and professional, preserve all HuggingFace links.
+`;
+  }
+
+  return `你是 AI 模型生态分析师。以下是 ${dateStr} Hugging Face Hub 上的热门模型（共 ${data.models.length} 个，按周点赞数排序）：
+
+---
+
+${modelsText}
+
+---
+
+请生成一份结构清晰的《Hugging Face 热门模型日报》，要求：
+
+1. **今日速览** — 3~5 句话，概括 Hugging Face 上最值得关注的模型发布和趋势
+
+2. **热门模型** — 按以下分类整理，每个模型包含：
+   - 模型名（附 HF 链接）
+   - 作者、点赞数、下载数
+   - 一句话说明：这个模型是什么，为什么在趋势榜上
+
+   分类：
+   - 🧠 语言模型（LLM、对话模型、指令微调）
+   - 🎨 多模态与生成（图像、视频、音频、文本到X）
+   - 🔧 专用模型（代码、数学、医疗、嵌入）
+   - 📦 微调与量化（社区微调、GGUF、AWQ）
+
+3. **生态信号** — 100~200 字，分析模型生态趋势：
+   - 哪些模型家族势头正旺？
+   - 开源权重 vs 闭源的趋势
+   - 值得注意的量化或微调活动
+
+4. **值得探索** — 2~3 个最值得尝试或研究的模型，简述理由
+
+语言要求：中文，简洁专业，保留所有 HuggingFace 链接。
+`;
+}
+
+// ---------------------------------------------------------------------------
+// Community prompt (Dev.to + Lobste.rs combined)
+// ---------------------------------------------------------------------------
+
+export function buildCommunityPrompt(
+  devto: DevtoData,
+  lobsters: LobstersData,
+  dateStr: string,
+  lang: Lang = "zh",
+): string {
+  const devtoText =
+    devto.articles.length > 0
+      ? devto.articles
+          .map((a, i) =>
+            lang === "en"
+              ? `${i + 1}. **${a.title}**\n` +
+                `   Link: ${a.url}\n` +
+                `   Author: ${a.user} | Reactions: ${a.positiveReactionsCount} | Comments: ${a.commentsCount} | Reading: ${a.readingTimeMinutes} min\n` +
+                `   Tags: ${a.tags.join(", ")}\n` +
+                `   ${a.description}`
+              : `${i + 1}. **${a.title}**\n` +
+                `   链接: ${a.url}\n` +
+                `   作者: ${a.user} | 点赞: ${a.positiveReactionsCount} | 评论: ${a.commentsCount} | 阅读: ${a.readingTimeMinutes} 分钟\n` +
+                `   标签: ${a.tags.join(", ")}\n` +
+                `   ${a.description}`,
+          )
+          .join("\n\n")
+      : lang === "en"
+        ? "(No Dev.to articles available)"
+        : "（无 Dev.to 文章）";
+
+  const lobstersText =
+    lobsters.stories.length > 0
+      ? lobsters.stories
+          .map((s, i) =>
+            lang === "en"
+              ? `${i + 1}. **${s.title}**\n` +
+                `   Link: ${s.url}\n` +
+                `   Discussion: ${s.commentsUrl}\n` +
+                `   Score: ${s.score} | Comments: ${s.commentCount} | Author: ${s.author} | Tags: ${s.tags.join(", ")}`
+              : `${i + 1}. **${s.title}**\n` +
+                `   链接: ${s.url}\n` +
+                `   讨论: ${s.commentsUrl}\n` +
+                `   分数: ${s.score} | 评论: ${s.commentCount} | 作者: ${s.author} | 标签: ${s.tags.join(", ")}`,
+          )
+          .join("\n\n")
+      : lang === "en"
+        ? "(No Lobste.rs stories available)"
+        : "（无 Lobste.rs 内容）";
+
+  if (lang === "en") {
+    return `You are a tech community analyst. The following are AI-related content from Dev.to and Lobste.rs as of ${dateStr}:
+
+## Dev.to Articles (${devto.articles.length} articles)
+
+${devtoText}
+
+---
+
+## Lobste.rs Stories (${lobsters.stories.length} stories)
+
+${lobstersText}
+
+---
+
+Generate a structured Tech Community AI Digest in English:
+
+1. **Today's Highlights** — 3-5 sentences on the most discussed AI topics across these communities today
+
+2. **Dev.to Highlights** — Select 5-10 most valuable articles:
+   - Title (with link)
+   - Reactions and comments
+   - One sentence: key takeaway for developers
+
+3. **Lobste.rs Highlights** — Select 3-8 most notable stories:
+   - Title (with link + discussion link)
+   - Score and comments
+   - One sentence: why it's worth reading
+
+4. **Community Pulse** — 100-200 words on what these communities are talking about:
+   - Common themes across both platforms
+   - Practical concerns developers have about AI tools
+   - Emerging tutorials, patterns, or best practices
+
+5. **Worth Reading** — 2-3 articles/stories most worth reading in depth
+
+Style: English, concise and developer-friendly, preserve all original links.
+`;
+  }
+
+  return `你是技术社区分析师。以下是 ${dateStr} Dev.to 和 Lobste.rs 上的 AI 相关内容：
+
+## Dev.to 文章（共 ${devto.articles.length} 篇）
+
+${devtoText}
+
+---
+
+## Lobste.rs 内容（共 ${lobsters.stories.length} 条）
+
+${lobstersText}
+
+---
+
+请生成一份结构清晰的《技术社区 AI 动态日报》，要求：
+
+1. **今日速览** — 3~5 句话，概括今日技术社区围绕 AI 最热门的讨论方向
+
+2. **Dev.to 精选** — 选出 5~10 篇最有价值的文章：
+   - 标题（附链接）
+   - 点赞数和评论数
+   - 一句话说明：对开发者的核心价值
+
+3. **Lobste.rs 精选** — 选出 3~8 条最值得关注的内容：
+   - 标题（附链接 + 讨论链接）
+   - 分数和评论数
+   - 一句话说明：为什么值得阅读
+
+4. **社区脉搏** — 100~200 字，分析技术社区在聊什么：
+   - 两个平台共同关注的主题
+   - 开发者对 AI 工具的实际关切
+   - 新兴的教程、模式或最佳实践
+
+5. **值得精读** — 2~3 篇最值得深入阅读的内容
 
 语言要求：中文，简洁专业，保留所有原文链接。
 `;

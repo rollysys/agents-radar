@@ -3,14 +3,35 @@
  * Extracted from index.ts for separation of concerns.
  */
 
-import { type Lang, WEB_REPORT, TRENDING_REPORT, HN_REPORT, PH_REPORT, ISSUE_LABELS } from "./i18n.ts";
-import { buildWebReportPrompt, buildHnPrompt, buildPhPrompt } from "./prompts-data.ts";
+import {
+  type Lang,
+  WEB_REPORT,
+  TRENDING_REPORT,
+  HN_REPORT,
+  PH_REPORT,
+  ARXIV_REPORT,
+  HF_REPORT,
+  COMMUNITY_REPORT,
+  ISSUE_LABELS,
+} from "./i18n.ts";
+import {
+  buildWebReportPrompt,
+  buildHnPrompt,
+  buildPhPrompt,
+  buildArxivPrompt,
+  buildHfPrompt,
+  buildCommunityPrompt,
+} from "./prompts-data.ts";
 import { callLlm, saveFile, LLM_TOKENS_WEB } from "./report.ts";
 import { createGitHubIssue } from "./github.ts";
 import { saveWebState, type WebFetchResult, type WebState } from "./web.ts";
 import type { HnData } from "./hn.ts";
 import type { PhData } from "./ph.ts";
 import type { TrendingData } from "./trending.ts";
+import type { ArxivData } from "./arxiv.ts";
+import type { HfData } from "./hf.ts";
+import type { DevtoData } from "./devto.ts";
+import type { LobstersData } from "./lobsters.ts";
 
 // ---------------------------------------------------------------------------
 // Web report
@@ -203,5 +224,148 @@ export async function savePhReport(
     }
   } catch (err) {
     console.error(`  [ph/${lang}] Report generation failed: ${err}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// ArXiv report
+// ---------------------------------------------------------------------------
+
+export async function saveArxivReport(
+  arxivData: ArxivData,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+  lang: Lang = "zh",
+): Promise<void> {
+  if (!arxivData.fetchSuccess) {
+    console.log(`  [arxiv/${lang}] No data available, skipping report.`);
+    return;
+  }
+
+  console.log(`  [arxiv/${lang}] Calling LLM for ArXiv report...`);
+  try {
+    const summary = await callLlm(buildArxivPrompt(arxivData, dateStr, lang));
+    const fileName = lang === "en" ? "ai-arxiv-en.md" : "ai-arxiv.md";
+    const header =
+      lang === "en"
+        ? `# ${ARXIV_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> Source: [ArXiv](https://arxiv.org/) (cs.AI, cs.CL, cs.LG) | ` +
+          `${arxivData.papers.length} papers | Generated: ${utcStr} UTC\n\n` +
+          `---\n\n`
+        : `# ${ARXIV_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> 数据来源: [ArXiv](https://arxiv.org/) (cs.AI, cs.CL, cs.LG) | ` +
+          `共 ${arxivData.papers.length} 篇论文 | 生成时间: ${utcStr} UTC\n\n` +
+          `---\n\n`;
+
+    const content = header + summary + footer;
+
+    console.log(`  Saved ${saveFile(content, dateStr, fileName)}`);
+
+    if (digestRepo) {
+      const title = ARXIV_REPORT.issueTitle(dateStr, lang);
+      const label = ISSUE_LABELS.arxiv[lang];
+      const url = await createGitHubIssue(title, content, label);
+      console.log(`  Created ArXiv issue (${lang}): ${url}`);
+    }
+  } catch (err) {
+    console.error(`  [arxiv/${lang}] Report generation failed: ${err}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Hugging Face report
+// ---------------------------------------------------------------------------
+
+export async function saveHfReport(
+  hfData: HfData,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+  lang: Lang = "zh",
+): Promise<void> {
+  if (!hfData.fetchSuccess) {
+    console.log(`  [hf/${lang}] No data available, skipping report.`);
+    return;
+  }
+
+  console.log(`  [hf/${lang}] Calling LLM for Hugging Face report...`);
+  try {
+    const summary = await callLlm(buildHfPrompt(hfData, dateStr, lang));
+    const fileName = lang === "en" ? "ai-hf-en.md" : "ai-hf.md";
+    const header =
+      lang === "en"
+        ? `# ${HF_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> Source: [Hugging Face Hub](https://huggingface.co/) | ` +
+          `${hfData.models.length} models | Generated: ${utcStr} UTC\n\n` +
+          `---\n\n`
+        : `# ${HF_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> 数据来源: [Hugging Face Hub](https://huggingface.co/) | ` +
+          `共 ${hfData.models.length} 个模型 | 生成时间: ${utcStr} UTC\n\n` +
+          `---\n\n`;
+
+    const content = header + summary + footer;
+
+    console.log(`  Saved ${saveFile(content, dateStr, fileName)}`);
+
+    if (digestRepo) {
+      const title = HF_REPORT.issueTitle(dateStr, lang);
+      const label = ISSUE_LABELS.hf[lang];
+      const url = await createGitHubIssue(title, content, label);
+      console.log(`  Created HF issue (${lang}): ${url}`);
+    }
+  } catch (err) {
+    console.error(`  [hf/${lang}] Report generation failed: ${err}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Community report (Dev.to + Lobste.rs)
+// ---------------------------------------------------------------------------
+
+export async function saveCommunityReport(
+  devtoData: DevtoData,
+  lobstersData: LobstersData,
+  utcStr: string,
+  dateStr: string,
+  digestRepo: string,
+  footer: string,
+  lang: Lang = "zh",
+): Promise<void> {
+  const hasData = devtoData.fetchSuccess || lobstersData.fetchSuccess;
+  if (!hasData) {
+    console.log(`  [community/${lang}] No data available, skipping report.`);
+    return;
+  }
+
+  console.log(`  [community/${lang}] Calling LLM for community report...`);
+  try {
+    const summary = await callLlm(buildCommunityPrompt(devtoData, lobstersData, dateStr, lang));
+    const fileName = lang === "en" ? "ai-community-en.md" : "ai-community.md";
+    const devtoCount = devtoData.articles.length;
+    const lobstersCount = lobstersData.stories.length;
+    const header =
+      lang === "en"
+        ? `# ${COMMUNITY_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> Sources: [Dev.to](https://dev.to/) (${devtoCount} articles) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} stories) | Generated: ${utcStr} UTC\n\n` +
+          `---\n\n`
+        : `# ${COMMUNITY_REPORT.title[lang]} ${dateStr}\n\n` +
+          `> 数据来源: [Dev.to](https://dev.to/) (${devtoCount} 篇) + [Lobste.rs](https://lobste.rs/) (${lobstersCount} 条) | 生成时间: ${utcStr} UTC\n\n` +
+          `---\n\n`;
+
+    const content = header + summary + footer;
+
+    console.log(`  Saved ${saveFile(content, dateStr, fileName)}`);
+
+    if (digestRepo) {
+      const title = COMMUNITY_REPORT.issueTitle(dateStr, lang);
+      const label = ISSUE_LABELS.community[lang];
+      const url = await createGitHubIssue(title, content, label);
+      console.log(`  Created community issue (${lang}): ${url}`);
+    }
+  } catch (err) {
+    console.error(`  [community/${lang}] Report generation failed: ${err}`);
   }
 }
