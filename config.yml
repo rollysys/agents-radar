@@ -55,6 +55,9 @@ openclaw_peers:
   - id: zeroclaw
     repo: zeroclaw-labs/zeroclaw
     name: Zeroclaw
+  - id: hermes-agent
+    repo: nousresearch/hermes-agent
+    name: Hermes Agent
   - id: picoclaw
     repo: sipeed/picoclaw
     name: PicoClaw

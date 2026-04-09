@@ -175,7 +175,7 @@ describe("AnthropicProvider", () => {
     });
 
     const p = new AnthropicProvider();
-    await expect(p.call("prompt", 100)).rejects.toThrow("Unexpected response type from Anthropic");
+    await expect(p.call("prompt", 100)).rejects.toThrow("No text content in Anthropic response");
   });
 });
 
