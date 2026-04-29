@@ -273,12 +273,13 @@ export async function closeStaleIssues(days: number): Promise<number> {
   if (!digestRepo) return 0;
   const cutoff = new Date(Date.now() - days * 86_400_000);
   let closed = 0;
-  let page = 1;
 
+  // Always re-fetch page 1: closing issues shifts pagination, so incrementing
+  // pages would skip items.
   while (true) {
     const issues = await githubGet<{ number: number; created_at: string }[]>(
       `https://api.github.com/repos/${digestRepo}/issues`,
-      { state: "open", sort: "created", direction: "asc", per_page: "100", page: String(page) },
+      { state: "open", sort: "created", direction: "asc", per_page: "100" },
     );
     if (issues.length === 0) break;
 
@@ -296,9 +297,6 @@ export async function closeStaleIssues(days: number): Promise<number> {
       }),
     );
     closed += stale.length;
-
-    if (stale.length < issues.length) break;
-    page++;
   }
   return closed;
 }
