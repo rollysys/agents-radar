@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-05-02T02:55:52.384Z",
+    "lastChecked": "2026-05-03T03:32:18.206Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -354,7 +354,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-05-02T02:55:52.446Z",
+    "lastChecked": "2026-05-03T03:32:21.029Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-05-02T01:30:37.967Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-05-02T01:36:03.782Z",
@@ -436,7 +436,7 @@
       "https://openai.com/index/introducing-evmbench/": "2026-04-23T08:57:46.682Z",
       "https://openai.com/index/evaluating-chain-of-thought-monitorability/": "2026-05-02T01:41:14.796Z",
       "https://openai.com/index/how-confessions-can-keep-language-models-honest/": "2026-04-23T08:15:23.021Z",
-      "https://openai.com/index/introducing-gpt-5-2/": "2026-05-02T02:07:52.809Z",
+      "https://openai.com/index/introducing-gpt-5-2/": "2026-05-02T05:36:10.691Z",
       "https://openai.com/index/how-people-are-using-chatgpt/": "2026-04-23T08:37:34.485Z",
       "https://openai.com/research/index/publication/": "2026-05-02T01:43:27.106Z",
       "https://openai.com/research/index/milestone/": "2026-05-02T01:44:03.212Z",
@@ -975,7 +975,7 @@
       "https://openai.com/index/gpt-5-3-instant/": "2026-04-23T03:47:28.610Z",
       "https://openai.com/index/gpt-5-3-instant-system-card/": "2026-04-23T06:02:41.219Z",
       "https://openai.com/index/extending-single-minus-amplitudes-to-gravitons/": "2026-05-02T01:11:27.009Z",
-      "https://openai.com/index/introducing-gpt-5-4/": "2026-05-02T02:07:37.982Z",
+      "https://openai.com/index/introducing-gpt-5-4/": "2026-05-02T05:35:22.704Z",
       "https://openai.com/index/reasoning-models-chain-of-thought-controllability/": "2026-04-30T10:41:26.667Z",
       "https://openai.com/index/chatgpt-for-excel/": "2026-04-28T17:56:55.880Z",
       "https://openai.com/index/gpt-5-4-thinking-system-card/": "2026-04-23T05:45:21.943Z",
@@ -1016,7 +1016,7 @@
       "https://openai.com/index/making-chatgpt-better-for-clinicians/": "2026-04-24T20:03:25.350Z",
       "https://openai.com/index/introducing-workspace-agents-in-chatgpt/": "2026-05-02T01:56:50.831Z",
       "https://openai.com/index/introducing-gpt-5-5/": "2026-04-27T23:48:37.181Z",
-      "https://openai.com/index/gpt-5-5-bio-bug-bounty/": "2026-05-02T02:05:00.320Z",
+      "https://openai.com/index/gpt-5-5-bio-bug-bounty/": "2026-05-02T17:35:46.369Z",
       "https://openai.com/index/gpt-5-5-system-card/": "2026-04-28T21:41:49.722Z",
       "https://openai.com/index/our-principles/": "2026-05-02T01:11:27.295Z",
       "https://openai.com/index/open-source-codex-orchestration-symphony/": "2026-04-30T11:26:22.439Z",
@@ -1024,7 +1024,7 @@
       "https://openai.com/index/openai-on-aws/": "2026-05-01T20:15:24.702Z",
       "https://openai.com/index/our-commitment-to-community-safety/": "2026-05-02T01:32:31.591Z",
       "https://openai.com/index/where-the-goblins-came-from/": "2026-05-01T21:58:18.765Z",
-      "https://openai.com/index/advanced-account-security/": "2026-05-01T23:14:20.062Z"
+      "https://openai.com/index/advanced-account-security/": "2026-05-02T11:40:22.699Z"
     }
   }
 }
