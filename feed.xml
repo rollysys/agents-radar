@@ -6,7 +6,42 @@
     <description>AI 开源生态每日简报 · Daily AI ecosystem digest</description>
     <language>zh-CN</language>
     <atom:link href="https://duanyytop.github.io/agents-radar/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Tue, 05 May 2026 03:13:19 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 May 2026 03:40:05 +0000</lastBuildDate>
+    <item>
+      <title>AI CLI 工具社区动态日报 2026-05-06</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-05-06/ai-cli</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-06/ai-cli</guid>
+      <pubDate>Wed, 06 May 2026 00:00:00 +0000</pubDate>
+      <description>AI CLI 工具社区动态日报 2026-05-06</description>
+    </item>
+    <item>
+      <title>AI Agents 生态日报 2026-05-06</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-05-06/ai-agents</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-06/ai-agents</guid>
+      <pubDate>Wed, 06 May 2026 00:00:00 +0000</pubDate>
+      <description>AI Agents 生态日报 2026-05-06</description>
+    </item>
+    <item>
+      <title>AI 官方内容追踪报告 2026-05-06</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-05-06/ai-web</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-06/ai-web</guid>
+      <pubDate>Wed, 06 May 2026 00:00:00 +0000</pubDate>
+      <description>AI 官方内容追踪报告 2026-05-06</description>
+    </item>
+    <item>
+      <title>AI 开源趋势日报 2026-05-06</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-05-06/ai-trending</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-06/ai-trending</guid>
+      <pubDate>Wed, 06 May 2026 00:00:00 +0000</pubDate>
+      <description>AI 开源趋势日报 2026-05-06</description>
+    </item>
+    <item>
+      <title>Hacker News AI 社区动态日报 2026-05-06</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-05-06/ai-hn</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-06/ai-hn</guid>
+      <pubDate>Wed, 06 May 2026 00:00:00 +0000</pubDate>
+      <description>Hacker News AI 社区动态日报 2026-05-06</description>
+    </item>
     <item>
       <title>AI CLI 工具社区动态日报 2026-05-05</title>
       <link>https://duanyytop.github.io/agents-radar/#2026-05-05/ai-cli</link>
@@ -181,41 +216,6 @@
       <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-01/ai-hn</guid>
       <pubDate>Fri, 01 May 2026 00:00:00 +0000</pubDate>
       <description>Hacker News AI 社区动态日报 2026-05-01</description>
-    </item>
-    <item>
-      <title>AI 工具生态月报 2026-05-01</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-05-01/ai-monthly</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-01/ai-monthly</guid>
-      <pubDate>Fri, 01 May 2026 00:00:00 +0000</pubDate>
-      <description>AI 工具生态月报 2026-05-01</description>
-    </item>
-    <item>
-      <title>AI Tools Monthly Digest 2026-05-01</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-05-01/ai-monthly-en</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-05-01/ai-monthly-en</guid>
-      <pubDate>Fri, 01 May 2026 00:00:00 +0000</pubDate>
-      <description>AI Tools Monthly Digest 2026-05-01</description>
-    </item>
-    <item>
-      <title>AI CLI 工具社区动态日报 2026-04-30</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-04-30/ai-cli</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-04-30/ai-cli</guid>
-      <pubDate>Thu, 30 Apr 2026 00:00:00 +0000</pubDate>
-      <description>AI CLI 工具社区动态日报 2026-04-30</description>
-    </item>
-    <item>
-      <title>AI Agents 生态日报 2026-04-30</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-04-30/ai-agents</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-04-30/ai-agents</guid>
-      <pubDate>Thu, 30 Apr 2026 00:00:00 +0000</pubDate>
-      <description>AI Agents 生态日报 2026-04-30</description>
-    </item>
-    <item>
-      <title>AI 官方内容追踪报告 2026-04-30</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-04-30/ai-web</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-04-30/ai-web</guid>
-      <pubDate>Thu, 30 Apr 2026 00:00:00 +0000</pubDate>
-      <description>AI 官方内容追踪报告 2026-04-30</description>
     </item>
   </channel>
 </rss>
