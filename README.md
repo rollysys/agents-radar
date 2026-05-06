@@ -99,6 +99,7 @@ Subscribe to get daily digest notifications pushed directly to Telegram. Each me
 | Kimi Code CLI | [MoonshotAI/kimi-cli](https://github.com/MoonshotAI/kimi-cli) |
 | OpenCode | [anomalyco/opencode](https://github.com/anomalyco/opencode) |
 | Qwen Code | [QwenLM/qwen-code](https://github.com/QwenLM/qwen-code) |
+| DeepSeek TUI | [Hmbown/DeepSeek-TUI](https://github.com/Hmbown/DeepSeek-TUI) |
 
 ### Claude Code Skills (GitHub)
 
@@ -295,6 +296,7 @@ Each report is generated in both Chinese (`ai-cli.md`) and English (`ai-cli-en.m
   <details> Kimi Code CLI  — ...
   <details> OpenCode       — ...
   <details> Qwen Code      — ...
+  <details> DeepSeek TUI   — ...
 ```
 
 `ai-agents.md` / `ai-agents-en.md` structure:
