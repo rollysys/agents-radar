@@ -84,6 +84,10 @@ Files written to `digests/YYYY-MM-DD/`:
 | `ai-web.md` | `web` | Skipped if no new sitemap content |
 | `ai-trending.md` | `trending` | Skipped if both data sources fail |
 | `ai-hn.md` | `hn` | Skipped if Algolia fetch fails |
+| `ai-ph.md` | `ph` | Skipped if Product Hunt fetch fails or `PRODUCTHUNT_TOKEN` unset |
+| `ai-arxiv.md` | `arxiv` | Skipped if ArXiv fetch fails |
+| `ai-hf.md` | `hf` | Skipped if Hugging Face fetch fails |
+| `ai-community.md` | `community` | Aggregates Dev.to + Lobsters; skipped if both fail |
 
 ## Tracked sources
 
@@ -93,6 +97,10 @@ Files written to `digests/YYYY-MM-DD/`:
 - **Web**: anthropic.com + openai.com via sitemap, state in `digests/web-state.json`
 - **Trending**: github.com/trending (HTML) + GitHub Search API (6 AI topics, 7-day window)
 - **HN**: Algolia HN Search API — 6 parallel queries, top-30 AI stories by points, last 24h
+- **PH**: Product Hunt GraphQL API — top AI products in last 24h (requires `PRODUCTHUNT_TOKEN`)
+- **ArXiv**: arxiv.org/cs.AI feed — papers from last 48h
+- **HF**: huggingface.co — trending models
+- **Community**: Dev.to top AI articles + Lobsters AI/ML stories, merged into one report
 
 ## Key conventions
 
