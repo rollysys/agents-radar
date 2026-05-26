@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-05-25T04:05:32.330Z",
+    "lastChecked": "2026-05-26T03:51:16.585Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -365,11 +365,12 @@
       "https://www.anthropic.com/news/anthropic-acquires-stainless": "2026-05-19T18:06:44.000Z",
       "https://www.anthropic.com/news/widening-conversation-ai": "2026-05-20T00:29:29.000Z",
       "https://www.anthropic.com/news/anthropic-kpmg": "2026-05-19T13:30:59.000Z",
-      "https://www.anthropic.com/research/glasswing-initial-update": "2026-05-22T20:37:40.000Z"
+      "https://www.anthropic.com/research/glasswing-initial-update": "2026-05-22T20:37:40.000Z",
+      "https://www.anthropic.com/news/chris-olah-pope-leo-encyclical": "2026-05-25T18:41:28.000Z"
     }
   },
   "openai": {
-    "lastChecked": "2026-05-25T04:05:35.043Z",
+    "lastChecked": "2026-05-26T03:51:13.446Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-05-23T00:56:40.607Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-05-22T19:04:21.352Z",
