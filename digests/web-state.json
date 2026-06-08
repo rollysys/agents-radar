@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-06-07T04:12:00.164Z",
+    "lastChecked": "2026-06-08T04:16:29.592Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -381,7 +381,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-06-07T04:12:02.810Z",
+    "lastChecked": "2026-06-08T04:16:31.949Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-05-29T00:25:33.242Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-05-28T11:05:40.405Z",
@@ -437,7 +437,7 @@
       "https://openai.com/index/introducing-openai-dublin/": "2026-05-29T00:25:56.440Z",
       "https://openai.com/index/introducing-openai-japan/": "2026-05-22T19:44:37.280Z",
       "https://openai.com/index/jakub-pachocki-announced-as-chief-scientist/": "2026-05-22T19:43:50.494Z",
-      "https://openai.com/index/openai-welcomes-cfo-cpo/": "2026-05-22T19:12:32.931Z",
+      "https://openai.com/index/openai-welcomes-cfo-cpo/": "2026-06-07T14:44:12.147Z",
       "https://openai.com/index/zico-kolter-joins-openais-board-of-directors/": "2026-06-04T09:53:07.509Z",
       "https://openai.com/global-affairs/openai-academy/": "2026-05-29T00:26:21.346Z",
       "https://openai.com/index/openai-en-france/": "2026-05-29T00:25:29.503Z",
@@ -459,7 +459,7 @@
       "https://openai.com/index/introducing-chatgpt-agent/": "2026-06-04T22:11:33.428Z",
       "https://openai.com/index/mixpanel-incident/": "2026-05-22T19:33:13.093Z",
       "https://openai.com/index/beyond-rate-limits/": "2026-06-02T12:48:35.429Z",
-      "https://openai.com/index/introducing-lockdown-mode-and-elevated-risk-labels-in-chatgpt/": "2026-06-04T20:39:42.695Z",
+      "https://openai.com/index/introducing-lockdown-mode-and-elevated-risk-labels-in-chatgpt/": "2026-06-07T14:53:21.077Z",
       "https://openai.com/index/introducing-evmbench/": "2026-06-06T15:41:14.801Z",
       "https://openai.com/index/evaluating-chain-of-thought-monitorability/": "2026-05-22T19:42:54.777Z",
       "https://openai.com/index/how-confessions-can-keep-language-models-honest/": "2026-06-04T23:18:48.758Z",
@@ -1085,7 +1085,7 @@
       "https://openai.com/index/openai-frontier-models-and-codex-are-now-available-on-aws/": "2026-06-06T07:48:43.209Z",
       "https://openai.com/index/advancing-youth-safety-and-opportunity-through-global-leadership/": "2026-06-05T06:40:18.609Z",
       "https://openai.com/index/codex-for-every-role-tool-workflow/": "2026-06-05T04:45:05.412Z",
-      "https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind/": "2026-06-07T03:10:23.083Z",
+      "https://openai.com/index/introducing-new-capabilities-to-gpt-rosalind/": "2026-06-08T04:10:31.360Z",
       "https://openai.com/index/chatgpt-memory-dreaming/": "2026-06-05T22:05:09.519Z"
     }
   }
