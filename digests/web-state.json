@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-06-27T03:42:17.296Z",
+    "lastChecked": "2026-06-28T04:04:58.258Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -409,7 +409,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-06-27T03:40:59.264Z",
+    "lastChecked": "2026-06-28T04:04:56.316Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-05-29T00:25:33.242Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-06-12T04:05:36.713Z",
@@ -893,7 +893,7 @@
       "https://openai.com/index/gartner-2025-emerging-leader/": "2026-06-08T07:32:40.882Z",
       "https://openai.com/index/gpt-5-1-for-developers/": "2026-06-09T20:53:17.363Z",
       "https://openai.com/index/dall-e-3/": "2026-06-08T07:47:21.242Z",
-      "https://openai.com/devday/": "2026-06-26T23:57:20.929Z",
+      "https://openai.com/devday/": "2026-06-27T07:33:21.991Z",
       "https://openai.com/index/introducing-gpt-realtime/": "2026-05-22T19:18:36.512Z",
       "https://openai.com/index/introducing-gpt-oss-safeguard/": "2026-06-14T07:22:19.093Z",
       "https://openai.com/index/introducing-agentkit/": "2026-06-05T12:39:25.601Z",
@@ -1091,7 +1091,7 @@
       "https://openai.com/index/introducing-trusted-contact-in-chatgpt/": "2026-05-22T18:55:28.997Z",
       "https://openai.com/index/running-codex-safely/": "2026-05-22T19:23:21.941Z",
       "https://openai.com/index/advancing-youth-safety-in-emea/": "2026-06-15T02:08:24.760Z",
-      "https://openai.com/index/openai-campus-network-student-club-interest-form/": "2026-06-26T21:20:59.513Z",
+      "https://openai.com/index/openai-campus-network-student-club-interest-form/": "2026-06-27T22:30:11.386Z",
       "https://openai.com/business/guides-and-resources/how-enterprises-are-scaling-ai/": "2026-06-11T17:36:23.683Z",
       "https://openai.com/index/openai-launches-the-deployment-company/": "2026-05-22T19:20:44.308Z",
       "https://openai.com/business/the-openai-deployment-company/": "2026-05-22T19:24:34.685Z",
@@ -1127,9 +1127,9 @@
       "https://openai.com/index/chatgpt-enterprise-spend-controls/": "2026-06-25T09:53:22.123Z",
       "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment/": "2026-06-26T16:09:17.109Z",
       "https://openai.com/index/daybreak-securing-the-world/": "2026-06-25T10:12:01.877Z",
-      "https://openai.com/index/openai-broadcom-jalapeno-inference-chip/": "2026-06-26T23:32:42.200Z",
-      "https://openai.com/index/how-agents-are-transforming-work/": "2026-06-27T03:30:23.524Z",
-      "https://openai.com/index/previewing-gpt-5-6-sol/": "2026-06-27T01:32:03.070Z"
+      "https://openai.com/index/openai-broadcom-jalapeno-inference-chip/": "2026-06-27T05:39:24.590Z",
+      "https://openai.com/index/how-agents-are-transforming-work/": "2026-06-27T15:51:23.057Z",
+      "https://openai.com/index/previewing-gpt-5-6-sol/": "2026-06-27T21:20:05.085Z"
     }
   }
 }
