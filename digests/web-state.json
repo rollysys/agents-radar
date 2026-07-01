@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-06-30T03:54:01.464Z",
+    "lastChecked": "2026-07-01T04:08:27.948Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -387,7 +387,7 @@
       "https://www.anthropic.com/news/anthropic-public-record": "2026-06-12T16:24:44.000Z",
       "https://www.anthropic.com/research/claude-code-expertise": "2026-06-26T12:25:45.000Z",
       "https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem": "2026-06-26T12:27:32.000Z",
-      "https://www.anthropic.com/research/team/frontier-red-team": "2026-06-17T17:03:48.000Z",
+      "https://www.anthropic.com/research/team/frontier-red-team": "2026-06-30T08:57:47.000Z",
       "https://www.anthropic.com/research/mythos-preview": "2026-06-26T12:27:49.000Z",
       "https://www.anthropic.com/research/nuclear-safeguards-for-ai": "2026-06-24T14:21:03.000Z",
       "https://www.anthropic.com/research/n-days": "2026-06-17T16:51:58.000Z",
@@ -405,11 +405,14 @@
       "https://www.anthropic.com/research/biorisk": "2026-06-17T16:47:23.000Z",
       "https://www.anthropic.com/research/project-fetch-phase-two": "2026-06-26T12:28:05.000Z",
       "https://www.anthropic.com/news/introducing-claude-tag": "2026-06-26T12:23:43.000Z",
-      "https://www.anthropic.com/research/economic-index-june-2026-report": "2026-06-26T23:50:17.000Z"
+      "https://www.anthropic.com/research/economic-index-june-2026-report": "2026-06-26T23:50:17.000Z",
+      "https://www.anthropic.com/news/redeploying-fable-5": "2026-07-01T03:16:50.000Z",
+      "https://www.anthropic.com/news/claude-sonnet-5": "2026-06-30T21:20:30.000Z",
+      "https://www.anthropic.com/news/claude-science-ai-workbench": "2026-06-30T18:43:57.000Z"
     }
   },
   "openai": {
-    "lastChecked": "2026-06-30T03:54:04.263Z",
+    "lastChecked": "2026-07-01T04:08:16.359Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-05-29T00:25:33.242Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-06-12T04:05:36.713Z",
@@ -1127,10 +1130,12 @@
       "https://openai.com/index/chatgpt-enterprise-spend-controls/": "2026-06-29T20:50:32.610Z",
       "https://openai.com/index/samsung-electronics-chatgpt-codex-deployment/": "2026-06-29T15:56:02.566Z",
       "https://openai.com/index/daybreak-securing-the-world/": "2026-06-25T10:12:01.877Z",
-      "https://openai.com/index/openai-broadcom-jalapeno-inference-chip/": "2026-06-30T03:33:47.975Z",
-      "https://openai.com/index/how-agents-are-transforming-work/": "2026-06-29T14:41:28.572Z",
-      "https://openai.com/index/previewing-gpt-5-6-sol/": "2026-06-29T15:35:03.069Z",
-      "https://openai.com/index/hp-frontier-partnership/": "2026-06-30T02:02:27.511Z"
+      "https://openai.com/index/openai-broadcom-jalapeno-inference-chip/": "2026-06-30T21:07:10.453Z",
+      "https://openai.com/index/how-agents-are-transforming-work/": "2026-07-01T00:26:24.676Z",
+      "https://openai.com/index/previewing-gpt-5-6-sol/": "2026-06-30T18:42:04.752Z",
+      "https://openai.com/index/hp-frontier-partnership/": "2026-07-01T01:00:41.831Z",
+      "https://openai.com/index/introducing-genebench-pro/": "2026-06-30T23:04:03.511Z",
+      "https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug/": "2026-06-30T22:29:12.784Z"
     }
   }
 }
