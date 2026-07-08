@@ -6,7 +6,63 @@
     <description>AI 开源生态每日简报 · Daily AI ecosystem digest</description>
     <language>zh-CN</language>
     <atom:link href="https://duanyytop.github.io/agents-radar/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Tue, 07 Jul 2026 03:58:24 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jul 2026 03:11:17 +0000</lastBuildDate>
+    <item>
+      <title>AI CLI 工具社区动态日报 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-cli</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-cli</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>AI CLI 工具社区动态日报 2026-07-08</description>
+    </item>
+    <item>
+      <title>AI Agents 生态日报 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-agents</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-agents</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>AI Agents 生态日报 2026-07-08</description>
+    </item>
+    <item>
+      <title>AI 官方内容追踪报告 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-web</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-web</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>AI 官方内容追踪报告 2026-07-08</description>
+    </item>
+    <item>
+      <title>AI 开源趋势日报 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-trending</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-trending</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>AI 开源趋势日报 2026-07-08</description>
+    </item>
+    <item>
+      <title>Hacker News AI 社区动态日报 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-hn</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-hn</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Hacker News AI 社区动态日报 2026-07-08</description>
+    </item>
+    <item>
+      <title>ArXiv AI 研究日报 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-arxiv</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-arxiv</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>ArXiv AI 研究日报 2026-07-08</description>
+    </item>
+    <item>
+      <title>Hugging Face 热门模型日报 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-hf</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-hf</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>Hugging Face 热门模型日报 2026-07-08</description>
+    </item>
+    <item>
+      <title>技术社区 AI 动态日报 2026-07-08</title>
+      <link>https://duanyytop.github.io/agents-radar/#2026-07-08/ai-community</link>
+      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-08/ai-community</guid>
+      <pubDate>Wed, 08 Jul 2026 00:00:00 +0000</pubDate>
+      <description>技术社区 AI 动态日报 2026-07-08</description>
+    </item>
     <item>
       <title>AI CLI 工具社区动态日报 2026-07-07</title>
       <link>https://duanyytop.github.io/agents-radar/#2026-07-07/ai-cli</link>
@@ -160,62 +216,6 @@
       <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-05/ai-community</guid>
       <pubDate>Sun, 05 Jul 2026 00:00:00 +0000</pubDate>
       <description>技术社区 AI 动态日报 2026-07-05</description>
-    </item>
-    <item>
-      <title>AI CLI 工具社区动态日报 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-cli</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-cli</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>AI CLI 工具社区动态日报 2026-07-04</description>
-    </item>
-    <item>
-      <title>AI Agents 生态日报 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-agents</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-agents</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>AI Agents 生态日报 2026-07-04</description>
-    </item>
-    <item>
-      <title>AI 官方内容追踪报告 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-web</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-web</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>AI 官方内容追踪报告 2026-07-04</description>
-    </item>
-    <item>
-      <title>AI 开源趋势日报 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-trending</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-trending</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>AI 开源趋势日报 2026-07-04</description>
-    </item>
-    <item>
-      <title>Hacker News AI 社区动态日报 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-hn</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-hn</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>Hacker News AI 社区动态日报 2026-07-04</description>
-    </item>
-    <item>
-      <title>ArXiv AI 研究日报 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-arxiv</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-arxiv</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>ArXiv AI 研究日报 2026-07-04</description>
-    </item>
-    <item>
-      <title>Hugging Face 热门模型日报 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-hf</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-hf</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>Hugging Face 热门模型日报 2026-07-04</description>
-    </item>
-    <item>
-      <title>技术社区 AI 动态日报 2026-07-04</title>
-      <link>https://duanyytop.github.io/agents-radar/#2026-07-04/ai-community</link>
-      <guid isPermaLink="true">https://duanyytop.github.io/agents-radar/#2026-07-04/ai-community</guid>
-      <pubDate>Sat, 04 Jul 2026 00:00:00 +0000</pubDate>
-      <description>技术社区 AI 动态日报 2026-07-04</description>
     </item>
   </channel>
 </rss>
