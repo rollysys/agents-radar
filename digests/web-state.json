@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-08-03T03:15:12.277Z",
+    "lastChecked": "2026-08-04T02:44:07.943Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -26,7 +26,7 @@
       "https://www.anthropic.com/news/donate-public-first-action": "2026-02-12T14:45:37.000Z",
       "https://www.anthropic.com/news/healthcare-life-sciences": "2026-04-09T20:25:31.000Z",
       "https://www.anthropic.com/news/covering-electricity-price-increases": "2026-02-11T21:08:31.000Z",
-      "https://www.anthropic.com/news/claude-for-nonprofits": "2026-02-09T15:51:38.000Z",
+      "https://www.anthropic.com/news/claude-for-nonprofits": "2026-08-03T16:00:43.000Z",
       "https://www.anthropic.com/engineering/building-c-compiler": "2026-02-05T19:38:29.000Z",
       "https://www.anthropic.com/engineering/infrastructure-noise": "2026-04-24T14:21:28.000Z",
       "https://www.anthropic.com/research/AI-assistance-coding-skills": "2026-07-08T22:03:46.000Z",
@@ -434,11 +434,11 @@
       "https://www.anthropic.com/news/position-open-weights-models": "2026-07-28T15:25:50.000Z",
       "https://www.anthropic.com/news/cognizant-anthropic": "2026-07-27T15:34:00.000Z",
       "https://www.anthropic.com/research/discovering-cryptographic-weaknesses": "2026-07-29T14:10:25.000Z",
-      "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals": "2026-07-30T23:14:55.000Z"
+      "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals": "2026-08-03T14:36:32.000Z"
     }
   },
   "openai": {
-    "lastChecked": "2026-08-03T03:15:15.103Z",
+    "lastChecked": "2026-08-04T02:44:08.407Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-07-25T07:19:31.944Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-07-29T03:13:44.572Z",
@@ -1162,7 +1162,7 @@
       "https://openai.com/index/hp-frontier-partnership/": "2026-07-01T23:23:03.958Z",
       "https://openai.com/index/introducing-genebench-pro/": "2026-07-25T06:56:29.525Z",
       "https://openai.com/index/core-dump-epidemiology-data-infrastructure-bug/": "2026-07-06T16:31:15.664Z",
-      "https://openai.com/index/introducing-gpt-live/": "2026-08-02T19:38:08.671Z",
+      "https://openai.com/index/introducing-gpt-live/": "2026-08-03T20:56:06.760Z",
       "https://openai.com/index/separating-signal-from-noise-coding-evaluations/": "2026-07-16T15:59:29.772Z",
       "https://openai.com/index/gpt-5-6/": "2026-07-31T21:43:22.392Z",
       "https://openai.com/index/chatgpt-for-your-most-ambitious-work/": "2026-07-24T00:11:55.566Z",
@@ -1182,13 +1182,14 @@
       "https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/": "2026-07-28T02:04:59.850Z",
       "https://openai.com/business/guides-and-resources/a-practical-guide-to-building-with-ai/": "2026-07-28T02:04:56.101Z",
       "https://openai.com/business/guides-and-resources/how-openai-uses-codex/": "2026-07-28T02:04:55.166Z",
-      "https://openai.com/index/scientific-computing-agentic-ai/": "2026-08-01T04:51:03.284Z",
+      "https://openai.com/index/scientific-computing-agentic-ai/": "2026-08-03T13:19:01.399Z",
       "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/": "2026-07-31T09:10:44.113Z",
-      "https://openai.com/index/chatgpt-for-academic-researchers/": "2026-07-31T10:59:09.724Z",
-      "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores/": "2026-07-31T18:49:21.706Z",
-      "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/": "2026-08-02T22:49:17.372Z",
+      "https://openai.com/index/chatgpt-for-academic-researchers/": "2026-08-03T17:39:06.866Z",
+      "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores/": "2026-08-03T16:24:01.681Z",
+      "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/": "2026-08-04T02:06:43.656Z",
       "https://openai.com/index/building-abundant-intelligence/": "2026-07-31T15:01:22.960Z",
-      "https://openai.com/index/ten-advances-in-mathematics/": "2026-08-03T03:06:09.915Z"
+      "https://openai.com/index/ten-advances-in-mathematics/": "2026-08-04T02:38:29.044Z",
+      "https://openai.com/index/continuous-voice-interaction-with-gpt-live/": "2026-08-03T20:21:10.293Z"
     }
   }
 }
