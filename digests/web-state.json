@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-08-12T02:06:14.983Z",
+    "lastChecked": "2026-08-13T02:08:08.605Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -437,11 +437,13 @@
       "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals": "2026-08-03T14:36:32.000Z",
       "https://www.anthropic.com/news/tino-cuellar": "2026-08-04T17:40:15.000Z",
       "https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards": "2026-08-07T03:05:42.000Z",
-      "https://www.anthropic.com/research/riemann-zeta": "2026-08-10T22:34:13.000Z"
+      "https://www.anthropic.com/research/riemann-zeta": "2026-08-10T22:34:13.000Z",
+      "https://www.anthropic.com/research/multiagent-systems": "2026-08-13T01:33:05.000Z",
+      "https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs": "2026-08-12T20:17:11.000Z"
     }
   },
   "openai": {
-    "lastChecked": "2026-08-12T02:06:17.517Z",
+    "lastChecked": "2026-08-13T02:08:10.423Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-07-25T07:19:31.944Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-07-29T03:13:44.572Z",
@@ -644,10 +646,10 @@
       "https://openai.com/index/accelerating-biological-research-in-the-wet-lab/": "2026-07-14T14:06:43.364Z",
       "https://openai.com/index/introducing-gpt-5-3-codex-spark/": "2026-08-11T18:02:09.003Z",
       "https://openai.com/index/developers-can-now-submit-apps-to-chatgpt/": "2026-06-12T22:38:11.601Z",
-      "https://openai.com/index/testing-ads-in-chatgpt/": "2026-08-12T01:19:17.866Z",
+      "https://openai.com/index/testing-ads-in-chatgpt/": "2026-08-12T21:53:06.581Z",
       "https://openai.com/index/introducing-gpt-5-3-codex/": "2026-08-11T18:02:51.804Z",
       "https://openai.com/index/our-approach-to-advertising-and-expanding-access/": "2026-06-04T18:57:56.045Z",
-      "https://openai.com/index/introducing-chatgpt-health/": "2026-08-12T01:35:02.490Z",
+      "https://openai.com/index/introducing-chatgpt-health/": "2026-08-12T02:07:09.224Z",
       "https://openai.com/index/introducing-our-next-generation-audio-models/": "2026-07-28T17:05:16.141Z",
       "https://openai.com/index/introducing-the-teen-safety-blueprint/": "2026-07-28T18:08:06.113Z",
       "https://openai.com/index/openai-api/": "2026-06-03T18:58:55.238Z",
@@ -1140,7 +1142,7 @@
       "https://openai.com/business/learn/gartner-2026-agentic-coding-leader/": "2026-07-10T11:32:29.191Z",
       "https://openai.com/index/building-self-improving-tax-agents-with-codex/": "2026-06-04T19:16:32.732Z",
       "https://openai.com/index/openai-frontier-governance-framework/": "2026-06-04T08:13:48.422Z",
-      "https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense/": "2026-08-12T02:02:27.061Z",
+      "https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense/": "2026-08-13T01:58:28.471Z",
       "https://openai.com/index/trustworthy-third-party-evaluations-foundations/": "2026-06-23T22:24:45.376Z",
       "https://openai.com/index/openai-frontier-models-and-codex-are-now-available-on-aws/": "2026-06-12T09:31:28.021Z",
       "https://openai.com/index/advancing-youth-safety-and-opportunity-through-global-leadership/": "2026-06-05T06:40:18.609Z",
@@ -1150,7 +1152,7 @@
       "https://openai.com/index/built-to-benefit-everyone-our-plan/": "2026-06-18T04:03:56.965Z",
       "https://openai.com/index/openai-submits-confidential-s-1/": "2026-06-17T22:17:03.568Z",
       "https://openai.com/index/economic-research-exchange/": "2026-07-14T17:38:43.002Z",
-      "https://openai.com/index/openai-on-oracle-cloud/": "2026-08-12T01:59:35.117Z",
+      "https://openai.com/index/openai-on-oracle-cloud/": "2026-08-12T21:08:30.093Z",
       "https://openai.com/index/openai-to-acquire-ona/": "2026-06-19T05:51:09.079Z",
       "https://openai.com/index/introducing-openai-partner-network/": "2026-07-25T07:00:37.054Z",
       "https://openai.com/index/deployment-simulation/": "2026-07-25T07:03:02.886Z",
@@ -1178,7 +1180,7 @@
       "https://openai.com/index/david-velez-robin-vince-join-openai-boards/": "2026-07-29T11:22:21.018Z",
       "https://openai.com/index/introducing-openai-presence/": "2026-07-30T08:26:02.273Z",
       "https://openai.com/index/how-news-organizations-are-using-ai/": "2026-08-06T13:49:52.687Z",
-      "https://openai.com/index/health-in-chatgpt/": "2026-08-12T01:08:09.656Z",
+      "https://openai.com/index/health-in-chatgpt/": "2026-08-12T21:26:18.657Z",
       "https://openai.com/index/how-ai-is-expanding-what-people-do-at-work/": "2026-08-04T03:08:03.094Z",
       "https://openai.com/business/guides-and-resources/identifying-and-scaling-ai-use-cases/": "2026-07-28T02:05:53.654Z",
       "https://openai.com/business/guides-and-resources/inside-gpt5-our-best-model-for-work/": "2026-07-28T02:05:48.773Z",
@@ -1187,23 +1189,24 @@
       "https://openai.com/business/guides-and-resources/how-openai-uses-codex/": "2026-07-28T02:04:55.166Z",
       "https://openai.com/index/scientific-computing-agentic-ai/": "2026-08-11T08:01:02.739Z",
       "https://openai.com/index/gpt-5-6-frontier-intelligence-efficiency/": "2026-08-09T13:32:02.805Z",
-      "https://openai.com/index/chatgpt-for-academic-researchers/": "2026-08-12T01:46:02.778Z",
+      "https://openai.com/index/chatgpt-for-academic-researchers/": "2026-08-12T06:00:12.148Z",
       "https://openai.com/index/how-two-settings-tripled-our-arc-agi-3-scores/": "2026-08-04T21:40:07.084Z",
       "https://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/": "2026-08-07T23:58:02.759Z",
-      "https://openai.com/index/building-abundant-intelligence/": "2026-08-11T18:59:52.091Z",
+      "https://openai.com/index/building-abundant-intelligence/": "2026-08-12T21:47:13.503Z",
       "https://openai.com/index/ten-advances-in-mathematics/": "2026-08-09T21:15:26.473Z",
       "https://openai.com/index/continuous-voice-interaction-with-gpt-live/": "2026-08-12T00:07:02.137Z",
       "https://openai.com/index/introducing-the-openai-economic-research-exchange/": "2026-08-11T11:31:10.090Z",
-      "https://openai.com/index/learn-teach-chatgpt-work-codex/": "2026-08-11T22:10:03.176Z",
+      "https://openai.com/index/learn-teach-chatgpt-work-codex/": "2026-08-12T22:37:41.348Z",
       "https://openai.com/index/apple-is-getting-this-wrong/": "2026-08-06T14:10:10.360Z",
-      "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work/": "2026-08-11T18:18:02.707Z",
-      "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt/": "2026-08-11T21:45:30.977Z",
-      "https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai/": "2026-08-10T22:35:30.664Z",
-      "https://openai.com/index/building-an-ai-native-finance-function/": "2026-08-12T01:45:04.902Z",
-      "https://openai.com/index/premium-seats-chatgpt-business/": "2026-08-12T01:12:21.647Z",
-      "https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows/": "2026-08-12T01:50:02.919Z",
-      "https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands/": "2026-08-12T01:50:17.750Z",
-      "https://openai.com/index/daybreak-models-are-now-available-on-aws/": "2026-08-12T01:59:50.931Z"
+      "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work/": "2026-08-12T22:00:03.461Z",
+      "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt/": "2026-08-12T21:21:09.298Z",
+      "https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai/": "2026-08-12T21:40:46.035Z",
+      "https://openai.com/index/building-an-ai-native-finance-function/": "2026-08-12T12:03:15.606Z",
+      "https://openai.com/index/premium-seats-chatgpt-business/": "2026-08-12T21:59:47.647Z",
+      "https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows/": "2026-08-13T01:21:02.756Z",
+      "https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands/": "2026-08-12T23:58:09.599Z",
+      "https://openai.com/index/daybreak-models-are-now-available-on-aws/": "2026-08-13T02:07:33.163Z",
+      "https://openai.com/index/how-enterprises-put-ai-to-work/": "2026-08-12T21:48:02.656Z"
     }
   }
 }
