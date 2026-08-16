@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-08-15T01:20:24.526Z",
+    "lastChecked": "2026-08-16T01:25:22.521Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-02-25T20:58:11.000Z",
@@ -438,13 +438,13 @@
       "https://www.anthropic.com/news/tino-cuellar": "2026-08-04T17:40:15.000Z",
       "https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards": "2026-08-07T03:05:42.000Z",
       "https://www.anthropic.com/research/riemann-zeta": "2026-08-13T23:32:23.000Z",
-      "https://www.anthropic.com/research/multiagent-systems": "2026-08-13T01:33:05.000Z",
+      "https://www.anthropic.com/research/multiagent-systems": "2026-08-15T16:06:32.000Z",
       "https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs": "2026-08-14T17:26:28.000Z",
-      "https://www.anthropic.com/news/claude-text-watermark": "2026-08-14T20:06:43.000Z"
+      "https://www.anthropic.com/news/claude-text-watermark": "2026-08-15T05:53:01.000Z"
     }
   },
   "openai": {
-    "lastChecked": "2026-08-15T01:20:26.605Z",
+    "lastChecked": "2026-08-16T01:25:24.878Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-07-25T07:19:31.944Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-07-29T03:13:44.572Z",
@@ -1143,7 +1143,7 @@
       "https://openai.com/business/learn/gartner-2026-agentic-coding-leader/": "2026-07-10T11:32:29.191Z",
       "https://openai.com/index/building-self-improving-tax-agents-with-codex/": "2026-06-04T19:16:32.732Z",
       "https://openai.com/index/openai-frontier-governance-framework/": "2026-06-04T08:13:48.422Z",
-      "https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense/": "2026-08-13T23:27:21.825Z",
+      "https://openai.com/index/strengthening-societal-resilience-with-rosalind-biodefense/": "2026-08-15T11:20:14.400Z",
       "https://openai.com/index/trustworthy-third-party-evaluations-foundations/": "2026-06-23T22:24:45.376Z",
       "https://openai.com/index/openai-frontier-models-and-codex-are-now-available-on-aws/": "2026-06-12T09:31:28.021Z",
       "https://openai.com/index/advancing-youth-safety-and-opportunity-through-global-leadership/": "2026-08-14T02:11:43.596Z",
@@ -1201,15 +1201,15 @@
       "https://openai.com/index/apple-is-getting-this-wrong/": "2026-08-06T14:10:10.360Z",
       "https://openai.com/index/how-the-world-is-putting-chatgpt-to-work/": "2026-08-13T21:16:02.520Z",
       "https://openai.com/index/improving-gpt-5-6-sol-in-chatgpt/": "2026-08-12T21:21:09.298Z",
-      "https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai/": "2026-08-14T13:51:44.067Z",
+      "https://openai.com/index/openai-and-apa-partner-to-advance-responsible-ai/": "2026-08-15T12:34:45.266Z",
       "https://openai.com/index/building-an-ai-native-finance-function/": "2026-08-14T17:11:08.605Z",
       "https://openai.com/index/premium-seats-chatgpt-business/": "2026-08-14T10:23:01.730Z",
       "https://openai.com/index/expanding-daybreak-as-the-cyber-defense-window-narrows/": "2026-08-14T17:30:02.593Z",
       "https://openai.com/index/putting-frontier-cyber-models-in-more-trusted-hands/": "2026-08-14T17:33:05.064Z",
       "https://openai.com/index/daybreak-models-are-now-available-on-aws/": "2026-08-13T22:04:01.124Z",
-      "https://openai.com/index/how-enterprises-put-ai-to-work/": "2026-08-14T21:33:06.061Z",
-      "https://openai.com/index/previewing-ultrafast/": "2026-08-15T01:13:02.328Z",
-      "https://openai.com/index/dali-rajic-chief-revenue-officer/": "2026-08-15T00:36:43.386Z"
+      "https://openai.com/index/how-enterprises-put-ai-to-work/": "2026-08-15T05:23:03.602Z",
+      "https://openai.com/index/previewing-ultrafast/": "2026-08-15T16:19:06.258Z",
+      "https://openai.com/index/dali-rajic-chief-revenue-officer/": "2026-08-15T19:40:30.084Z"
     }
   }
 }
