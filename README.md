@@ -100,6 +100,8 @@ Subscribe to get daily digest notifications pushed directly to Telegram. Each me
 | OpenCode | [anomalyco/opencode](https://github.com/anomalyco/opencode) |
 | Qwen Code | [QwenLM/qwen-code](https://github.com/QwenLM/qwen-code) |
 | DeepSeek TUI | [Hmbown/DeepSeek-TUI](https://github.com/Hmbown/DeepSeek-TUI) |
+| Pi | [earendil-works/pi](https://github.com/earendil-works/pi) |
+| DeepSeek Harness | [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) |
 
 ### Claude Code Skills (GitHub)
 
@@ -297,6 +299,8 @@ Each report is generated in both Chinese (`ai-cli.md`) and English (`ai-cli-en.m
   <details> OpenCode       — ...
   <details> Qwen Code      — ...
   <details> DeepSeek TUI   — ...
+  <details> Pi             — ...
+  <details> DeepSeek Harness — ...
 ```
 
 `ai-agents.md` / `ai-agents-en.md` structure:

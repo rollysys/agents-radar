@@ -32,6 +32,14 @@ cli_repos:
   - id: deepseek-tui
     repo: Hmbown/DeepSeek-TUI
     name: DeepSeek TUI
+  - id: pi
+    repo: earendil-works/pi
+    name: Pi
+    paginated: true
+  - id: deepseek-harness
+    repo: deepseek-ai/deepseek-harness
+    name: DeepSeek Harness
+    paginated: true
 
 # ── Claude Code Skills ────────────────────────────────────────────────────────
 # Tracked separately without a date filter, sorted by community engagement.
