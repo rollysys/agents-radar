@@ -36,6 +36,10 @@ cli_repos:
     repo: earendil-works/pi
     name: Pi
     paginated: true
+  - id: oh-my-pi
+    repo: can1357/oh-my-pi
+    name: oh-my-pi
+    paginated: true
   - id: deepseek-harness
     repo: deepseek-ai/deepseek-harness
     name: DeepSeek Harness
