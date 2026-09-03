@@ -61,12 +61,32 @@ function releaseSlot(): void {
 const MAX_RETRIES = 3;
 const RETRY_BASE_MS = 5_000; // 5 s, 10 s, 20 s
 
+/** Narrow an unknown thrown value to its HTTP status code, if it carries one. */
+function errorStatus(err: unknown): number | undefined {
+  if (typeof err === "object" && err !== null && "status" in err && typeof err.status === "number") {
+    return err.status;
+  }
+  return undefined;
+}
+
 export function is429(err: unknown): boolean {
-  return (err as { status?: number })?.status === 429 || String(err).includes("429");
+  return errorStatus(err) === 429 || String(err).includes("429");
 }
 
 function is403(err: unknown): boolean {
-  return (err as { status?: number })?.status === 403 || String(err).includes("permission_error");
+  return errorStatus(err) === 403 || String(err).includes("permission_error");
+}
+/**
+ * z.ai / Alibaba-style content moderation rejects the whole prompt with a 400
+ * (code 1301, "sensitive content"). Narrow match so genuine client bugs
+ * (bad params etc.) still surface instead of silently failing over.
+ */
+function isContentFilter(err: unknown): boolean {
+  return errorStatus(err) === 400 && /1301|sensitive content/i.test(String(err));
+}
+
+export function shouldFallback(err: unknown): boolean {
+  return is403(err) || isContentFilter(err);
 }
 
 export async function callLlm(prompt: string, maxTokens = LLM_TOKENS_DEFAULT): Promise<string> {
@@ -84,8 +104,9 @@ export async function callLlm(prompt: string, maxTokens = LLM_TOKENS_DEFAULT): P
         await sleep(wait);
         continue;
       }
-      if (is403(err) && fallbackProvider) {
-        console.error(`[llm] 403 quota exceeded — switching to fallback provider`);
+      if (shouldFallback(err) && fallbackProvider) {
+        const reason = is403(err) ? "403 quota exceeded" : "content filter rejected prompt";
+        console.error(`[llm] ${reason} — switching to fallback provider`);
         return await fallbackProvider.call(prompt, maxTokens);
       }
       throw err;

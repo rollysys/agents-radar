@@ -18,7 +18,7 @@ vi.mock("../providers/index.ts", async (importOriginal) => {
   };
 });
 
-import { is429, callLlm, saveFile, autoGenFooter } from "../report.ts";
+import { is429, shouldFallback, callLlm, saveFile, autoGenFooter } from "../report.ts";
 
 // ---------------------------------------------------------------------------
 // is429
@@ -62,6 +62,42 @@ describe("is429", () => {
       headers: { "retry-after": "30" },
     });
     expect(is429(anthropicError)).toBe(true);
+  });
+});
+// ---------------------------------------------------------------------------
+// shouldFallback
+// ---------------------------------------------------------------------------
+
+describe("shouldFallback", () => {
+  it("triggers on 403 quota errors", () => {
+    expect(shouldFallback({ status: 403 })).toBe(true);
+    expect(shouldFallback(new Error("permission_error: quota exceeded"))).toBe(true);
+  });
+
+  it("triggers on z.ai content-filter 400 (code 1301)", () => {
+    const zaiError = Object.assign(
+      new Error(
+        '400 {"type":"error","error":{"type":"invalid_request_error","code":"1301","message":"[1301][System detected potentially unsafe or sensitive content in input or generation.]"}}',
+      ),
+      { status: 400 },
+    );
+    expect(shouldFallback(zaiError)).toBe(true);
+  });
+
+  it("does not trigger on genuine 400 client bugs", () => {
+    const badRequest = Object.assign(new Error("400 max_tokens exceeds limit"), { status: 400 });
+    expect(shouldFallback(badRequest)).toBe(false);
+  });
+
+  it("does not trigger on content-signature strings without status 400", () => {
+    expect(shouldFallback(new Error("1301 sensitive content"))).toBe(false);
+    expect(shouldFallback(Object.assign(new Error("500 sensitive content"), { status: 500 }))).toBe(false);
+  });
+
+  it("returns false for null/undefined and unrelated errors", () => {
+    expect(shouldFallback(null)).toBe(false);
+    expect(shouldFallback(undefined)).toBe(false);
+    expect(shouldFallback(new Error("Something else"))).toBe(false);
   });
 });
 
