@@ -1,6 +1,6 @@
 {
   "anthropic": {
-    "lastChecked": "2026-09-26T04:05:54.946Z",
+    "lastChecked": "2026-09-27T04:20:07.557Z",
     "seenUrls": {
       "https://www.anthropic.com/news/responsible-scaling-policy-v3": "2026-02-25T23:57:06.000Z",
       "https://www.anthropic.com/research/deprecation-updates-opus-3": "2026-09-09T21:14:42.000Z",
@@ -437,7 +437,7 @@
       "https://www.anthropic.com/news/investigating-incidents-cybersecurity-evals": "2026-09-09T15:04:52.000Z",
       "https://www.anthropic.com/news/tino-cuellar": "2026-09-09T15:03:30.000Z",
       "https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards": "2026-09-09T15:02:25.000Z",
-      "https://www.anthropic.com/research/riemann-zeta": "2026-09-10T13:15:27.000Z",
+      "https://www.anthropic.com/research/riemann-zeta": "2026-09-26T16:02:49.000Z",
       "https://www.anthropic.com/research/multiagent-systems": "2026-08-27T15:38:32.000Z",
       "https://www.anthropic.com/research/reviewing-the-evidence-on-worker-retraining-programs": "2026-09-04T14:19:31.000Z",
       "https://www.anthropic.com/news/claude-text-watermark": "2026-09-09T14:58:19.000Z",
@@ -465,7 +465,7 @@
     }
   },
   "openai": {
-    "lastChecked": "2026-09-26T04:05:56.323Z",
+    "lastChecked": "2026-09-27T04:20:09.525Z",
     "seenUrls": {
       "https://openai.com/index/arvind-kc-chief-people-officer/": "2026-09-22T22:06:04.924Z",
       "https://openai.com/index/put-ai-to-work-for-your-product-team/": "2026-09-02T00:20:45.696Z",
@@ -1255,7 +1255,7 @@
       "https://openai.com/index/gpt-6-astra/": "2026-09-25T19:18:10.771Z",
       "https://openai.com/index/safety-overview-gpt-6-astra/": "2026-09-25T19:16:27.583Z",
       "https://openai.com/index/an-alien-mind/": "2026-09-25T19:18:08.420Z",
-      "https://openai.com/index/research-acceleration-view-inside-openai/": "2026-09-26T01:15:03.316Z",
+      "https://openai.com/index/research-acceleration-view-inside-openai/": "2026-09-27T03:53:46.530Z",
       "https://openai.com/index/introducing-chatgpt-images-2-5/": "2026-09-25T19:16:19.735Z",
       "https://openai.com/index/supporting-journalism-from-classrooms-to-newsrooms/": "2026-09-25T19:16:20.953Z",
       "https://openai.com/index/teen-development-research-grants/": "2026-09-25T19:16:14.844Z",
@@ -1268,7 +1268,7 @@
       "https://openai.com/index/introducing-the-agents-api/": "2026-09-25T19:16:13.585Z",
       "https://openai.com/devday/2025/": "2026-09-22T22:05:52.301Z",
       "https://openai.com/index/introducing-gpt-live-1-in-the-api/": "2026-09-25T19:16:18.828Z",
-      "https://openai.com/index/scaling-storage-one-billion-users-part-one/": "2026-09-25T19:16:10.387Z",
+      "https://openai.com/index/scaling-storage-one-billion-users-part-one/": "2026-09-26T14:25:04.165Z",
       "https://openai.com/business/learn/gartner-2026-enterprise-ai-assistants-leader/": "2026-09-15T23:19:03.904Z",
       "https://openai.com/index/disrupting-malicious-uses-of-ai/": "2026-09-25T18:59:39.526Z",
       "https://openai.com/index/disrupting-malicious-uses-of-ai-data-center-bandwagon/": "2026-09-25T18:56:48.673Z",
@@ -1279,7 +1279,7 @@
       "https://openai.com/index/disrupting-malicious-uses-of-ai-bad-grammar/": "2026-09-25T18:57:13.488Z",
       "https://openai.com/index/how-to-connect-ai-usage-to-business-value/": "2026-09-25T19:16:12.865Z",
       "https://openai.com/index/model-misalignment-reporting-framework/": "2026-09-25T19:18:08.559Z",
-      "https://openai.com/index/reimagining-advertising-with-ai/": "2026-09-25T19:16:11.371Z",
+      "https://openai.com/index/reimagining-advertising-with-ai/": "2026-09-26T12:26:15.440Z",
       "https://openai.com/index/disrupting-malicious-uses-of-ai-silver-lining-playbook/": "2026-09-25T18:56:49.531Z",
       "https://openai.com/index/disrupting-malicious-uses-of-ai-romance-scam/": "2026-09-25T18:57:12.529Z",
       "https://openai.com/index/disrupting-malicious-uses-of-ai-trolling-stone/": "2026-09-17T11:25:35.241Z",
@@ -1329,19 +1329,19 @@
       "https://openai.com/business/learn/how-our-finance-team-uses-chatgpt-work/": "2026-09-17T22:29:06.368Z",
       "https://openai.com/business/learn/download-the-chatgpt-work-guide-for-finance-teams/": "2026-09-17T22:27:30.594Z",
       "https://openai.com/business/learn/download-the-chatgpt-work-guide-for-marketing-teams/": "2026-09-17T22:20:34.823Z",
-      "https://openai.com/index/astra-for-law/": "2026-09-25T19:16:14.009Z",
-      "https://openai.com/index/australian-youth-safety-blueprint/": "2026-09-25T19:16:12.301Z",
+      "https://openai.com/index/astra-for-law/": "2026-09-26T11:57:04.491Z",
+      "https://openai.com/index/australian-youth-safety-blueprint/": "2026-09-26T15:28:43.733Z",
       "https://openai.com/index/advisory-group-on-mathematics-and-ai/": "2026-09-25T19:16:10.371Z",
-      "https://openai.com/index/expanding-openai-academy-with-new-learning-paths/": "2026-09-25T19:16:11.008Z",
+      "https://openai.com/index/expanding-openai-academy-with-new-learning-paths/": "2026-09-26T15:45:20.075Z",
       "https://openai.com/business/learn/download-the-chatgpt-work-guide-for-data-teams/": "2026-09-21T20:52:44.954Z",
-      "https://openai.com/index/better-prompt-caching-for-gpt-6/": "2026-09-25T19:16:11.368Z",
+      "https://openai.com/index/better-prompt-caching-for-gpt-6/": "2026-09-26T05:58:21.071Z",
       "https://openai.com/index/priorities-principles-third-party-assessments/": "2026-09-25T19:16:10.778Z",
-      "https://openai.com/index/introducing-gpt-6-sol-and-luna/": "2026-09-25T19:18:10.151Z",
+      "https://openai.com/index/introducing-gpt-6-sol-and-luna/": "2026-09-26T09:51:08.046Z",
       "https://openai.com/index/chatgpt-ads-expands-southeast-asia-taiwan/": "2026-09-24T02:01:30.125Z",
       "https://openai.com/index/introducing-mentalhealthbench/": "2026-09-25T19:16:12.929Z",
       "https://openai.com/index/airbnb-gpt-6-astra/": "2026-09-25T19:16:16.112Z",
       "https://openai.com/index/sam-altman-un-security-council-remarks/": "2026-09-23T20:53:34.445Z",
-      "https://openai.com/index/two-years-of-openai-academy/": "2026-09-26T01:27:30.966Z"
+      "https://openai.com/index/two-years-of-openai-academy/": "2026-09-27T01:38:14.767Z"
     }
   }
 }
